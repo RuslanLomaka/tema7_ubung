@@ -9,63 +9,233 @@
   <body>
     <main class="app-shell">
       <header class="topbar">
-        <div>
+        <div class="title-wrap">
           <p class="eyebrow">Grammatiktraining</p>
-          <h1></h1>
+          <h1 id="topicTitle"></h1>
         </div>
-        <div class="score-card" aria-live="polite">
-          <span id="roundLabel">Runde 1 / 50</span>
-          <strong id="scoreLabel">0 richtig</strong>
+
+        <div class="header-side">
+          <nav class="view-switch" aria-label="Ansichten">
+            <button id="theoryNavButton" class="secondary-button is-active" type="button">Theorie</button>
+            <button id="testNavButton" class="secondary-button" type="button">Test starten</button>
+          </nav>
+
+          <div class="score-card" aria-live="polite">
+            <label class="language-picker" for="languageSelect">Sprache</label>
+            <select id="languageSelect" class="language-select">
+              <option value="en">English</option>
+              <option value="uk">Ukrainian</option>
+              <option value="ar">Arabic</option>
+            </select>
+            <span id="roundLabel">Theorie</span>
+            <strong id="scoreLabel">Bereit</strong>
+          </div>
         </div>
       </header>
 
-      <section class="progress-wrap" aria-label="Fortschritt">
-        <div class="progress-bar">
-          <span id="progressFill"></span>
-        </div>
+      <section id="theoryView" class="theory-view">
+        <section class="theory-hero panel-band">
+          <div class="hero-copy">
+            <p class="task-type">Lektion 7</p>
+            <h2>Rund ums Wohnen</h2>
+            <p class="hero-text">
+              Hier findest du die Grammatik, den Wortschatz und die Beispielsätze für diese Lektion. Du kannst alles
+              zuerst wiederholen und danach den Test mit 15 gemischten Aufgaben starten.
+            </p>
+            <div class="hero-actions">
+              <button id="startTestFromTheoryButton" class="primary-button" type="button">Test starten</button>
+            </div>
+          </div>
+
+          <div class="hero-stats">
+            <div class="mini-stat settings-stat">
+              <span>Aufgaben im Test</span>
+              <div id="questionCountControls" class="settings-options" role="group" aria-label="Anzahl der Aufgaben">
+                <button type="button" class="settings-option is-active" data-count="6">6</button>
+                <button type="button" class="settings-option" data-count="9">9</button>
+                <button type="button" class="settings-option" data-count="12">12</button>
+                <button type="button" class="settings-option" data-count="15">15</button>
+              </div>
+            </div>
+            <div class="mini-stat settings-stat">
+              <span>Schwierigkeit</span>
+              <div id="difficultyModeControls" class="settings-options settings-options-level" role="group" aria-label="Schwierigkeit im Test">
+                <button type="button" class="settings-option is-active" data-mode="mixed">Gemischt</button>
+                <button type="button" class="settings-option" data-mode="A2">Einfach</button>
+                <button type="button" class="settings-option" data-mode="B1">Mittel</button>
+                <button type="button" class="settings-option" data-mode="B2">Schwer</button>
+              </div>
+              <p id="difficultyModeHint" class="mini-stat-hint">Gemischt = möglichst gleich verteilt.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel-band">
+          <div class="section-head">
+            <div>
+              <p class="task-type">Grammatik</p>
+              <h2>Regeln und Muster</h2>
+            </div>
+          </div>
+          <div id="grammarTheoryList" class="theory-grid"></div>
+        </section>
+
+        <section class="panel-band">
+          <div class="section-head">
+            <div>
+              <p class="task-type">Wortschatz</p>
+              <h2>Wörter mit Formen</h2>
+            </div>
+            <div class="theory-tools">
+              <input id="vocabularySearch" class="theory-input" type="search" placeholder="Wort suchen">
+              <select id="vocabularyCategory" class="language-select theory-select">
+                <option value="all">Alle Kategorien</option>
+                <option value="noun">Nomen</option>
+                <option value="verb">Verben</option>
+                <option value="adjective">Adjektive</option>
+                <option value="grammar">Grammatik</option>
+              </select>
+            </div>
+          </div>
+          <div id="vocabularyList" class="vocabulary-list"></div>
+        </section>
+
+        <section class="panel-band">
+          <div class="section-head">
+            <div>
+              <p class="task-type">Sätze</p>
+              <h2>Alle Beispielsätze</h2>
+            </div>
+            <div class="theory-tools">
+              <select id="sentenceLevelFilter" class="language-select theory-select">
+                <option value="all">Alle Niveaus</option>
+                <option value="A2">Einfach</option>
+                <option value="B1">Mittel</option>
+                <option value="B2">Schwer</option>
+              </select>
+            </div>
+          </div>
+          <div id="sentenceBank" class="sentence-bank"></div>
+        </section>
       </section>
 
-      <section class="workspace" aria-live="polite">
-        <div id="feedback" class="feedback hidden"></div>
+      <section id="testView" class="test-view hidden">
+        <section class="progress-wrap" aria-label="Fortschritt">
+          <div class="progress-bar">
+            <span id="progressFill"></span>
+          </div>
+        </section>
 
-        <div class="task-head">
-          <p id="taskType" class="task-type">Satzbau</p>
-          <h2 id="taskTitle">Bringe die Wörter in die richtige Reihenfolge.</h2>
-        </div>
+        <section class="workspace" aria-live="polite">
+          <div id="feedback" class="feedback hidden"></div>
+          <div id="postSubmitPanel" class="post-submit-panel hidden">
+            <div id="translationPanel" class="translation-panel hidden"></div>
+            <div id="alternatePanel" class="translation-panel hidden"></div>
+            <div id="rulePanel" class="rule-panel hidden">
+              <h3 id="ruleTitle" class="rule-title"></h3>
+              <p id="ruleShort" class="rule-line"></p>
+              <p id="ruleExample" class="rule-line"></p>
+              <button id="whyButton" class="secondary-button hidden" type="button">Warum ist das richtig?</button>
+              <button id="moreRuleButton" class="secondary-button hidden" type="button">Mehr</button>
+              <div id="ruleMore" class="rule-more hidden">
+                <p id="ruleTheory" class="rule-line"></p>
+                <p id="ruleMistake" class="rule-line"></p>
+                <div id="ruleExamples" class="rule-examples"></div>
+                <button id="lessRuleButton" class="secondary-button" type="button">Weniger</button>
+              </div>
+            </div>
+          </div>
 
-        <div class="sentence-zone" aria-label="Deine Antwort">
-          <div id="answerArea" class="answer-area"></div>
-        </div>
+          <div class="task-head">
+            <div>
+              <p id="taskType" class="task-type">Satzbau</p>
+              <h2 id="taskTitle">Bringe die Wörter in die richtige Reihenfolge.</h2>
+            </div>
+            <span id="levelBadge" class="level-badge" aria-label="Schwierigkeit">
+              <span class="level-badge-label">Schwierigkeit:</span>
+              <span class="level-scale" aria-hidden="true">
+                <span class="level-option is-active level-A2">Einfach</span>
+                <span class="level-option">Mittel</span>
+                <span class="level-option">Schwer</span>
+              </span>
+            </span>
+          </div>
 
-        <div id="charToolbar" class="char-toolbar hidden" aria-label="Deutsche Sonderzeichen">
-          <button type="button" data-char="ä">ä</button>
-          <button type="button" data-char="ö">ö</button>
-          <button type="button" data-char="ü">ü</button>
-          <button type="button" data-char="Ä">Ä</button>
-          <button type="button" data-char="Ö">Ö</button>
-          <button type="button" data-char="Ü">Ü</button>
-          <button type="button" data-char="ß">ß</button>
-        </div>
+          <div class="task-help-wrap">
+            <button id="taskHelpToggle" class="secondary-button task-help-toggle" type="button" aria-expanded="false" aria-controls="taskHelpPanel">Was zu tun hier?</button>
+            <article id="taskHelpPanel" class="task-help-panel hidden" aria-live="polite">
+              <h3 id="taskHelpTitle">In this task you should...</h3>
+              <p id="taskHelpBody" class="task-help-line"></p>
+              <p id="taskHelpDecide" class="task-help-line"></p>
+              <p id="taskHelpExample" class="task-help-line"></p>
+              <p id="taskHelpSubmit" class="task-help-line"></p>
+            </article>
+          </div>
 
-        <div class="word-bank" id="wordBank" aria-label="Wortblöcke"></div>
+          <div class="sentence-zone" aria-label="Deine Antwort">
+            <div id="answerArea" class="answer-area"></div>
+          </div>
 
-        <div class="actions">
-          <button id="clearButton" class="secondary-button" type="button">Zurücksetzen</button>
-          <button id="checkButton" class="primary-button" type="button">Prüfen</button>
-          <button id="nextButton" class="primary-button hidden" type="button">Weiter</button>
-        </div>
-      </section>
+          <div id="charToolbar" class="char-toolbar hidden" aria-label="Deutsche Sonderzeichen">
+            <button type="button" data-char="ä">ä</button>
+            <button type="button" data-char="ö">ö</button>
+            <button type="button" data-char="ü">ü</button>
+            <button type="button" data-char="Ä">Ä</button>
+            <button type="button" data-char="Ö">Ö</button>
+            <button type="button" data-char="Ü">Ü</button>
+            <button type="button" data-char="ß">ß</button>
+          </div>
 
-      <section id="finishPanel" class="finish-panel hidden" aria-live="polite">
-        <p class="task-type">Fertig</p>
-        <h2 id="finishTitle">Runde abgeschlossen</h2>
-        <p id="finishText"></p>
-        <h3 class="review-title">Details</h3>
-        <p id="reviewSummary" class="review-summary"></p>
-        <div id="reviewList" class="review-list"></div>
+          <div class="word-bank" id="wordBank" aria-label="Wortblöcke"></div>
+
+          <div class="actions">
+            <button id="clearButton" class="secondary-button" type="button">Zurücksetzen</button>
+            <button id="checkButton" class="primary-button" type="button">Prüfen</button>
+            <button id="nextButton" class="primary-button hidden" type="button">Weiter</button>
+          </div>
+        </section>
+
+        <section id="finishPanel" class="finish-panel hidden" aria-live="polite">
+          <p class="task-type">Auswertung</p>
+          <h2 id="finishTitle">Test abgeschlossen</h2>
+          <p id="finishText"></p>
+
+          <div class="result-grid">
+            <article class="result-card overall-card">
+              <span>Gesamt</span>
+              <strong id="overallResultValue">0%</strong>
+              <p id="overallResultDetail"></p>
+            </article>
+            <div id="levelStats" class="result-level-grid"></div>
+          </div>
+
+          <article id="insightBox" class="insight-box"></article>
+
+          <div class="finish-actions">
+            <button id="retryTestButton" class="primary-button" type="button">Neuen Test starten</button>
+            <button id="goTheoryAfterFinishButton" class="secondary-button" type="button">Zur Theorie</button>
+          </div>
+
+          <h3 class="review-title">Details</h3>
+          <p id="reviewSummary" class="review-summary"></p>
+          <div id="reviewList" class="review-list"></div>
+        </section>
       </section>
     </main>
 
-    <script src="script.js"></script>
+    <div id="confirmModal" class="modal-overlay hidden" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="confirmModalTitle" aria-describedby="confirmModalText">
+        <p id="confirmModalEyebrow" class="task-type">Achtung</p>
+        <h2 id="confirmModalTitle">Fortschritt verlieren?</h2>
+        <p id="confirmModalText" class="modal-text"></p>
+        <div class="modal-actions">
+          <button id="confirmModalCancel" class="secondary-button" type="button">Abbrechen</button>
+          <button id="confirmModalAccept" class="primary-button" type="button">Weiter</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="data.js?v=2026-05-01-1"></script>
+    <script src="script.js?v=2026-05-01-1"></script>
   </body>
 </html>
