@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Deutschtraining</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Grammatiktraining</p>
+          <h1></h1>
+        </div>
+        <div class="score-card" aria-live="polite">
+          <span id="roundLabel">Runde 1 / 50</span>
+          <strong id="scoreLabel">0 richtig</strong>
+        </div>
+      </header>
+
+      <section class="progress-wrap" aria-label="Fortschritt">
+        <div class="progress-bar">
+          <span id="progressFill"></span>
+        </div>
+      </section>
+
+      <section class="workspace" aria-live="polite">
+        <div id="feedback" class="feedback hidden"></div>
+
+        <div class="task-head">
+          <p id="taskType" class="task-type">Satzbau</p>
+          <h2 id="taskTitle">Bringe die Wörter in die richtige Reihenfolge.</h2>
+        </div>
+
+        <div class="sentence-zone" aria-label="Deine Antwort">
+          <div id="answerArea" class="answer-area"></div>
+        </div>
+
+        <div id="charToolbar" class="char-toolbar hidden" aria-label="Deutsche Sonderzeichen">
+          <button type="button" data-char="ä">ä</button>
+          <button type="button" data-char="ö">ö</button>
+          <button type="button" data-char="ü">ü</button>
+          <button type="button" data-char="Ä">Ä</button>
+          <button type="button" data-char="Ö">Ö</button>
+          <button type="button" data-char="Ü">Ü</button>
+          <button type="button" data-char="ß">ß</button>
+        </div>
+
+        <div class="word-bank" id="wordBank" aria-label="Wortblöcke"></div>
+
+        <div class="actions">
+          <button id="clearButton" class="secondary-button" type="button">Zurücksetzen</button>
+          <button id="checkButton" class="primary-button" type="button">Prüfen</button>
+          <button id="nextButton" class="primary-button hidden" type="button">Weiter</button>
+        </div>
+      </section>
+
+      <section id="finishPanel" class="finish-panel hidden" aria-live="polite">
+        <p class="task-type">Fertig</p>
+        <h2 id="finishTitle">Runde abgeschlossen</h2>
+        <p id="finishText"></p>
+        <h3 class="review-title">Details</h3>
+        <p id="reviewSummary" class="review-summary"></p>
+        <div id="reviewList" class="review-list"></div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
