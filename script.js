@@ -2166,8 +2166,6 @@ function buildInsight(levelSummary) {
     };
   }
 
-  const weakestLevel = Object.entries(levelSummary)
-    .sort((left, right) => (left[1].correct / left[1].total) - (right[1].correct / right[1].total))[0];
   const focusMistakes = results.reduce((accumulator, result) => {
     if (result.correct) return accumulator;
     const label = getLearnerFocusLabel(result);
@@ -2176,15 +2174,11 @@ function buildInsight(levelSummary) {
   }, {});
 
   const topFocus = Object.entries(focusMistakes).sort((left, right) => right[1] - left[1])[0];
-  const focusLabel = topFocus ? topFocus[0] : "mehreren Bereichen";
-  const levelLabel = weakestLevel ? getLevelLabel(weakestLevel[0]) : getLevelLabel("A2");
-  const levelMessage = weakestLevel
-    ? `Am meisten Mühe hattest du heute bei ${levelLabel}.`
-    : "";
+  const focusLabel = topFocus ? topFocus[0] : "ein paar Themen";
 
   return {
-    title: "Worauf du jetzt achten solltest",
-    text: `Die meisten Fehler hattest du bei ${focusLabel}. ${levelMessage} Schau dir dazu die Theorie noch einmal an und starte danach einen neuen Durchgang.`
+    title: "Nächster Schritt",
+    text: `Wiederhole kurz ${focusLabel} in der Theorie. Danach starte einen neuen Durchgang.`
   };
 }
 
