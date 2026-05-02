@@ -2,10 +2,17 @@ if (!window.appData) {
   throw new Error("data.js wurde nicht geladen.");
 }
 
-const { settings, grammarConcepts, tasks: allTasks, vocabulary } = window.appData;
+const {
+  settings,
+  grammarConcepts,
+  tasks: mainTasks,
+  vocabulary,
+  sentenceBankV2 = []
+} = window.appData;
 
 const TASK_TYPE_LABELS = {
   sentenceBuilder: "Satzbau",
+  sentenceMatch: "Satzhälften",
   multipleChoice: "Mehrfachauswahl",
   gapFill: "Lückentext",
   formTraining: "Formen",
@@ -13,14 +20,16 @@ const TASK_TYPE_LABELS = {
 };
 
 const LEVELS = ["A2", "B1", "B2"];
-const TASK_TYPES = ["sentenceBuilder", "multipleChoice", "gapFill", "formTraining", "errorSearch"];
+const TASK_TYPES = ["sentenceBuilder", "sentenceMatch", "multipleChoice", "gapFill", "formTraining", "errorSearch"];
 const LEVEL_LABELS = {
   A2: "Einfach",
   B1: "Mittel",
   B2: "Schwer"
 };
 const FORM_TRAINING_KINDS = ["verb", "adjective", "noun"];
-const QUESTION_COUNT_OPTIONS = [6, 9, 12, 15];
+const QUESTION_COUNT_OPTIONS = [15, 30, 60];
+const SENTENCE_MATCH_COLORS = ["#e11d48", "#d4a017", "#8b5e3c", "#2563eb"];
+const legacyFormTasks = mainTasks.filter((task) => task.type === "formTraining");
 const TASK_HELP_COPY = {
   en: {
     sentenceBuilder: {
@@ -29,6 +38,13 @@ const TASK_HELP_COPY = {
       decide: "How to decide: look for fixed chunks, verb position, and connectors that belong together.",
       example: "For example: “nicht nur” often goes together with “sondern auch”.",
       submit: "How to submit: place the blocks in the answer area in the final order and click “Prüfen”."
+    },
+    sentenceMatch: {
+      title: "In this task you should...",
+      body: "Match each sentence beginning with the correct sentence ending.",
+      decide: "How to decide: check meaning, grammar continuation, and which ending fits naturally with the beginning.",
+      example: "For example: “Nicht nur der Rasen muss gemäht werden, ...” fits with “... sondern auch die Hecken brauchen einen Schnitt.”",
+      submit: "How to submit: click one beginning and then one ending until all pairs are connected. Then click “Prüfen”."
     },
     multipleChoice: {
       title: "In this task you should...",
@@ -81,6 +97,13 @@ const TASK_HELP_COPY = {
       example: "Наприклад: “nicht nur” часто поєднується з “sondern auch”.",
       submit: "Як перевірити: розташуй блоки в зоні відповіді у правильному порядку й натисни “Prüfen”."
     },
+    sentenceMatch: {
+      title: "У цьому завданні потрібно...",
+      body: "поєднати кожен початок речення з правильним закінченням.",
+      decide: "Як вирішувати: дивись на зміст, граматичне продовження та на те, яке закінчення природно підходить до початку.",
+      example: "Наприклад: “Nicht nur der Rasen muss gemäht werden, ...” поєднується з “... sondern auch die Hecken brauchen einen Schnitt.”",
+      submit: "Як перевірити: натискай спочатку на початок, а потім на закінчення, доки всі пари не буде з’єднано. Потім натисни “Prüfen”."
+    },
     multipleChoice: {
       title: "У цьому завданні потрібно...",
       body: "вибрати одне речення, яке є повністю правильним.",
@@ -131,6 +154,13 @@ const TASK_HELP_COPY = {
       decide: "كيف تقرر: ابحث عن الأجزاء الثابتة، ومكان الفعل، والروابط التي تأتي معًا.",
       example: "مثال: “nicht nur” غالبًا تأتي مع “sondern auch”.",
       submit: "كيف ترسل الإجابة: رتّب المقاطع في منطقة الإجابة بالترتيب الصحيح ثم اضغط “Prüfen”."
+    },
+    sentenceMatch: {
+      title: "في هذا التمرين عليك أن...",
+      body: "تصل كل بداية جملة بالنهاية الصحيحة لها.",
+      decide: "كيف تقرر: راقب المعنى، واستمرار القاعدة، وأي نهاية تنسجم طبيعيًا مع بداية الجملة.",
+      example: "مثال: “Nicht nur der Rasen muss gemäht werden, ...” تناسب “... sondern auch die Hecken brauchen einen Schnitt.”",
+      submit: "كيف ترسل الإجابة: اضغط أولًا على بداية الجملة ثم على النهاية حتى تكتمل جميع الأزواج، ثم اضغط “Prüfen”."
     },
     multipleChoice: {
       title: "في هذا التمرين عليك أن...",
@@ -231,7 +261,9 @@ const VOCAB_TRANSLATIONS = {
   grosszuegig: { uk: "просторий / щедрий", ar: "واسع / كريم" },
   sauber: { uk: "чистий", ar: "نظيف" },
   darüber: { uk: "про це", ar: "عن ذلك" },
+  dafür: { uk: "для цього / за це", ar: "لهذا / لذلك" },
   wofür: { uk: "для чого / за що", ar: "لأجل ماذا / لماذا" },
+  worüber: { uk: "про що", ar: "عن ماذا" },
   trotz: { uk: "попри / незважаючи на", ar: "على الرغم من" },
   sondern: { uk: "а навпаки / а також", ar: "بل / وإنما" },
   entweder: { uk: "або", ar: "إما" },
@@ -255,9 +287,14 @@ let activeTextInput = null;
 let draggedWordButton = null;
 let selectedFormChoice = null;
 let formChoiceButtons = [];
+let selectedMatchStart = null;
+let sentenceMatchConnections = {};
+let sentenceMatchConnectionColors = {};
 let selectedLanguage = settings.defaultLanguage;
-let selectedQuestionCount = settings.mixedRound.total;
+let selectedQuestionCount = 15;
 let selectedDifficultyMode = "mixed";
+let selectedQuestionPreset = "15";
+let allTasks = [];
 
 const topicTitle = document.querySelector("#topicTitle");
 const theoryView = document.querySelector("#theoryView");
@@ -289,12 +326,16 @@ const rulePanel = document.querySelector("#rulePanel");
 const ruleTitle = document.querySelector("#ruleTitle");
 const ruleShort = document.querySelector("#ruleShort");
 const ruleExample = document.querySelector("#ruleExample");
+const sentenceGrammarBox = document.querySelector("#sentenceGrammarBox");
+const sentenceGrammarLabel = document.querySelector("#sentenceGrammarLabel");
+const sentenceGrammarList = document.querySelector("#sentenceGrammarList");
 const whyButton = document.querySelector("#whyButton");
 const moreRuleButton = document.querySelector("#moreRuleButton");
 const lessRuleButton = document.querySelector("#lessRuleButton");
 const ruleMore = document.querySelector("#ruleMore");
 const ruleTheory = document.querySelector("#ruleTheory");
 const ruleMistake = document.querySelector("#ruleMistake");
+const sentenceGrammarMore = document.querySelector("#sentenceGrammarMore");
 const ruleExamples = document.querySelector("#ruleExamples");
 const charToolbar = document.querySelector("#charToolbar");
 const clearButton = document.querySelector("#clearButton");
@@ -316,8 +357,10 @@ const vocabularyCategory = document.querySelector("#vocabularyCategory");
 const vocabularyList = document.querySelector("#vocabularyList");
 const sentenceLevelFilter = document.querySelector("#sentenceLevelFilter");
 const sentenceBank = document.querySelector("#sentenceBank");
-const questionCountControls = document.querySelector("#questionCountControls");
-const difficultyModeControls = document.querySelector("#difficultyModeControls");
+const questionCountPreset = document.querySelector("#questionCountPreset");
+const questionCountManual = document.querySelector("#questionCountManual");
+const questionCountHint = document.querySelector("#questionCountHint");
+const difficultyModeSelect = document.querySelector("#difficultyModeSelect");
 const difficultyModeHint = document.querySelector("#difficultyModeHint");
 const confirmModal = document.querySelector("#confirmModal");
 const confirmModalTitle = document.querySelector("#confirmModalTitle");
@@ -347,24 +390,195 @@ function shuffle(items) {
   return copy;
 }
 
-function getDifficultyModeHint() {
-  if (selectedDifficultyMode === "mixed") {
-    return "Gemischt = möglichst gleich verteilt.";
+function choosePilotErrorVariant(entry) {
+  const typoOptions = entry?.errorSearch?.typoOptions || {};
+  const candidates = Object.entries(typoOptions)
+    .map(([correctWord, wrongWords]) => ({
+      correctWord,
+      wrongWords: Array.isArray(wrongWords) ? wrongWords.filter(Boolean) : []
+    }))
+    .filter((item) => item.correctWord && item.wrongWords.length);
+
+  if (!candidates.length) {
+    return null;
   }
-  return `Nur ${getLevelLabel(selectedDifficultyMode)}. Die Aufgaben werden aus diesem Niveau gewählt.`;
+
+  const selectedCandidate = candidates[randomInt(candidates.length)];
+  const wrongWord = selectedCandidate.wrongWords[randomInt(selectedCandidate.wrongWords.length)];
+  const tokens = tokenize(entry.sentence);
+  const updatedTokens = [...tokens];
+  const replacementIndex = updatedTokens.findIndex((token) => normalizeWord(token) === normalizeWord(selectedCandidate.correctWord));
+
+  if (replacementIndex === -1) {
+    return null;
+  }
+
+  updatedTokens[replacementIndex] = wrongWord;
+
+  return {
+    sentence: formatSentenceFromTokens(updatedTokens),
+    wrongWord,
+    correctWord: selectedCandidate.correctWord
+  };
+}
+
+function buildSentenceBankTasks(entries) {
+  const perSentenceTasks = entries.flatMap((entry) => {
+    const chunks = entry.chunks || {};
+    const uniqueCorrectAnswers = getUniqueSentenceAnswers([
+      entry.sentence,
+      ...(entry.alternativeCorrectAnswers || [])
+    ]);
+    const sentenceBuilderParts = entry.level === "B2"
+      ? (chunks.hard || tokenize(entry.sentence))
+      : entry.level === "B1"
+      ? (chunks.medium || chunks.easy || tokenize(entry.sentence))
+      : (chunks.easy || chunks.medium || tokenize(entry.sentence));
+    const generatedErrorVariant = choosePilotErrorVariant(entry);
+
+    const tasksFromSentence = [
+      {
+        id: `pilot_sb_${entry.id}`,
+        type: "sentenceBuilder",
+        level: entry.level,
+        grammarFocus: entry.grammarFocus,
+        prompt: "Bringe die Wörter in die richtige Reihenfolge.",
+        parts: sentenceBuilderParts,
+        correctAnswers: uniqueCorrectAnswers.length ? uniqueCorrectAnswers : [entry.sentence],
+        translations: entry.translations,
+        sentenceGrammarNotes: entry.sentenceGrammarNotes,
+        sourceSentenceId: entry.id
+      },
+      {
+        id: `pilot_mc_${entry.id}`,
+        type: "multipleChoice",
+        level: entry.level,
+        grammarFocus: entry.grammarFocus,
+        prompt: "Wähle den richtigen Satz.",
+        options: shuffle([entry.sentence, ...(entry.multipleChoice?.wrongOptions || [])]),
+        correctAnswers: [entry.sentence],
+        translations: entry.translations,
+        sentenceGrammarNotes: entry.sentenceGrammarNotes,
+        sourceSentenceId: entry.id
+      },
+      {
+        id: `pilot_gf_${entry.id}`,
+        type: "gapFill",
+        level: entry.level,
+        grammarFocus: entry.grammarFocus,
+        prompt: "Schreibe das fehlende Wort.",
+        sentence: entry.sentence.replace(entry.gapFill.answer, "___"),
+        displaySentence: entry.sentence.replace(entry.gapFill.answer, "___"),
+        correctAnswers: [entry.gapFill.answer],
+        hint: entry.gapFill.hint,
+        translations: entry.translations,
+        sentenceGrammarNotes: entry.sentenceGrammarNotes,
+        sourceSentenceId: entry.id
+      },
+      {
+        id: `pilot_es_${entry.id}`,
+        type: "errorSearch",
+        level: entry.level,
+        grammarFocus: entry.grammarFocus,
+        prompt: "Klicke auf den Fehler oder wähle: Der Satz ist korrekt.",
+        sentence: generatedErrorVariant?.sentence || entry.sentence,
+        wrongWord: generatedErrorVariant?.wrongWord || null,
+        correctForm: generatedErrorVariant?.correctWord || null,
+        correctSentence: entry.sentence,
+        noMistake: !generatedErrorVariant,
+        translations: entry.translations,
+        sentenceGrammarNotes: entry.sentenceGrammarNotes,
+        sourceSentenceId: entry.id
+      }
+    ];
+
+    return tasksFromSentence;
+  });
+
+  return perSentenceTasks;
+}
+
+function rebuildTaskBank() {
+  allTasks = [
+    ...buildSentenceBankTasks(sentenceBankV2),
+    ...legacyFormTasks
+  ];
+}
+
+function getDifficultyModeHint() {
+  const available = getMaxAvailableTaskCount(selectedDifficultyMode);
+  if (selectedDifficultyMode === "mixed") {
+    return `${available} Aufgaben sind verfügbar für dieses Niveau. Gemischt = möglichst gleich verteilt.`;
+  }
+  return `${available} Aufgaben sind verfügbar für dieses Niveau. Nur ${getLevelLabel(selectedDifficultyMode)} wird gewählt.`;
+}
+
+function getLevelTaskCounts() {
+  return LEVELS.reduce((accumulator, level) => {
+    accumulator[level] = allTasks.filter((task) => task.level === level).length;
+    return accumulator;
+  }, {});
+}
+
+function getMaxMixedTaskCount() {
+  const levelCounts = getLevelTaskCounts();
+  const total = Object.values(levelCounts).reduce((sum, count) => sum + count, 0);
+  let maxPossible = 0;
+
+  for (let totalTasks = 1; totalTasks <= total; totalTasks += 1) {
+    const distribution = distributeEvenly(totalTasks, LEVELS);
+    const possible = LEVELS.every((level) => distribution[level] <= levelCounts[level]);
+    if (possible) {
+      maxPossible = totalTasks;
+    }
+  }
+
+  return maxPossible;
+}
+
+function getMaxAvailableTaskCount(mode = selectedDifficultyMode) {
+  if (mode === "mixed") return getMaxMixedTaskCount();
+  return allTasks.filter((task) => task.level === mode).length;
+}
+
+function clampSelectedQuestionCount() {
+  const maxAvailable = getMaxAvailableTaskCount(selectedDifficultyMode);
+  selectedQuestionCount = Math.max(1, Math.min(selectedQuestionCount, maxAvailable || 1));
 }
 
 function renderTestSettings() {
-  questionCountControls?.querySelectorAll("[data-count]").forEach((button) => {
-    button.classList.toggle("is-active", Number(button.dataset.count) === selectedQuestionCount);
-  });
+  const maxAvailable = getMaxAvailableTaskCount(selectedDifficultyMode);
+  clampSelectedQuestionCount();
 
-  difficultyModeControls?.querySelectorAll("[data-mode]").forEach((button) => {
-    button.classList.toggle("is-active", button.dataset.mode === selectedDifficultyMode);
-  });
+  if (difficultyModeSelect) {
+    difficultyModeSelect.value = selectedDifficultyMode;
+  }
 
-  if (difficultyModeHint) {
-    difficultyModeHint.textContent = getDifficultyModeHint();
+  if (questionCountPreset) {
+    Array.from(questionCountPreset.querySelectorAll('option[data-dynamic="true"]')).forEach((option) => option.remove());
+    Array.from(questionCountPreset.options).forEach((option) => {
+      if (!QUESTION_COUNT_OPTIONS.includes(Number(option.value))) return;
+      option.disabled = Number(option.value) > maxAvailable;
+    });
+    const hasPresetForCurrentCount = QUESTION_COUNT_OPTIONS.includes(selectedQuestionCount);
+    if (hasPresetForCurrentCount && Number(selectedQuestionPreset) <= maxAvailable) {
+      questionCountPreset.value = selectedQuestionPreset;
+    } else {
+      const fallback = [...QUESTION_COUNT_OPTIONS].reverse().find((value) => value <= maxAvailable);
+      if (fallback) {
+        selectedQuestionPreset = String(fallback);
+        selectedQuestionCount = fallback;
+        questionCountPreset.value = selectedQuestionPreset;
+      } else {
+        selectedQuestionPreset = String(selectedQuestionCount);
+        const dynamicOption = document.createElement("option");
+        dynamicOption.value = selectedQuestionPreset;
+        dynamicOption.textContent = `${selectedQuestionCount} (aktuell)`;
+        dynamicOption.dataset.dynamic = "true";
+        questionCountPreset.appendChild(dynamicOption);
+        questionCountPreset.value = selectedQuestionPreset;
+      }
+    }
   }
 }
 
@@ -397,6 +611,20 @@ function normalizeWord(text) {
     .trim()
     .toLowerCase();
 }
+
+function getUniqueSentenceAnswers(answers) {
+  const seen = new Set();
+  return (answers || []).filter((answer) => {
+    const normalized = normalizeText(answer);
+    if (!normalized || seen.has(normalized)) return false;
+    seen.add(normalized);
+    return true;
+  });
+}
+
+const sentenceGrammarNotesBySentence = new Map(
+  sentenceBankV2.map((entry) => [normalizeText(entry.sentence), entry.sentenceGrammarNotes || []])
+);
 
 const NORMALIZED_VOCAB_TRANSLATIONS = Object.fromEntries(
   Object.entries(VOCAB_TRANSLATIONS).map(([key, value]) => [normalizeWord(key), value])
@@ -434,6 +662,8 @@ function renderLevelBadge(level) {
 function updateNavState(activeView) {
   theoryNavButton.classList.toggle("is-active", activeView === "theory");
   testNavButton.classList.toggle("is-active", activeView === "test");
+  theoryNavButton.textContent = activeView === "theory" ? "Theorie" : "Zurück zur Theorie";
+  testNavButton.textContent = activeView === "theory" ? "Test starten" : "Im Test";
 }
 
 function getTaskById(taskId) {
@@ -542,7 +772,10 @@ function isParticiplePrompt(task) {
 }
 
 function getFormDisplayValue(task, key) {
-  if (isNounTraining(task) && key === "singular") return getDisplayNounSingular(task);
+  if (isNounTraining(task) && key === "singular") {
+    if (isArticlePrompt(task)) return task?.forms?.singular || "";
+    return getDisplayNounSingular(task);
+  }
   if (isNounTraining(task) && key === "plural") return getDisplayNounPlural(task);
   if (key === "participle") return getDisplayPerfectForm(task);
   return task?.forms?.[key] || "";
@@ -593,6 +826,9 @@ function getGapFillFullSentence(task) {
 }
 
 function getCorrectSentence(task) {
+  if (task.type === "sentenceMatch") {
+    return getSentenceMatchExpectedSummary(task);
+  }
   if (task.type === "gapFill") return getGapFillFullSentence(task);
   if (task.type === "formTraining") {
     return getFormOrder(task).map((key) => getFormDisplayValue(task, key)).join(" | ");
@@ -607,17 +843,15 @@ function getCorrectSentence(task) {
 function collectTheorySentences() {
   const sentenceMap = new Map();
 
-  allTasks.forEach((task) => {
-    if (task.type === "formTraining") return;
-
-    const text = getCorrectSentence(task);
+  sentenceBankV2.forEach((entry) => {
+    const text = entry.sentence;
     if (!text || sentenceMap.has(text)) return;
 
     sentenceMap.set(text, {
       text,
-      level: task.level,
-      grammarFocus: task.grammarFocus,
-      translation: getTranslation(task)
+      level: entry.level,
+      grammarFocus: entry.grammarFocus,
+      translation: entry.translations?.[selectedLanguage] || entry.translations?.en || ""
     });
   });
 
@@ -845,14 +1079,35 @@ function distributeEvenly(total, buckets) {
   return counts;
 }
 
-function pickTaskFromPool(pool, usedIds, usedFormKinds) {
+function getFormVariantKey(task) {
+  if (task?.type !== "formTraining") return "";
+  const kind = getFormTrainingKind(task);
+  if (kind === "noun") return `noun_${task.missingForm || "other"}`;
+  if (kind === "verb" && isParticiplePrompt(task)) return "verb_participle";
+  return `${kind}_${task.missingForm || "other"}`;
+}
+
+function pickTaskFromPool(pool, usedIds, usedFormKinds, usedFormVariants) {
   const available = pool.filter((task) => !usedIds.has(task.id));
   if (!available.length) return null;
 
   if (available[0]?.type === "formTraining") {
-    const preferred = available.filter((task) => !usedFormKinds.has(getFormTrainingKind(task)));
-    const choice = shuffle(preferred.length ? preferred : available)[0];
+    let preferred = available.filter((task) => {
+      if (getFormTrainingKind(task) !== "noun") return false;
+      return task.missingForm === "article" && !usedFormVariants.has("noun_article");
+    });
+    if (!preferred.length) {
+      preferred = available.filter((task) => !usedFormKinds.has(getFormTrainingKind(task)));
+    }
+    if (!preferred.length) {
+      preferred = available.filter((task) => !usedFormVariants.has(getFormVariantKey(task)));
+    }
+    if (!preferred.length) {
+      preferred = available;
+    }
+    const choice = shuffle(preferred)[0];
     usedFormKinds.add(getFormTrainingKind(choice));
+    usedFormVariants.add(getFormVariantKey(choice));
     usedIds.add(choice.id);
     return choice;
   }
@@ -862,16 +1117,52 @@ function pickTaskFromPool(pool, usedIds, usedFormKinds) {
   return choice;
 }
 
+function buildSentenceMatchTask(level) {
+  const matchingEntries = sentenceBankV2
+    .filter((entry) => entry.level === level && entry.matching?.start && entry.matching?.end);
+
+  if (matchingEntries.length < 4) return null;
+
+  const selectedEntries = shuffle(matchingEntries).slice(0, 4);
+
+  return {
+    id: `sm_dynamic_${level.toLowerCase()}_${selectedEntries.map((entry) => entry.id).join("_")}`,
+    type: "sentenceMatch",
+    level,
+    grammarFocus: null,
+    prompt: "Verbinde jeden Satzanfang mit dem passenden Satzende.",
+    pairs: selectedEntries.map((entry) => ({
+      start: entry.matching.start,
+      end: entry.matching.end
+    })),
+    translations: {
+      en: selectedEntries.map((entry, index) => `${index + 1}. ${entry.translations.en}`).join("\n"),
+      uk: selectedEntries.map((entry, index) => `${index + 1}. ${entry.translations.uk}`).join("\n"),
+      ar: selectedEntries.map((entry, index) => `${index + 1}. ${entry.translations.ar}`).join("\n")
+    },
+    sentenceGrammarNotes: selectedEntries.flatMap((entry) => entry.sentenceGrammarNotes || []),
+    sourceSentenceId: selectedEntries.map((entry) => entry.id).join(",")
+  };
+}
+
 function pickTasksForLevel(level, count, usedIds) {
   const selected = [];
   const byType = Object.fromEntries(TASK_TYPES.map((type) => [type, allTasks.filter((task) => task.level === level && task.type === type)]));
   const typeOrder = shuffle(TASK_TYPES);
   const usedFormKinds = new Set();
+  const usedFormVariants = new Set();
   let guard = 0;
+
+  if (count >= 4) {
+    const sentenceMatchTask = buildSentenceMatchTask(level);
+    if (sentenceMatchTask) {
+      selected.push(sentenceMatchTask);
+    }
+  }
 
   while (selected.length < count && guard < 200) {
     const type = typeOrder[guard % typeOrder.length];
-    const task = pickTaskFromPool(byType[type], usedIds, usedFormKinds);
+    const task = pickTaskFromPool(byType[type], usedIds, usedFormKinds, usedFormVariants);
     if (task) {
       selected.push(task);
     }
@@ -906,6 +1197,7 @@ function selectedAnswerForTask(taskMode, task = tasks[currentIndex]) {
     return formatSentenceFromTokens(Array.from(answerArea.querySelectorAll(".word-button")).map((button) => button.textContent));
   }
 
+  if (taskMode === "sentenceMatch") return getSentenceMatchSubmittedSummary(task);
   if (taskMode === "multipleChoice") return selectedChoice || "";
   if (taskMode === "gapFill" && gapInput) return gapInput.value;
   if (taskMode === "formTraining") {
@@ -921,11 +1213,13 @@ function selectedAnswerForTask(taskMode, task = tasks[currentIndex]) {
 
 function expectedAnswerForTask(task) {
   if (task.type === "errorSearch") return task.correctForm || "Der Satz ist korrekt.";
+  if (task.type === "sentenceMatch") return getSentenceMatchExpectedSummary(task);
   if (task.type === "formTraining") return expectedFormAnswer(task);
   return task.correctAnswers[0];
 }
 
 function promptForTask(task) {
+  if (task.type === "sentenceMatch") return "Verbinde die passenden Satzhälften.";
   if (task.type === "gapFill") return task.displaySentence || task.sentence;
 
   if (task.type === "formTraining") {
@@ -1000,6 +1294,10 @@ function resetRulePanel() {
   whyButton.classList.add("hidden");
   moreRuleButton.classList.add("hidden");
   ruleMore.classList.add("hidden");
+  sentenceGrammarBox.classList.add("hidden");
+  sentenceGrammarList.innerHTML = "";
+  sentenceGrammarMore.classList.add("hidden");
+  sentenceGrammarMore.innerHTML = "";
   ruleExamples.innerHTML = "";
 }
 
@@ -1021,7 +1319,8 @@ function showTranslation(task) {
 }
 
 function showAlternateAnswers(task, submittedAnswer) {
-  if (task.type !== "sentenceBuilder" || task.correctAnswers.length < 2) return;
+  const answers = getUniqueSentenceAnswers(task.correctAnswers);
+  if (task.type !== "sentenceBuilder" || answers.length < 2) return;
 
   const title = document.createElement("p");
   title.className = "alternate-title";
@@ -1030,7 +1329,7 @@ function showAlternateAnswers(task, submittedAnswer) {
   const list = document.createElement("ul");
   list.className = "alternate-list";
 
-  task.correctAnswers.forEach((answer) => {
+  answers.forEach((answer) => {
     const item = document.createElement("li");
     item.textContent = displayGerman(answer);
     list.appendChild(item);
@@ -1040,6 +1339,106 @@ function showAlternateAnswers(task, submittedAnswer) {
   alternatePanel.classList.add("alternate-panel");
   alternatePanel.replaceChildren(title, list);
   postSubmitPanel.classList.remove("hidden");
+}
+
+function showSentenceMatchSolutions(task) {
+  if (task.type !== "sentenceMatch") return;
+
+  const title = document.createElement("p");
+  title.className = "alternate-title";
+  title.textContent = "Die richtigen Sätze:";
+
+  const list = document.createElement("ul");
+  list.className = "alternate-list";
+
+  getSentenceMatchPairs(task).forEach((pair) => {
+    const item = document.createElement("li");
+    item.textContent = `${displayGerman(pair.start)} ${displayGerman(pair.end)}`;
+    list.appendChild(item);
+  });
+
+  alternatePanel.classList.remove("hidden");
+  alternatePanel.classList.add("alternate-panel");
+  alternatePanel.replaceChildren(title, list);
+  postSubmitPanel.classList.remove("hidden");
+}
+
+function getSentenceGrammarNotes(task) {
+  if (Array.isArray(task.sentenceGrammarNotes) && task.sentenceGrammarNotes.length) return task.sentenceGrammarNotes;
+  if (task.sentenceGrammarNote) return [task.sentenceGrammarNote];
+
+  if (task.type === "sentenceMatch" && Array.isArray(task.pairs)) {
+    const aggregated = task.pairs.flatMap((pair) => {
+      const fullSentence = `${pair.start} ${pair.end}`;
+      return sentenceGrammarNotesBySentence.get(normalizeText(fullSentence)) || [];
+    });
+    if (aggregated.length) return aggregated;
+  }
+
+  const canonicalSentence = getCorrectSentence(task);
+  if (canonicalSentence) {
+    const fallbackNotes = sentenceGrammarNotesBySentence.get(normalizeText(canonicalSentence));
+    if (fallbackNotes?.length) return fallbackNotes;
+  }
+  return [];
+}
+
+function makeSentenceGrammarItem(note, showDetails = false) {
+  const wrapper = document.createElement("article");
+
+  const title = document.createElement("p");
+  title.className = "sentence-grammar-item-title";
+  title.textContent = displayGerman(note.title || "Besonderheit");
+  wrapper.appendChild(title);
+
+  if (note.summary) {
+    const summary = document.createElement("p");
+    summary.className = "sentence-grammar-item-text";
+    summary.textContent = displayGerman(note.summary);
+    wrapper.appendChild(summary);
+  }
+
+  if (showDetails && note.details) {
+    const details = document.createElement("p");
+    details.className = "sentence-grammar-item-text";
+    details.textContent = displayGerman(note.details);
+    wrapper.appendChild(details);
+  }
+
+  if (showDetails && note.example) {
+    const example = document.createElement("p");
+    example.className = "sentence-grammar-item-example";
+    example.textContent = `Beispiel im Satz: ${displayGerman(note.example)}`;
+    wrapper.appendChild(example);
+  }
+
+  return wrapper;
+}
+
+function renderSentenceGrammarNotes(task, expandFullTheory = false) {
+  const notes = getSentenceGrammarNotes(task);
+  sentenceGrammarList.innerHTML = "";
+  sentenceGrammarMore.innerHTML = "";
+
+  if (!notes.length) {
+    sentenceGrammarBox.classList.add("hidden");
+    sentenceGrammarMore.classList.add("hidden");
+    return;
+  }
+
+  sentenceGrammarLabel.textContent = notes.length === 1
+    ? "Besonderheit in diesem Satz"
+    : "Besonderheiten in diesen Sätzen";
+
+  notes.forEach((note) => {
+    sentenceGrammarList.appendChild(makeSentenceGrammarItem(note, false));
+    if (expandFullTheory && (note.details || note.example)) {
+      sentenceGrammarMore.appendChild(makeSentenceGrammarItem(note, true));
+    }
+  });
+
+  sentenceGrammarBox.classList.remove("hidden");
+  sentenceGrammarMore.classList.toggle("hidden", !expandFullTheory || !sentenceGrammarMore.children.length);
 }
 
 function fillRulePanel(task, expandFullTheory = false) {
@@ -1052,6 +1451,7 @@ function fillRulePanel(task, expandFullTheory = false) {
   ruleTheory.textContent = displayGerman(concept.fullTheory);
   ruleMistake.textContent = `Häufiger Fehler: ${displayGerman(concept.commonMistake)}`;
   ruleExamples.innerHTML = "";
+  renderSentenceGrammarNotes(task, expandFullTheory);
 
   (concept.moreExamples || []).forEach((example) => {
     const item = document.createElement("div");
@@ -1070,7 +1470,9 @@ function fillRulePanel(task, expandFullTheory = false) {
 
 function setupPostSubmitState(task, isCorrect, submittedAnswer) {
   showTranslation(task);
-  if (isCorrect) {
+  if (task.type === "sentenceMatch") {
+    showSentenceMatchSolutions(task);
+  } else if (isCorrect) {
     showAlternateAnswers(task, submittedAnswer);
   }
 
@@ -1082,6 +1484,7 @@ function setupPostSubmitState(task, isCorrect, submittedAnswer) {
     ruleTitle.textContent = concept.title;
     ruleShort.textContent = "";
     ruleExample.textContent = "";
+    renderSentenceGrammarNotes(task, false);
     whyButton.classList.remove("hidden");
     moreRuleButton.classList.add("hidden");
     ruleMore.classList.add("hidden");
@@ -1404,7 +1807,8 @@ function buildChunksFromTokens(tokens, chunkSize) {
 function getSentenceBuilderParts(task) {
   if (Array.isArray(task.parts) && task.parts.length) return task.parts;
 
-  const tokens = [...(task.wordBank || tokenize(task.correctAnswers[0]))];
+  const uniqueAnswers = getUniqueSentenceAnswers(task.correctAnswers);
+  const tokens = [...(task.wordBank || tokenize(uniqueAnswers[0]))];
   if (task.level === "B2") return tokens;
   if (task.level === "B1") return buildChunksFromTokens(tokens, 2);
   return buildChunksFromTokens(tokens, 3);
@@ -1423,6 +1827,215 @@ function shuffleSentenceParts(parts, correctAnswers) {
   return shuffledParts;
 }
 
+function getSentenceMatchPairs(task) {
+  return task.pairs || [];
+}
+
+function getSentenceMatchCorrectCount(task) {
+  return getSentenceMatchPairs(task).reduce((count, pair, index) => {
+    return count + (Number(sentenceMatchConnections[index]) === index ? 1 : 0);
+  }, 0);
+}
+
+function getSentenceMatchSubmittedSummary(task) {
+  return getSentenceMatchPairs(task).map((pair, index) => {
+    const connectedIndex = sentenceMatchConnections[index];
+    const ending = Number.isInteger(connectedIndex) ? task.pairs[connectedIndex]?.end || "—" : "—";
+    return `${pair.start} ${ending}`;
+  }).join(" | ");
+}
+
+function getSentenceMatchExpectedSummary(task) {
+  return getSentenceMatchPairs(task).map((pair) => `${pair.start} ${pair.end}`).join(" | ");
+}
+
+function getSentenceMatchConnectedLeftIndex(rightIndex) {
+  for (const leftIndexRaw of Object.keys(sentenceMatchConnections)) {
+    if (Number(sentenceMatchConnections[leftIndexRaw]) === Number(rightIndex)) {
+      return Number(leftIndexRaw);
+    }
+  }
+  return null;
+}
+
+function pickSentenceMatchColor() {
+  const usedColors = new Set(Object.values(sentenceMatchConnectionColors));
+  const availableColors = SENTENCE_MATCH_COLORS.filter((color) => !usedColors.has(color));
+  const palette = availableColors.length ? availableColors : SENTENCE_MATCH_COLORS;
+  return palette[randomInt(palette.length)];
+}
+
+function assignSentenceMatchColor(leftIndex) {
+  sentenceMatchConnectionColors[leftIndex] = pickSentenceMatchColor();
+}
+
+function updateSentenceMatchLines(stage, task = tasks[currentIndex]) {
+  const svg = stage.querySelector(".sentence-match-lines");
+  if (!svg) return;
+
+  const stageRect = stage.getBoundingClientRect();
+  svg.setAttribute("viewBox", `0 0 ${Math.max(stageRect.width, 1)} ${Math.max(stageRect.height, 1)}`);
+  svg.innerHTML = "";
+
+  getSentenceMatchPairs(task).forEach((_, leftIndex) => {
+    const rightIndex = sentenceMatchConnections[leftIndex];
+    if (!Number.isInteger(rightIndex)) return;
+
+    const leftButton = stage.querySelector(`.match-button--left[data-pair-index="${leftIndex}"]`);
+    const rightButton = stage.querySelector(`.match-button--right[data-pair-index="${rightIndex}"]`);
+    if (!leftButton || !rightButton) return;
+
+    const leftDot = leftButton.querySelector(".match-dot");
+    const rightDot = rightButton.querySelector(".match-dot");
+    if (!leftDot || !rightDot) return;
+
+    const leftRect = leftDot.getBoundingClientRect();
+    const rightRect = rightDot.getBoundingClientRect();
+    const x1 = leftRect.left + leftRect.width / 2 - stageRect.left;
+    const y1 = leftRect.top + leftRect.height / 2 - stageRect.top;
+    const x2 = rightRect.left + rightRect.width / 2 - stageRect.left;
+    const y2 = rightRect.top + rightRect.height / 2 - stageRect.top;
+
+    const isCorrect = leftIndex === Number(rightIndex);
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("x1", x1);
+    line.setAttribute("y1", y1);
+    line.setAttribute("x2", x2);
+    line.setAttribute("y2", y2);
+    line.setAttribute("class", `match-line${locked ? (isCorrect ? " is-correct" : " is-incorrect") : ""}`);
+    line.style.setProperty("--match-color", sentenceMatchConnectionColors[leftIndex] || SENTENCE_MATCH_COLORS[0]);
+    svg.appendChild(line);
+
+    if (locked && !isCorrect) {
+      const expectedRightButton = stage.querySelector(`.match-button--right[data-pair-index="${leftIndex}"]`);
+      const expectedRightDot = expectedRightButton?.querySelector(".match-dot");
+      if (expectedRightButton && expectedRightDot) {
+        const expectedRect = expectedRightDot.getBoundingClientRect();
+        const expectedLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        expectedLine.setAttribute("x1", x1);
+        expectedLine.setAttribute("y1", y1);
+        expectedLine.setAttribute("x2", expectedRect.left + expectedRect.width / 2 - stageRect.left);
+        expectedLine.setAttribute("y2", expectedRect.top + expectedRect.height / 2 - stageRect.top);
+        expectedLine.setAttribute("class", "match-line is-expected");
+        svg.appendChild(expectedLine);
+      }
+    }
+  });
+}
+
+function updateSentenceMatchUi(stage, task = tasks[currentIndex]) {
+  const connectedTargets = new Set(Object.values(sentenceMatchConnections).map(Number));
+  const wrongLeftIndices = locked
+    ? Object.entries(sentenceMatchConnections)
+      .filter(([leftIndex, rightIndex]) => Number(leftIndex) !== Number(rightIndex))
+      .map(([leftIndex]) => Number(leftIndex))
+    : [];
+  const expectedRightTargets = new Set(wrongLeftIndices);
+
+  stage.querySelectorAll(".match-button--left").forEach((button) => {
+    const pairIndex = Number(button.dataset.pairIndex);
+    const isConnected = Number.isInteger(sentenceMatchConnections[pairIndex]);
+    const isCorrect = sentenceMatchConnections[pairIndex] === pairIndex;
+    const color = sentenceMatchConnectionColors[pairIndex] || "";
+    button.classList.toggle("is-selected", selectedMatchStart === pairIndex);
+    button.classList.toggle("is-connected", isConnected);
+    button.classList.toggle("is-correct", locked && isConnected && isCorrect);
+    button.classList.toggle("is-incorrect", locked && isConnected && !isCorrect);
+    button.classList.toggle("is-expected", locked && expectedRightTargets.has(pairIndex) && !isCorrect);
+    button.style.setProperty("--match-color", color);
+  });
+
+  stage.querySelectorAll(".match-button--right").forEach((button) => {
+    const pairIndex = Number(button.dataset.pairIndex);
+    const isConnected = connectedTargets.has(pairIndex);
+    const leftIndex = getSentenceMatchConnectedLeftIndex(pairIndex);
+    const isCorrect = leftIndex === pairIndex;
+    const color = leftIndex !== null ? sentenceMatchConnectionColors[leftIndex] || "" : "";
+    button.classList.toggle("is-connected", isConnected);
+    button.classList.toggle("is-correct", locked && isConnected && isCorrect);
+    button.classList.toggle("is-incorrect", locked && isConnected && !isCorrect);
+    button.classList.toggle("is-expected", locked && expectedRightTargets.has(pairIndex) && (!isConnected || !isCorrect));
+    button.style.setProperty("--match-color", color);
+  });
+
+  requestAnimationFrame(() => updateSentenceMatchLines(stage, task));
+}
+
+function renderSentenceMatch(task) {
+  const stage = document.createElement("div");
+  stage.className = "sentence-match-stage";
+
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("class", "sentence-match-lines");
+  svg.setAttribute("aria-hidden", "true");
+  stage.appendChild(svg);
+
+  const board = document.createElement("div");
+  board.className = "sentence-match-board";
+  stage.appendChild(board);
+
+  const leftColumn = document.createElement("div");
+  leftColumn.className = "match-column match-column--left";
+  const rightColumn = document.createElement("div");
+  rightColumn.className = "match-column match-column--right";
+
+  const shuffledLeft = shuffle(getSentenceMatchPairs(task).map((pair, pairIndex) => ({ pairIndex, text: pair.start })));
+  const shuffledRight = shuffle(getSentenceMatchPairs(task).map((pair, pairIndex) => ({ pairIndex, text: pair.end })));
+
+  shuffledLeft.forEach((item) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "match-button match-button--left";
+    button.dataset.pairIndex = String(item.pairIndex);
+    button.innerHTML = `<span class="match-text">${displayGerman(item.text)}</span><span class="match-dot" aria-hidden="true"></span>`;
+    button.addEventListener("click", () => {
+      if (locked) return;
+      selectedMatchStart = selectedMatchStart === item.pairIndex ? null : item.pairIndex;
+      updateSentenceMatchUi(stage, task);
+    });
+    leftColumn.appendChild(button);
+  });
+
+  shuffledRight.forEach((item) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "match-button match-button--right";
+    button.dataset.pairIndex = String(item.pairIndex);
+    button.innerHTML = `<span class="match-dot" aria-hidden="true"></span><span class="match-text">${displayGerman(item.text)}</span>`;
+    button.addEventListener("click", () => {
+      if (locked) return;
+
+      const existingLeftIndex = getSentenceMatchConnectedLeftIndex(item.pairIndex);
+
+      if (selectedMatchStart === null) {
+        if (existingLeftIndex !== null) {
+          delete sentenceMatchConnections[existingLeftIndex];
+          delete sentenceMatchConnectionColors[existingLeftIndex];
+          updateSentenceMatchUi(stage, task);
+        }
+        return;
+      }
+
+      delete sentenceMatchConnections[selectedMatchStart];
+      delete sentenceMatchConnectionColors[selectedMatchStart];
+      if (existingLeftIndex !== null) {
+        delete sentenceMatchConnections[existingLeftIndex];
+        delete sentenceMatchConnectionColors[existingLeftIndex];
+      }
+
+      sentenceMatchConnections[selectedMatchStart] = item.pairIndex;
+      assignSentenceMatchColor(selectedMatchStart);
+      selectedMatchStart = null;
+      updateSentenceMatchUi(stage, task);
+    });
+    rightColumn.appendChild(button);
+  });
+
+  board.append(leftColumn, rightColumn);
+  answerArea.appendChild(stage);
+  updateSentenceMatchUi(stage, task);
+}
+
 function renderTask() {
   locked = false;
   selectedChoice = null;
@@ -1430,6 +2043,9 @@ function renderTask() {
   gapInput = null;
   formInput = null;
   activeTextInput = null;
+  selectedMatchStart = null;
+  sentenceMatchConnections = {};
+  sentenceMatchConnectionColors = {};
   setTaskHelpOpen(false);
   answerArea.innerHTML = "";
   wordBank.innerHTML = "";
@@ -1443,7 +2059,7 @@ function renderTask() {
   renderLevelBadge(task.level);
   renderTaskHelp(task);
 
-  answerArea.classList.remove("choice-list", "gap-fill", "form-training", "error-search", "sentence-builder");
+  answerArea.classList.remove("choice-list", "gap-fill", "form-training", "error-search", "sentence-builder", "sentence-match");
   wordBank.classList.add("hidden");
   charToolbar.classList.add("hidden");
   clearButton.classList.remove("hidden");
@@ -1454,10 +2070,14 @@ function renderTask() {
     shuffleSentenceParts(getSentenceBuilderParts(task), task.correctAnswers).forEach((part) => {
       wordBank.appendChild(makeWordButton(part));
     });
+  } else if (task.type === "sentenceMatch") {
+    answerArea.classList.add("sentence-match");
+    clearButton.classList.add("hidden");
+    renderSentenceMatch(task);
   } else if (task.type === "multipleChoice") {
     answerArea.classList.add("choice-list");
     clearButton.classList.add("hidden");
-    task.options.forEach((option) => answerArea.appendChild(makeChoiceButton(option)));
+    shuffle(task.options).forEach((option) => answerArea.appendChild(makeChoiceButton(option)));
   } else if (task.type === "gapFill") {
     answerArea.classList.add("gap-fill");
     charToolbar.classList.remove("hidden");
@@ -1487,6 +2107,11 @@ function validateBeforeSubmit(task) {
 
   if (task.type === "multipleChoice" && !selectedChoice) {
     setFeedback("bad", "Wähle zuerst eine Antwort aus.");
+    return false;
+  }
+
+  if (task.type === "sentenceMatch" && Object.keys(sentenceMatchConnections).length < getSentenceMatchPairs(task).length) {
+    setFeedback("bad", "Verbinde zuerst alle Satzanfänge mit einem Satzende.");
     return false;
   }
 
@@ -1531,6 +2156,10 @@ function isTaskCorrect(task) {
     return task.correctAnswers.some((answer) => normalizeText(answer) === normalizeText(selectedChoice));
   }
 
+  if (task.type === "sentenceMatch") {
+    return getSentenceMatchCorrectCount(task) === getSentenceMatchPairs(task).length;
+  }
+
   if (task.type === "gapFill") {
     return task.correctAnswers.some((answer) => normalizeWord(answer) === normalizeWord(gapInput.value));
   }
@@ -1558,6 +2187,16 @@ function lockTaskUi(task, isCorrect) {
       button.classList.toggle("incorrect", isSelectedWrong);
       button.disabled = true;
     });
+  }
+
+  if (task.type === "sentenceMatch") {
+    const stage = answerArea.querySelector(".sentence-match-stage");
+    if (stage) {
+      updateSentenceMatchUi(stage, task);
+      stage.querySelectorAll(".match-button").forEach((button) => {
+        button.disabled = true;
+      });
+    }
   }
 
   if (task.type === "gapFill" && gapInput) gapInput.disabled = true;
@@ -1607,8 +2246,10 @@ function lockTaskUi(task, isCorrect) {
 }
 
 function checkAnswer() {
+  let sentenceMatchStep = "before-try";
   try {
     if (locked) return;
+    sentenceMatchStep = "start";
     const task = tasks[currentIndex];
     if (!task) {
       setFeedback("bad", "Die Aufgabe konnte nicht geladen werden.");
@@ -1638,23 +2279,35 @@ function checkAnswer() {
 
     if (isCorrect) {
       score += 1;
-      const successText = task.type === "errorSearch" && task.correctForm
+      const successText = task.type === "sentenceMatch"
+        ? `Sehr gut, alle ${getSentenceMatchPairs(task).length} Verbindungen sind richtig.`
+        : task.type === "errorSearch" && task.correctForm
         ? `Sehr gut, das ist richtig. Die richtige Schreibweise ist: ${displayGerman(task.correctForm)}`
         : "Sehr gut, das ist richtig.";
       setFeedback("good", successText);
     } else {
-      setFeedback("bad", `Hoppla, das war ein kleiner Fehler. Die richtige Version ist: ${displayGerman(expected)}`);
+      if (task.type === "sentenceMatch") {
+        setFeedback("bad", `Hoppla, ${getSentenceMatchCorrectCount(task)} von ${getSentenceMatchPairs(task).length} Verbindungen waren richtig.`);
+      } else {
+        setFeedback("bad", `Hoppla, das war ein kleiner Fehler. Die richtige Version ist: ${displayGerman(expected)}`);
+      }
     }
 
+    sentenceMatchStep = "postSubmitState";
     setupPostSubmitState(task, isCorrect, submitted);
+    sentenceMatchStep = "lockTaskUi";
     lockTaskUi(task, isCorrect);
+    sentenceMatchStep = "finalUi";
     checkButton.classList.add("hidden");
     clearButton.classList.add("hidden");
     nextButton.classList.remove("hidden");
     updateStats();
   } catch (error) {
     console.error(error);
-    setFeedback("bad", "Beim Prüfen ist ein Fehler passiert. Bitte Seite neu laden.");
+    console.error("SentenceMatch step:", typeof sentenceMatchStep !== "undefined" ? sentenceMatchStep : "unknown");
+    const extra = error?.message ? ` (${error.message})` : "";
+    const step = typeof sentenceMatchStep !== "undefined" ? ` [${sentenceMatchStep}]` : "";
+    setFeedback("bad", `Beim Prüfen ist ein Fehler passiert${extra}${step}. Bitte Seite neu laden.`);
   }
 }
 
@@ -1682,6 +2335,14 @@ function clearAnswer() {
 
   if (task.type === "sentenceBuilder") {
     Array.from(answerArea.children).forEach((button) => wordBank.appendChild(button));
+  }
+
+  if (task.type === "sentenceMatch") {
+    selectedMatchStart = null;
+    sentenceMatchConnections = {};
+    sentenceMatchConnectionColors = {};
+    const stage = answerArea.querySelector(".sentence-match-stage");
+    if (stage) updateSentenceMatchUi(stage, task);
   }
 
   hideFeedback();
@@ -1834,14 +2495,20 @@ function resetTestState() {
   selectedChoice = null;
   selectedErrorWord = null;
   progressFill.style.width = "0%";
+  sentenceMatchConnectionColors = {};
   hideFeedback();
   hidePostSubmitPanels();
 }
 
 function startRound() {
   try {
+    rebuildTaskBank();
+    clampSelectedQuestionCount();
     resetTestState();
     tasks = selectRoundTasks();
+    if (!tasks.length) {
+      throw new Error("Keine Aufgaben für diese Auswahl verfügbar.");
+    }
     testActive = true;
     goToTestView();
     renderTask();
@@ -1876,18 +2543,24 @@ languageSelect.addEventListener("change", (event) => {
   refreshAfterLanguageChange();
 });
 
-questionCountControls?.querySelectorAll("[data-count]").forEach((button) => {
-  button.addEventListener("click", () => {
-    selectedQuestionCount = Number(button.dataset.count) || settings.mixedRound.total;
-    renderTestSettings();
-  });
+questionCountPreset?.addEventListener("change", (event) => {
+  const value = event.target.value;
+  selectedQuestionPreset = value;
+  selectedQuestionCount = Number(value) || 15;
+  renderTestSettings();
 });
 
-difficultyModeControls?.querySelectorAll("[data-mode]").forEach((button) => {
-  button.addEventListener("click", () => {
-    selectedDifficultyMode = button.dataset.mode || "mixed";
-    renderTestSettings();
-  });
+difficultyModeSelect?.addEventListener("change", (event) => {
+  selectedDifficultyMode = event.target.value || "mixed";
+  clampSelectedQuestionCount();
+  renderTestSettings();
+});
+
+window.addEventListener("resize", () => {
+  const task = tasks[currentIndex];
+  if (currentView !== "test" || !task || task.type !== "sentenceMatch") return;
+  const stage = answerArea.querySelector(".sentence-match-stage");
+  if (stage) updateSentenceMatchUi(stage, task);
 });
 
 taskHelpToggle.addEventListener("click", () => {
@@ -1955,4 +2628,5 @@ sentenceLevelFilter.addEventListener("change", renderSentenceTheory);
 setupWordDropZone(answerArea);
 setupWordDropZone(wordBank);
 
+rebuildTaskBank();
 goToTheory(true);

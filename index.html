@@ -23,9 +23,9 @@
           <div class="score-card" aria-live="polite">
             <label class="language-picker" for="languageSelect">Sprache</label>
             <select id="languageSelect" class="language-select">
-              <option value="en">English</option>
-              <option value="uk">Ukrainian</option>
-              <option value="ar">Arabic</option>
+              <option value="en">Englisch</option>
+              <option value="uk">Ukrainisch</option>
+              <option value="ar">Arabisch</option>
             </select>
             <span id="roundLabel">Theorie</span>
             <strong id="scoreLabel">Bereit</strong>
@@ -40,7 +40,7 @@
             <h2>Rund ums Wohnen</h2>
             <p class="hero-text">
               Hier findest du die Grammatik, den Wortschatz und die Beispielsätze für diese Lektion. Du kannst alles
-              zuerst wiederholen und danach den Test mit 15 gemischten Aufgaben starten.
+              zuerst wiederholen und danach den Test starten.
             </p>
             <div class="hero-actions">
               <button id="startTestFromTheoryButton" class="primary-button" type="button">Test starten</button>
@@ -50,22 +50,22 @@
           <div class="hero-stats">
             <div class="mini-stat settings-stat">
               <span>Aufgaben im Test</span>
-              <div id="questionCountControls" class="settings-options" role="group" aria-label="Anzahl der Aufgaben">
-                <button type="button" class="settings-option is-active" data-count="6">6</button>
-                <button type="button" class="settings-option" data-count="9">9</button>
-                <button type="button" class="settings-option" data-count="12">12</button>
-                <button type="button" class="settings-option" data-count="15">15</button>
+              <div class="settings-field-row">
+                <select id="questionCountPreset" class="language-select theory-select" aria-label="Anzahl der Aufgaben">
+                  <option value="15">15</option>
+                  <option value="30">30</option>
+                  <option value="60">60</option>
+                </select>
               </div>
             </div>
             <div class="mini-stat settings-stat">
               <span>Schwierigkeit</span>
-              <div id="difficultyModeControls" class="settings-options settings-options-level" role="group" aria-label="Schwierigkeit im Test">
-                <button type="button" class="settings-option is-active" data-mode="mixed">Gemischt</button>
-                <button type="button" class="settings-option" data-mode="A2">Einfach</button>
-                <button type="button" class="settings-option" data-mode="B1">Mittel</button>
-                <button type="button" class="settings-option" data-mode="B2">Schwer</button>
-              </div>
-              <p id="difficultyModeHint" class="mini-stat-hint">Gemischt = möglichst gleich verteilt.</p>
+              <select id="difficultyModeSelect" class="language-select theory-select" aria-label="Schwierigkeit im Test">
+                <option value="mixed">Gemischt</option>
+                <option value="A2">Einfach</option>
+                <option value="B1">Mittel</option>
+                <option value="B2">Schwer</option>
+              </select>
             </div>
           </div>
         </section>
@@ -135,11 +135,16 @@
               <h3 id="ruleTitle" class="rule-title"></h3>
               <p id="ruleShort" class="rule-line"></p>
               <p id="ruleExample" class="rule-line"></p>
+              <div id="sentenceGrammarBox" class="sentence-grammar-box hidden">
+                <p id="sentenceGrammarLabel" class="sentence-grammar-label">Besonderheit in diesem Satz</p>
+                <div id="sentenceGrammarList" class="sentence-grammar-list"></div>
+              </div>
               <button id="whyButton" class="secondary-button hidden" type="button">Warum ist das richtig?</button>
               <button id="moreRuleButton" class="secondary-button hidden" type="button">Mehr</button>
               <div id="ruleMore" class="rule-more hidden">
                 <p id="ruleTheory" class="rule-line"></p>
                 <p id="ruleMistake" class="rule-line"></p>
+                <div id="sentenceGrammarMore" class="sentence-grammar-more hidden"></div>
                 <div id="ruleExamples" class="rule-examples"></div>
                 <button id="lessRuleButton" class="secondary-button" type="button">Weniger</button>
               </div>
