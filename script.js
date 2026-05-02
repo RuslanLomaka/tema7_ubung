@@ -207,70 +207,6 @@ const TASK_HELP_COPY = {
   }
 };
 
-const VOCAB_TRANSLATIONS = {
-  "der Mietvertrag": { uk: "договір оренди", ar: "عقد الإيجار" },
-  "die Kaution": { uk: "застава", ar: "التأمين / الكفالة" },
-  "die Nebenkosten": { uk: "додаткові комунальні витрати", ar: "التكاليف الجانبية" },
-  "das Grundstueck": { uk: "земельна ділянка", ar: "قطعة أرض" },
-  "die Hausordnung": { uk: "правила будинку", ar: "قواعد المنزل" },
-  "der Mieter": { uk: "орендар", ar: "المستأجر" },
-  "der Vermieter": { uk: "орендодавець", ar: "المالك" },
-  "die Kuendigungsfrist": { uk: "строк попередження про розірвання", ar: "مهلة الإشعار" },
-  "das Dach": { uk: "дах", ar: "السقف" },
-  "die Mauer": { uk: "мур", ar: "الجدار" },
-  "die Treppe": { uk: "сходи", ar: "الدرج" },
-  "der Lift": { uk: "ліфт", ar: "المصعد" },
-  "der Rasen": { uk: "газон", ar: "العشب" },
-  "die Stufe": { uk: "сходинка", ar: "الدرجة" },
-  "der Rechtsanwalt": { uk: "адвокат", ar: "المحامي" },
-  "das Gericht": { uk: "суд", ar: "المحكمة" },
-  "der Prozess": { uk: "судовий процес", ar: "الدعوى القضائية" },
-  "der Laerm": { uk: "шум", ar: "الضوضاء" },
-  "der Frieden": { uk: "спокій / мир", ar: "الهدوء / السلام" },
-  "die Wirklichkeit": { uk: "реальність", ar: "الواقع" },
-  "das Eigentum": { uk: "власність", ar: "الملكية" },
-  "die Pflicht": { uk: "обов’язок", ar: "الواجب" },
-  "das Verbot": { uk: "заборона", ar: "الحظر" },
-  "die Genehmigung": { uk: "дозвіл", ar: "التصريح / الموافقة" },
-  "der Umzug": { uk: "переїзд", ar: "الانتقال" },
-  einziehen: { uk: "вселятися", ar: "ينتقل للسكن" },
-  ausziehen: { uk: "виїжджати", ar: "ينتقل من السكن" },
-  kuendigen: { uk: "розривати договір", ar: "يفسخ / ينهي العقد" },
-  "sich beschweren": { uk: "скаржитися", ar: "يشتكي" },
-  "sich kuemmern": { uk: "дбати про", ar: "يعتني بـ" },
-  stoeren: { uk: "заважати", ar: "يزعج" },
-  maehen: { uk: "косити", ar: "يقص العشب" },
-  vereinbaren: { uk: "домовлятися", ar: "يتفق / يرتب" },
-  "sich leisten": { uk: "мати змогу собі дозволити", ar: "يتحمل التكلفة" },
-  reagieren: { uk: "реагувати", ar: "يستجيب" },
-  verlangen: { uk: "вимагати", ar: "يطالب" },
-  verstossen: { uk: "порушувати", ar: "ينتهك" },
-  ueberweisen: { uk: "переказувати гроші", ar: "يحوّل المال" },
-  entdecken: { uk: "виявляти", ar: "يكتشف" },
-  schreien: { uk: "кричати", ar: "يصرخ" },
-  vermeiden: { uk: "уникати", ar: "يتجنب" },
-  "der Schnitt": { uk: "зріз / підрізання", ar: "قص / تقليم" },
-  guenstig: { uk: "вигідний / недорогий", ar: "رخيص / مناسب" },
-  ruhig: { uk: "тихий", ar: "هادئ" },
-  zentral: { uk: "центральний", ar: "مركزي" },
-  laut: { uk: "гучний", ar: "صاخب" },
-  ruecksichtslos: { uk: "безвідповідальний до інших", ar: "غير مراعٍ" },
-  hoeflich: { uk: "ввічливий", ar: "مهذب" },
-  winzig: { uk: "крихітний", ar: "ضئيل جدًا" },
-  teuer: { uk: "дорогий", ar: "غالي" },
-  grosszuegig: { uk: "просторий / щедрий", ar: "واسع / كريم" },
-  sauber: { uk: "чистий", ar: "نظيف" },
-  darüber: { uk: "про це", ar: "عن ذلك" },
-  dafür: { uk: "для цього / за це", ar: "لهذا / لذلك" },
-  wofür: { uk: "для чого / за що", ar: "لأجل ماذا / لماذا" },
-  worüber: { uk: "про що", ar: "عن ماذا" },
-  trotz: { uk: "попри / незважаючи на", ar: "على الرغم من" },
-  sondern: { uk: "а навпаки / а також", ar: "بل / وإنما" },
-  entweder: { uk: "або", ar: "إما" },
-  hätte: { uk: "мав би / якби мав", ar: "كان سيملك / لو كان قد" },
-  wären: { uk: "були б / якби були", ar: "لكانوا / لو كانوا قد" }
-};
-
 let tasks = [];
 let results = [];
 let currentIndex = 0;
@@ -422,19 +358,186 @@ function choosePilotErrorVariant(entry) {
   };
 }
 
+const vocabularyByBasicForm = new Map(
+  vocabulary.map((item) => [normalizeWord(item.basicForm), item])
+);
+
+const GAP_FILL_CATEGORY_PRIORITY = {
+  verb: 0,
+  noun: 1,
+  adjective: 2,
+  grammar: 3
+};
+
+const GRAMMAR_SURFACE_FORMS = {
+  hätte: ["hätte", "hätten"],
+  wären: ["wäre", "wären"]
+};
+
+function stripArticle(text) {
+  return String(text).replace(/^(der|die|das)\s+/i, "").trim();
+}
+
+function escapeRegExp(text) {
+  return String(text).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function buildVerbPresentCandidate(basicForm) {
+  const infinitive = basicForm.replace(/^sich\s+/, "").trim();
+
+  if (!infinitive.endsWith("en") || infinitive.length < 4) {
+    return "";
+  }
+
+  const stem = infinitive.slice(0, -2);
+  return `${stem}t`;
+}
+
+function cleanVerbForm(text) {
+  return String(text)
+    .replace(/^(hat|ist)\s+/i, "")
+    .replace(/\bsich\b/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function buildAdjectiveSurfaceForms(basicForm) {
+  const stem = basicForm.trim();
+  const endings = ["", "e", "en", "em", "er", "es"];
+  return endings.map((ending) => `${stem}${ending}`);
+}
+
+function buildVocabularySurfaceForms(item) {
+  if (!item) return [];
+
+  if (item.category === "grammar") {
+    return GRAMMAR_SURFACE_FORMS[item.basicForm] || [item.basicForm];
+  }
+
+  if (item.category === "noun") {
+    const forms = [stripArticle(item.basicForm)];
+    if (item.forms && !/^(kein|nur)\s+Plural$/i.test(item.forms)) {
+      forms.push(stripArticle(item.forms));
+    }
+    return forms;
+  }
+
+  if (item.category === "adjective") {
+    return buildAdjectiveSurfaceForms(item.basicForm);
+  }
+
+  if (item.category === "verb") {
+    const forms = [item.basicForm.replace(/^sich\s+/, "").trim()];
+    const presentCandidate = buildVerbPresentCandidate(item.basicForm);
+    if (presentCandidate) {
+      forms.push(presentCandidate);
+    }
+
+    const rawForms = String(item.forms || "")
+      .split(",")
+      .map((value) => value.trim())
+      .filter(Boolean);
+
+    rawForms.forEach((value) => {
+      const cleaned = cleanVerbForm(value);
+      if (cleaned) {
+        forms.push(cleaned);
+      }
+    });
+
+    return forms;
+  }
+
+  return [item.basicForm];
+}
+
+function findSurfaceMatch(sentence, candidates) {
+  const uniqueCandidates = [...new Set((candidates || []).filter(Boolean))]
+    .sort((left, right) => right.length - left.length);
+
+  for (const candidate of uniqueCandidates) {
+    const regex = new RegExp(`(^|[^\\p{L}])(${escapeRegExp(candidate)})(?=$|[^\\p{L}])`, "iu");
+    const match = sentence.match(regex);
+    if (match) {
+      return match[2];
+    }
+  }
+
+  return "";
+}
+
+function resolveVocabularyLink(link) {
+  return vocabularyByBasicForm.get(normalizeWord(link)) || null;
+}
+
+function buildGapFillCandidate(entry) {
+  const linkedItems = (entry.vocabularyLinks || [])
+    .map(resolveVocabularyLink)
+    .filter(Boolean);
+
+  const candidates = linkedItems
+    .map((item) => {
+      const matchedSurface = findSurfaceMatch(entry.sentence, buildVocabularySurfaceForms(item));
+      if (!matchedSurface) return null;
+
+      return {
+        item,
+        answer: matchedSurface,
+        hint: item.hintDe,
+        categoryPriority: GAP_FILL_CATEGORY_PRIORITY[item.category] ?? 99
+      };
+    })
+    .filter(Boolean)
+    .sort((left, right) => (
+      left.categoryPriority - right.categoryPriority
+      || right.answer.length - left.answer.length
+    ));
+
+  return candidates[0] || null;
+}
+
+function replaceSurfaceWithGap(sentence, answer) {
+  const regex = new RegExp(`(^|[^\\p{L}])(${escapeRegExp(answer)})(?=$|[^\\p{L}])`, "u");
+  return sentence.replace(regex, (_, prefix) => `${prefix}___`);
+}
+
+function buildSentenceMatchPair(sentence) {
+  const tokens = tokenize(sentence);
+  if (tokens.length < 4) return null;
+
+  const commaIndex = tokens.indexOf(",");
+  if (commaIndex > 0 && commaIndex < tokens.length - 2) {
+    return {
+      start: formatSentenceFromTokens(tokens.slice(0, commaIndex + 1)),
+      end: formatSentenceFromTokens(tokens.slice(commaIndex + 1))
+    };
+  }
+
+  const wordIndexes = tokens
+    .map((token, index) => ({ token, index }))
+    .filter(({ token }) => /\p{L}/u.test(token));
+
+  if (wordIndexes.length < 4) return null;
+
+  const splitWordIndex = Math.ceil(wordIndexes.length / 2) - 1;
+  const splitTokenIndex = wordIndexes[splitWordIndex]?.index + 1;
+
+  if (!splitTokenIndex || splitTokenIndex >= tokens.length) return null;
+
+  return {
+    start: formatSentenceFromTokens(tokens.slice(0, splitTokenIndex)),
+    end: formatSentenceFromTokens(tokens.slice(splitTokenIndex))
+  };
+}
+
 function buildSentenceBankTasks(entries) {
   const perSentenceTasks = entries.flatMap((entry) => {
-    const chunks = entry.chunks || {};
     const uniqueCorrectAnswers = getUniqueSentenceAnswers([
       entry.sentence,
       ...(entry.alternativeCorrectAnswers || [])
     ]);
-    const sentenceBuilderParts = entry.level === "B2"
-      ? (chunks.hard || tokenize(entry.sentence))
-      : entry.level === "B1"
-      ? (chunks.medium || chunks.easy || tokenize(entry.sentence))
-      : (chunks.easy || chunks.medium || tokenize(entry.sentence));
     const generatedErrorVariant = choosePilotErrorVariant(entry);
+    const generatedGapFill = buildGapFillCandidate(entry);
 
     const tasksFromSentence = [
       {
@@ -443,7 +546,6 @@ function buildSentenceBankTasks(entries) {
         level: entry.level,
         grammarFocus: entry.grammarFocus,
         prompt: "Bringe die Wörter in die richtige Reihenfolge.",
-        parts: sentenceBuilderParts,
         correctAnswers: uniqueCorrectAnswers.length ? uniqueCorrectAnswers : [entry.sentence],
         translations: entry.translations,
         sentenceGrammarNotes: entry.sentenceGrammarNotes,
@@ -460,22 +562,27 @@ function buildSentenceBankTasks(entries) {
         translations: entry.translations,
         sentenceGrammarNotes: entry.sentenceGrammarNotes,
         sourceSentenceId: entry.id
-      },
-      {
+      }
+    ];
+
+    if (generatedGapFill?.answer) {
+      tasksFromSentence.push({
         id: `pilot_gf_${entry.id}`,
         type: "gapFill",
         level: entry.level,
         grammarFocus: entry.grammarFocus,
         prompt: "Schreibe das fehlende Wort.",
-        sentence: entry.sentence.replace(entry.gapFill.answer, "___"),
-        displaySentence: entry.sentence.replace(entry.gapFill.answer, "___"),
-        correctAnswers: [entry.gapFill.answer],
-        hint: entry.gapFill.hint,
+        sentence: replaceSurfaceWithGap(entry.sentence, generatedGapFill.answer),
+        displaySentence: replaceSurfaceWithGap(entry.sentence, generatedGapFill.answer),
+        correctAnswers: [generatedGapFill.answer],
+        hint: generatedGapFill.hint,
         translations: entry.translations,
         sentenceGrammarNotes: entry.sentenceGrammarNotes,
         sourceSentenceId: entry.id
-      },
-      {
+      });
+    }
+
+    tasksFromSentence.push({
         id: `pilot_es_${entry.id}`,
         type: "errorSearch",
         level: entry.level,
@@ -490,7 +597,7 @@ function buildSentenceBankTasks(entries) {
         sentenceGrammarNotes: entry.sentenceGrammarNotes,
         sourceSentenceId: entry.id
       }
-    ];
+    );
 
     return tasksFromSentence;
   });
@@ -626,10 +733,6 @@ const sentenceGrammarNotesBySentence = new Map(
   sentenceBankV2.map((entry) => [normalizeText(entry.sentence), entry.sentenceGrammarNotes || []])
 );
 
-const NORMALIZED_VOCAB_TRANSLATIONS = Object.fromEntries(
-  Object.entries(VOCAB_TRANSLATIONS).map(([key, value]) => [normalizeWord(key), value])
-);
-
 function tokenize(sentence) {
   return sentence.match(/[A-Za-zÄÖÜäöüß]+|[.,!?;:]/g) || [];
 }
@@ -694,8 +797,9 @@ function isArticlePrompt(task) {
 }
 
 function getVocabularyTranslation(item) {
-  if (selectedLanguage === "en") return item.meaningEn;
-  return NORMALIZED_VOCAB_TRANSLATIONS[normalizeWord(item.basicForm)]?.[selectedLanguage] || item.meaningEn;
+  if (selectedLanguage === "uk") return item.meaningUk || item.meaningEn;
+  if (selectedLanguage === "ar") return item.meaningAr || item.meaningEn;
+  return item.meaningEn;
 }
 
 function getDefaultFormOrder(task) {
@@ -1119,7 +1223,12 @@ function pickTaskFromPool(pool, usedIds, usedFormKinds, usedFormVariants) {
 
 function buildSentenceMatchTask(level) {
   const matchingEntries = sentenceBankV2
-    .filter((entry) => entry.level === level && entry.matching?.start && entry.matching?.end);
+    .filter((entry) => entry.level === level)
+    .map((entry) => ({
+      entry,
+      pair: buildSentenceMatchPair(entry.sentence)
+    }))
+    .filter((item) => item.pair?.start && item.pair?.end);
 
   if (matchingEntries.length < 4) return null;
 
@@ -1131,17 +1240,17 @@ function buildSentenceMatchTask(level) {
     level,
     grammarFocus: null,
     prompt: "Verbinde jeden Satzanfang mit dem passenden Satzende.",
-    pairs: selectedEntries.map((entry) => ({
-      start: entry.matching.start,
-      end: entry.matching.end
+    pairs: selectedEntries.map(({ pair }) => ({
+      start: pair.start,
+      end: pair.end
     })),
     translations: {
-      en: selectedEntries.map((entry, index) => `${index + 1}. ${entry.translations.en}`).join("\n"),
-      uk: selectedEntries.map((entry, index) => `${index + 1}. ${entry.translations.uk}`).join("\n"),
-      ar: selectedEntries.map((entry, index) => `${index + 1}. ${entry.translations.ar}`).join("\n")
+      en: selectedEntries.map(({ entry }, index) => `${index + 1}. ${entry.translations.en}`).join("\n"),
+      uk: selectedEntries.map(({ entry }, index) => `${index + 1}. ${entry.translations.uk}`).join("\n"),
+      ar: selectedEntries.map(({ entry }, index) => `${index + 1}. ${entry.translations.ar}`).join("\n")
     },
-    sentenceGrammarNotes: selectedEntries.flatMap((entry) => entry.sentenceGrammarNotes || []),
-    sourceSentenceId: selectedEntries.map((entry) => entry.id).join(",")
+    sentenceGrammarNotes: selectedEntries.flatMap(({ entry }) => entry.sentenceGrammarNotes || []),
+    sourceSentenceId: selectedEntries.map(({ entry }) => entry.id).join(",")
   };
 }
 
@@ -1805,8 +1914,6 @@ function buildChunksFromTokens(tokens, chunkSize) {
 }
 
 function getSentenceBuilderParts(task) {
-  if (Array.isArray(task.parts) && task.parts.length) return task.parts;
-
   const uniqueAnswers = getUniqueSentenceAnswers(task.correctAnswers);
   const tokens = [...(task.wordBank || tokenize(uniqueAnswers[0]))];
   if (task.level === "B2") return tokens;
