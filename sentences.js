@@ -106,12 +106,17 @@ window.appData.sentenceBankV2 = [
       {
         "title": "nicht nur ..., sondern auch ...",
         "summary": "Der Satz ergänzt eine Information mit einem zweiteiligen Konnektor.",
-        "details": "Nach nicht nur folgt der erste Teil, nach sondern auch kommt die zusätzliche Information.",
+        "details": "Der erste Satzteil bleibt ein normaler Hauptsatz: Die Wohnung | ist | nicht nur teuer. Nach sondern auch folgt die zusätzliche Information. Das finite Verb ist steht also weiter auf Position 2.",
         "example": "nicht nur teuer, sondern auch in einem schlechten Zustand"
+      },
+      {
+        "title": "Verb auf Position 2",
+        "summary": "Auch mit nicht nur ..., sondern auch ... bleibt das finite Verb im Hauptsatz auf Position 2.",
+        "details": "Das Subjekt Die Wohnung steht zuerst, dann kommt sofort das finite Verb ist. Der zweite Teil beginnt nicht als neuer Verbblock, sondern ergänzt nur die Aussage.",
+        "example": "Die Wohnung | ist | nicht nur teuer ..."
       }
     ],
     "vocabularyLinks": [
-      "die Wohnung",
       "teuer"
     ],
     "alternativeCorrectAnswers": [
@@ -148,8 +153,14 @@ window.appData.sentenceBankV2 = [
       {
         "title": "nicht nur ..., sondern auch ...",
         "summary": "Der Konnektor verbindet zwei Pflichten oder Aufgaben.",
-        "details": "Mit sondern auch wird gezeigt, dass noch etwas zusätzlich gemacht werden muss.",
+        "details": "Im ersten Teil steht das finite Verb muss an Position 2: der Rasen | muss | gemäht werden. Im zweiten Teil steht das finite Verb brauchen wieder an Position 2: die Hecken | brauchen | einen Schnitt.",
         "example": "Nicht nur der Rasen ..., sondern auch die Hecken ..."
+      },
+      {
+        "title": "Zwei Hauptsätze mit Verb auf Position 2",
+        "summary": "Beide Teile behalten die normale Hauptsatzstellung.",
+        "details": "Der Konnektor verbindet zwei Aussagen, aber er verschiebt die Verben nicht. Deshalb heißen die Muster hier: der Rasen | muss | ... und die Hecken | brauchen | ...",
+        "example": "Nicht nur der Rasen muss gemäht werden, sondern auch die Hecken brauchen einen Schnitt."
       }
     ],
     "vocabularyLinks": [
@@ -203,7 +214,6 @@ window.appData.sentenceBankV2 = [
     ],
     "vocabularyLinks": [
       "der Vermieter",
-      "die Miete",
       "verlangen"
     ],
     "alternativeCorrectAnswers": [
@@ -263,7 +273,7 @@ window.appData.sentenceBankV2 = [
         "sauber": [
           "saüer",
           "sauberr",
-          "sau ber"
+          "sauberr"
         ]
       }
     }
@@ -330,8 +340,7 @@ window.appData.sentenceBankV2 = [
     ],
     "vocabularyLinks": [
       "der Mieter",
-      "einziehen",
-      "die Wohnung"
+      "einziehen"
     ],
     "alternativeCorrectAnswers": [
       "Der Mieter zieht nächste Woche in die neue Wohnung ein."
@@ -470,7 +479,6 @@ window.appData.sentenceBankV2 = [
     ],
     "vocabularyLinks": [
       "wofür",
-      "die Gebühr",
       "die Nebenkosten"
     ],
     "alternativeCorrectAnswers": [
@@ -571,7 +579,6 @@ window.appData.sentenceBankV2 = [
     ],
     "vocabularyLinks": [
       "der Vermieter",
-      "die Hausverwaltung",
       "der Lift"
     ],
     "alternativeCorrectAnswers": [
@@ -698,8 +705,7 @@ window.appData.sentenceBankV2 = [
     ],
     "vocabularyLinks": [
       "die Kaution",
-      "verstoßen",
-      "der Vertrag"
+      "verstoßen"
     ],
     "alternativeCorrectAnswers": [
       "Die Kaution dient dem Vermieter als Sicherheit, falls der Mieter gegen den Vertrag verstößt."
@@ -960,7 +966,6 @@ window.appData.sentenceBankV2 = [
       }
     ],
     "vocabularyLinks": [
-      "die Miete",
       "überweisen"
     ],
     "alternativeCorrectAnswers": [
@@ -1296,7 +1301,6 @@ window.appData.sentenceBankV2 = [
       }
     ],
     "vocabularyLinks": [
-      "die Wohnung",
       "zentral"
     ],
     "alternativeCorrectAnswers": [],
@@ -1497,7 +1501,6 @@ window.appData.sentenceBankV2 = [
     ],
     "vocabularyLinks": [
       "dafür",
-      "der Eigentümer",
       "die Genehmigung",
       "das Gericht"
     ],
@@ -1939,7 +1942,7 @@ window.appData.sentenceBankV2 = [
         "unklar": [
           "unklaar",
           "unklarr",
-          "uncl ar"
+          "unclar"
         ]
       }
     }
@@ -2000,6 +2003,12 @@ window.appData.sentenceBankV2 = [
         "summary": "Die Konstruktion stellt zwei mögliche Entwicklungen gegenüber.",
         "details": "Beide Teile sind Hauptsätze mit normaler Verbposition 2: der Eigentümer | senkt | die Nebenkosten; mehrere Mieter | kündigen | den Vertrag.",
         "example": "Entweder ... oder mehrere Mieter kündigen den Vertrag."
+      },
+      {
+        "title": "Verbposition in beiden Teilen",
+        "summary": "Auch hier bleibt das finite Verb in beiden Satzteilen auf Position 2.",
+        "details": "Im ersten Teil steht nach dem Subjekt der Eigentümer sofort das finite Verb senkt. Im zweiten Teil steht nach mehrere Mieter das finite Verb kündigen. Entweder und oder leiten nur die Alternativen ein.",
+        "example": "der Eigentümer | senkt | die Nebenkosten; mehrere Mieter | kündigen | den Vertrag"
       }
     ],
     "vocabularyLinks": [
@@ -2040,8 +2049,14 @@ window.appData.sentenceBankV2 = [
       {
         "title": "Konjunktiv II mit Zustand",
         "summary": "Die gedachte Bedingung betrifft den Zustand der Mauern in der Vergangenheit.",
-        "details": "Wären ... gewesen beschreibt die irreale Bedingung, hätte man gehört die gedachte Folge.",
+        "details": "Im ersten Teil steht Wären als finites Verb ganz vorne, weil der Konditionalsatz ohne wenn beginnt. Gewesen schließt diesen Teil am Ende ab. Im zweiten Teil steht hätte wieder früh im Satz, und gehört steht am Ende des Verbkomplexes.",
         "example": "Wären die Mauern besser isoliert gewesen, hätte man ..."
+      },
+      {
+        "title": "Verbklammer im Konjunktiv II",
+        "summary": "Die beiden Satzteile haben jeweils eine klare Verbklammer.",
+        "details": "Erster Teil: Wären ... gewesen. Zweiter Teil: hätte ... gehört. So sieht man, wo der Satzteil beginnt und wo er mit dem letzten Verb endet.",
+        "example": "Wären die Mauern besser isoliert gewesen, hätte man ... gehört."
       }
     ],
     "vocabularyLinks": [
@@ -2139,7 +2154,6 @@ window.appData.sentenceBankV2 = [
       }
     ],
     "vocabularyLinks": [
-      "der Eigentümer",
       "entdecken",
       "laut",
       "das Grundstück"

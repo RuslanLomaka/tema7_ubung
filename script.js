@@ -7,207 +7,52 @@ const {
   grammarConcepts,
   tasks: mainTasks,
   vocabulary,
-  sentenceBankV2 = []
+  sentenceBankV2 = [],
+  taskHelpCopy = {},
+  uiConfig = {}
 } = window.appData;
 
-const TASK_TYPE_LABELS = {
-  sentenceBuilder: "Satzbau",
-  sentenceMatch: "Satzhälften",
-  multipleChoice: "Mehrfachauswahl",
-  gapFill: "Lückentext",
-  formTraining: "Formen",
-  errorSearch: "Fehlersuche"
-};
-
 const LEVELS = ["A2", "B1", "B2"];
-const TASK_TYPES = ["sentenceBuilder", "sentenceMatch", "multipleChoice", "gapFill", "formTraining", "errorSearch"];
-const LEVEL_LABELS = {
-  A2: "Einfach",
-  B1: "Mittel",
-  B2: "Schwer"
+const ROUND_POLICY_CONFIG = uiConfig.roundPolicy || {};
+const TASK_TYPES = ROUND_POLICY_CONFIG.taskTypes || ["sentenceBuilder", "sentenceMatch", "multipleChoice", "gapFill", "formTraining", "errorSearch"];
+const TASK_TYPE_LABELS = uiConfig.taskTypeLabels || {};
+const LEVEL_LABELS = uiConfig.levelLabels || {};
+const FORM_TRAINING_KINDS = uiConfig.formTrainingKinds || ["verb", "adjective", "noun"];
+const QUESTION_COUNT_OPTIONS = uiConfig.questionCountOptions || [15, 30, 60];
+const SENTENCE_MATCH_COLORS = uiConfig.sentenceMatchColors || ["#e11d48", "#d4a017", "#8b5e3c", "#2563eb"];
+const UI_TEXT = uiConfig.staticText || {};
+const TEXT = {
+  theory: UI_TEXT.theory || "Theorie",
+  testStart: UI_TEXT.testStart || "Test starten",
+  backToTheory: UI_TEXT.backToTheory || "Zurück zur Theorie",
+  inTest: UI_TEXT.inTest || "Im Test",
+  ready: UI_TEXT.ready || "Bereit",
+  resultReady: UI_TEXT.resultReady || "Ergebnis da",
+  continue: UI_TEXT.continue || "Weiter",
+  cancel: UI_TEXT.cancel || "Abbrechen",
+  loseProgressTitle: UI_TEXT.loseProgressTitle || "Fortschritt verlieren?",
+  loseProgressText:
+    UI_TEXT.loseProgressText || "Wenn du jetzt zur Theorie gehst, verlierst du deinen aktuellen Testfortschritt.",
+  toTheory: UI_TEXT.toTheory || "Zur Theorie",
+  stayInTest: UI_TEXT.stayInTest || "Im Test bleiben",
+  restartTitle: UI_TEXT.restartTitle || "Neuen Test starten?",
+  restartText:
+    UI_TEXT.restartText || "Wenn du jetzt einen neuen Test startest, verlierst du deinen aktuellen Fortschritt.",
+  restartAccept: UI_TEXT.restartAccept || "Neu starten",
+  errorSearchCorrect: UI_TEXT.errorSearchCorrect || "Der Satz ist korrekt.",
+  errorSearchPrompt:
+    UI_TEXT.errorSearchPrompt || "Klicke auf den Fehler oder wähle: Der Satz ist korrekt."
 };
-const FORM_TRAINING_KINDS = ["verb", "adjective", "noun"];
-const QUESTION_COUNT_OPTIONS = [15, 30, 60];
-const SENTENCE_MATCH_COLORS = ["#e11d48", "#d4a017", "#8b5e3c", "#2563eb"];
 const legacyFormTasks = mainTasks.filter((task) => task.type === "formTraining");
-const RECENT_SENTENCE_MATCH_HISTORY_LIMIT = 8;
-const RECENT_FORM_HISTORY_LIMIT = 10;
-const TASK_HELP_COPY = {
-  en: {
-    sentenceBuilder: {
-      title: "In this task you should...",
-      body: "Build the correct German sentence from the blocks you see on the screen.",
-      decide: "How to decide: look for fixed chunks, verb position, and connectors that belong together.",
-      example: "For example: “nicht nur” often goes together with “sondern auch”.",
-      submit: "How to submit: place the blocks in the answer area in the final order and click “Prüfen”."
-    },
-    sentenceMatch: {
-      title: "In this task you should...",
-      body: "Match each sentence beginning with the correct sentence ending.",
-      decide: "How to decide: check meaning, grammar continuation, and which ending fits naturally with the beginning.",
-      example: "For example: “Nicht nur der Rasen muss gemäht werden, ...” fits with “... sondern auch die Hecken brauchen einen Schnitt.”",
-      submit: "How to submit: click one beginning and then one ending until all pairs are connected. Then click “Prüfen”."
-    },
-    multipleChoice: {
-      title: "In this task you should...",
-      body: "Choose the one sentence that is fully correct.",
-      decide: "How to decide: compare word order, case, connector pairs, and verb forms. Usually only one option is completely right.",
-      example: "For example: after “trotz” the article should usually be in the genitive form.",
-      submit: "How to submit: click one option and then click “Prüfen”."
-    },
-    gapFill: {
-      title: "In this task you should...",
-      body: "Write the missing word in the sentence.",
-      decide: "How to decide: use the grammar topic, the sentence meaning, and the hint under the sentence.",
-      example: "For example: if the sentence asks about a thing, “wofür” can fit better than “für wen”.",
-      submit: "How to submit: type the missing word into the field and click “Prüfen”."
-    },
-    formTraining_verb: {
-      title: "In this task you should...",
-      body: "Write the missing verb form.",
-      decide: "How to decide: compare the other two verb forms and think about infinitive, Präteritum, or Partizip II.",
-      example: "For example: “einziehen - zog ein - ist eingezogen”.",
-      submit: "How to submit: if Partizip II is missing, first choose “hat” or “ist”, then type only the participle and click “Prüfen”."
-    },
-    formTraining_adjective: {
-      title: "In this task you should...",
-      body: "Write the missing adjective form.",
-      decide: "How to decide: compare Positiv, Komparativ, and Superlativ carefully.",
-      example: "For example: “teuer - teurer - am teuersten”.",
-      submit: "How to submit: type the missing adjective form and click “Prüfen”."
-    },
-    formTraining_noun: {
-      title: "In this task you should...",
-      body: "Complete the noun form that is missing.",
-      decide: "How to decide: either choose the correct article or write the plural noun form.",
-      example: "For example: “der Mieter - die Mieter” or “das Dach - die Dächer”.",
-      submit: "How to submit: click the right article button or type only the plural noun, then click “Prüfen”."
-    },
-    errorSearch: {
-      title: "In this task you should...",
-      body: "Find the one wrong word in the sentence, or decide that the sentence is correct.",
-      decide: "How to decide: check spelling, case, verb form, and fixed grammar patterns. There is at most one mistake.",
-      example: "For example: “trotz dem Preis” is wrong in standard German, but “trotz des Preises” is correct.",
-      submit: "How to submit: click the wrong word or click “Der Satz ist korrekt.” and then click “Prüfen”."
-    }
-  },
-  uk: {
-    sentenceBuilder: {
-      title: "У цьому завданні потрібно...",
-      body: "побудувати правильне німецьке речення з блоків, які ти бачиш на екрані.",
-      decide: "Як вирішувати: шукай сталі частини, позицію дієслова та сполучники, які вживаються разом.",
-      example: "Наприклад: “nicht nur” часто поєднується з “sondern auch”.",
-      submit: "Як перевірити: розташуй блоки в зоні відповіді у правильному порядку й натисни “Prüfen”."
-    },
-    sentenceMatch: {
-      title: "У цьому завданні потрібно...",
-      body: "поєднати кожен початок речення з правильним закінченням.",
-      decide: "Як вирішувати: дивись на зміст, граматичне продовження та на те, яке закінчення природно підходить до початку.",
-      example: "Наприклад: “Nicht nur der Rasen muss gemäht werden, ...” поєднується з “... sondern auch die Hecken brauchen einen Schnitt.”",
-      submit: "Як перевірити: натискай спочатку на початок, а потім на закінчення, доки всі пари не буде з’єднано. Потім натисни “Prüfen”."
-    },
-    multipleChoice: {
-      title: "У цьому завданні потрібно...",
-      body: "вибрати одне речення, яке є повністю правильним.",
-      decide: "Як вирішувати: порівняй порядок слів, відмінок, парні сполучники та форми дієслів. Зазвичай лише один варіант повністю правильний.",
-      example: "Наприклад: після “trotz” артикль зазвичай стоїть у родовому відмінку.",
-      submit: "Як перевірити: натисни на один варіант, а потім натисни “Prüfen”."
-    },
-    gapFill: {
-      title: "У цьому завданні потрібно...",
-      body: "вписати пропущене слово в речення.",
-      decide: "Як вирішувати: використай граматичну тему, зміст речення та підказку під реченням.",
-      example: "Наприклад: якщо питання стосується предмета, “wofür” може підходити краще, ніж “für wen”.",
-      submit: "Як перевірити: введи пропущене слово в поле й натисни “Prüfen”."
-    },
-    formTraining_verb: {
-      title: "У цьому завданні потрібно...",
-      body: "написати пропущену форму дієслова.",
-      decide: "Як вирішувати: порівняй дві інші форми дієслова й подумай, чи потрібен інфінітив, Präteritum або Partizip II.",
-      example: "Наприклад: “einziehen - zog ein - ist eingezogen”.",
-      submit: "Як перевірити: якщо бракує Partizip II, спочатку вибери “hat” або “ist”, потім введи тільки participle і натисни “Prüfen”."
-    },
-    formTraining_adjective: {
-      title: "У цьому завданні потрібно...",
-      body: "написати пропущену форму прикметника.",
-      decide: "Як вирішувати: уважно порівняй Positiv, Komparativ і Superlativ.",
-      example: "Наприклад: “teuer - teurer - am teuersten”.",
-      submit: "Як перевірити: введи пропущену форму прикметника й натисни “Prüfen”."
-    },
-    formTraining_noun: {
-      title: "У цьому завданні потрібно...",
-      body: "доповнити пропущену форму іменника.",
-      decide: "Як вирішувати: або вибери правильний артикль, або напиши форму множини.",
-      example: "Наприклад: “der Mieter - die Mieter” або “das Dach - die Dächer”.",
-      submit: "Як перевірити: натисни правильний артикль або введи тільки іменник у множині, а потім натисни “Prüfen”."
-    },
-    errorSearch: {
-      title: "У цьому завданні потрібно...",
-      body: "знайти одне неправильне слово в реченні або вирішити, що речення правильне.",
-      decide: "Як вирішувати: перевіряй написання, відмінок, форму дієслова та сталі граматичні моделі. Помилка тут максимум одна.",
-      example: "Наприклад: “trotz dem Preis” у стандартній німецькій мові є помилкою, а “trotz des Preises” — правильно.",
-      submit: "Як перевірити: натисни на неправильне слово або на “Der Satz ist korrekt.”, а потім натисни “Prüfen”."
-    }
-  },
-  ar: {
-    sentenceBuilder: {
-      title: "في هذا التمرين عليك أن...",
-      body: "تبني الجملة الألمانية الصحيحة من المقاطع الظاهرة أمامك.",
-      decide: "كيف تقرر: ابحث عن الأجزاء الثابتة، ومكان الفعل، والروابط التي تأتي معًا.",
-      example: "مثال: “nicht nur” غالبًا تأتي مع “sondern auch”.",
-      submit: "كيف ترسل الإجابة: رتّب المقاطع في منطقة الإجابة بالترتيب الصحيح ثم اضغط “Prüfen”."
-    },
-    sentenceMatch: {
-      title: "في هذا التمرين عليك أن...",
-      body: "تصل كل بداية جملة بالنهاية الصحيحة لها.",
-      decide: "كيف تقرر: راقب المعنى، واستمرار القاعدة، وأي نهاية تنسجم طبيعيًا مع بداية الجملة.",
-      example: "مثال: “Nicht nur der Rasen muss gemäht werden, ...” تناسب “... sondern auch die Hecken brauchen einen Schnitt.”",
-      submit: "كيف ترسل الإجابة: اضغط أولًا على بداية الجملة ثم على النهاية حتى تكتمل جميع الأزواج، ثم اضغط “Prüfen”."
-    },
-    multipleChoice: {
-      title: "في هذا التمرين عليك أن...",
-      body: "تختار الجملة الوحيدة الصحيحة تمامًا.",
-      decide: "كيف تقرر: قارن ترتيب الكلمات، والحالة الإعرابية، والروابط الثنائية، وصيغ الأفعال. عادة يوجد خيار واحد صحيح بالكامل.",
-      example: "مثال: بعد “trotz” يكون شكل الأداة عادة في حالة الجر.",
-      submit: "كيف ترسل الإجابة: اضغط على خيار واحد ثم اضغط “Prüfen”."
-    },
-    gapFill: {
-      title: "في هذا التمرين عليك أن...",
-      body: "تكتب الكلمة الناقصة في الجملة.",
-      decide: "كيف تقرر: استخدم موضوع القاعدة، ومعنى الجملة، والتلميح الموجود تحتها.",
-      example: "مثال: إذا كان السؤال عن شيء، فقد تكون “wofür” أنسب من “für wen”.",
-      submit: "كيف ترسل الإجابة: اكتب الكلمة الناقصة في الحقل ثم اضغط “Prüfen”."
-    },
-    formTraining_verb: {
-      title: "في هذا التمرين عليك أن...",
-      body: "تكتب صيغة الفعل الناقصة.",
-      decide: "كيف تقرر: قارن الصيغتين الأخريين وفكر هل المطلوب Infinitiv أو Präteritum أو Partizip II.",
-      example: "مثال: “einziehen - zog ein - ist eingezogen”.",
-      submit: "كيف ترسل الإجابة: إذا كانت الصيغة الناقصة هي Partizip II فاختر أولًا “hat” أو “ist”، ثم اكتب اسم المفعول فقط واضغط “Prüfen”."
-    },
-    formTraining_adjective: {
-      title: "في هذا التمرين عليك أن...",
-      body: "تكتب صيغة الصفة الناقصة.",
-      decide: "كيف تقرر: قارن بعناية بين Positiv و Komparativ و Superlativ.",
-      example: "مثال: “teuer - teurer - am teuersten”.",
-      submit: "كيف ترسل الإجابة: اكتب صيغة الصفة الناقصة ثم اضغط “Prüfen”."
-    },
-    formTraining_noun: {
-      title: "في هذا التمرين عليك أن...",
-      body: "تكمل صيغة الاسم الناقصة.",
-      decide: "كيف تقرر: إما أن تختار أداة التعريف الصحيحة أو تكتب صيغة الجمع.",
-      example: "مثال: “der Mieter - die Mieter” أو “das Dach - die Dächer”.",
-      submit: "كيف ترسل الإجابة: اضغط على أداة التعريف الصحيحة أو اكتب اسم الجمع فقط ثم اضغط “Prüfen”."
-    },
-    errorSearch: {
-      title: "في هذا التمرين عليك أن...",
-      body: "تجد الكلمة الخاطئة الوحيدة في الجملة أو تقرر أن الجملة صحيحة.",
-      decide: "كيف تقرر: افحص الإملاء، والحالة، وصيغة الفعل، والأنماط النحوية الثابتة. يوجد خطأ واحد كحد أقصى.",
-      example: "مثال: “trotz dem Preis” خطأ في الألمانية المعيارية، أما “trotz des Preises” فهي صحيحة.",
-      submit: "كيف ترسل الإجابة: اضغط على الكلمة الخاطئة أو على “Der Satz ist korrekt.” ثم اضغط “Prüfen”."
-    }
-  }
-};
+const RECENT_SENTENCE_MATCH_HISTORY_LIMIT = ROUND_POLICY_CONFIG.recentSentenceMatchHistoryLimit || 8;
+const RECENT_FORM_HISTORY_LIMIT = ROUND_POLICY_CONFIG.recentFormHistoryLimit || 10;
+const SENTENCE_MATCH_MIN_ROUND_COUNT = ROUND_POLICY_CONFIG.sentenceMatchMinRoundCount || 4;
+const SENTENCE_MATCH_PAIRS_PER_BOARD = ROUND_POLICY_CONFIG.sentenceMatchPairsPerBoard || 4;
+const TASK_HELP_COPY = taskHelpCopy;
+const taskFactory = window.TaskFactory;
+if (!taskFactory) {
+  throw new Error("task-factory.js wurde nicht geladen.");
+}
 
 let tasks = [];
 let results = [];
@@ -302,10 +147,7 @@ const vocabularyList = document.querySelector("#vocabularyList");
 const sentenceLevelFilter = document.querySelector("#sentenceLevelFilter");
 const sentenceBank = document.querySelector("#sentenceBank");
 const questionCountPreset = document.querySelector("#questionCountPreset");
-const questionCountManual = document.querySelector("#questionCountManual");
-const questionCountHint = document.querySelector("#questionCountHint");
 const difficultyModeSelect = document.querySelector("#difficultyModeSelect");
-const difficultyModeHint = document.querySelector("#difficultyModeHint");
 const confirmModal = document.querySelector("#confirmModal");
 const confirmModalTitle = document.querySelector("#confirmModalTitle");
 const confirmModalText = document.querySelector("#confirmModalText");
@@ -334,328 +176,10 @@ function shuffle(items) {
   return copy;
 }
 
-function choosePilotErrorVariant(entry) {
-  const typoOptions = entry?.errorSearch?.typoOptions || {};
-  const candidates = Object.entries(typoOptions)
-    .map(([correctWord, wrongWords]) => ({
-      correctWord,
-      wrongWords: Array.isArray(wrongWords) ? wrongWords.filter(Boolean) : []
-    }))
-    .filter((item) => item.correctWord && item.wrongWords.length);
-
-  if (!candidates.length) {
-    return null;
-  }
-
-  const selectedCandidate = candidates[randomInt(candidates.length)];
-  const wrongWord = selectedCandidate.wrongWords[randomInt(selectedCandidate.wrongWords.length)];
-  const tokens = tokenize(entry.sentence);
-  const updatedTokens = [...tokens];
-  const replacementIndex = updatedTokens.findIndex((token) => normalizeWord(token) === normalizeWord(selectedCandidate.correctWord));
-
-  if (replacementIndex === -1) {
-    return null;
-  }
-
-  updatedTokens[replacementIndex] = wrongWord;
-
-  return {
-    sentence: formatSentenceFromTokens(updatedTokens),
-    wrongWord,
-    correctWord: selectedCandidate.correctWord
-  };
-}
-
-const vocabularyByBasicForm = new Map(
-  vocabulary.map((item) => [normalizeWord(item.basicForm), item])
-);
-
-const GAP_FILL_CATEGORY_PRIORITY = {
-  verb: 0,
-  noun: 1,
-  adjective: 2,
-  grammar: 3
-};
-
-const GRAMMAR_SURFACE_FORMS = {
-  hätte: ["hätte", "hätten"],
-  wären: ["wäre", "wären"]
-};
-
-function stripArticle(text) {
-  return String(text).replace(/^(der|die|das)\s+/i, "").trim();
-}
-
-function escapeRegExp(text) {
-  return String(text).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-function buildVerbPresentCandidate(basicForm) {
-  const infinitive = basicForm.replace(/^sich\s+/, "").trim();
-
-  if (!infinitive.endsWith("en") || infinitive.length < 4) {
-    return "";
-  }
-
-  const stem = infinitive.slice(0, -2);
-  return `${stem}t`;
-}
-
-function cleanVerbForm(text) {
-  return String(text)
-    .replace(/^(hat|ist)\s+/i, "")
-    .replace(/\bsich\b/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function buildAdjectiveSurfaceForms(basicForm) {
-  const stem = basicForm.trim();
-  const endings = ["", "e", "en", "em", "er", "es"];
-  return endings.map((ending) => `${stem}${ending}`);
-}
-
-function buildVocabularySurfaceForms(item) {
-  if (!item) return [];
-
-  if (item.category === "grammar") {
-    return GRAMMAR_SURFACE_FORMS[item.basicForm] || [item.basicForm];
-  }
-
-  if (item.category === "noun") {
-    const forms = [stripArticle(item.basicForm)];
-    if (item.forms && !/^(kein|nur)\s+Plural$/i.test(item.forms)) {
-      forms.push(stripArticle(item.forms));
-    }
-    return forms;
-  }
-
-  if (item.category === "adjective") {
-    return buildAdjectiveSurfaceForms(item.basicForm);
-  }
-
-  if (item.category === "verb") {
-    const forms = [item.basicForm.replace(/^sich\s+/, "").trim()];
-    const presentCandidate = buildVerbPresentCandidate(item.basicForm);
-    if (presentCandidate) {
-      forms.push(presentCandidate);
-    }
-
-    const rawForms = String(item.forms || "")
-      .split(",")
-      .map((value) => value.trim())
-      .filter(Boolean);
-
-    rawForms.forEach((value) => {
-      const cleaned = cleanVerbForm(value);
-      if (cleaned) {
-        forms.push(cleaned);
-      }
-    });
-
-    return forms;
-  }
-
-  return [item.basicForm];
-}
-
-function findSurfaceMatch(sentence, candidates) {
-  const uniqueCandidates = [...new Set((candidates || []).filter(Boolean))]
-    .sort((left, right) => right.length - left.length);
-
-  for (const candidate of uniqueCandidates) {
-    const regex = new RegExp(`(^|[^\\p{L}])(${escapeRegExp(candidate)})(?=$|[^\\p{L}])`, "iu");
-    const match = sentence.match(regex);
-    if (match) {
-      return match[2];
-    }
-  }
-
-  return "";
-}
-
-function resolveVocabularyLink(link) {
-  return vocabularyByBasicForm.get(normalizeWord(link)) || null;
-}
-
-function buildGapFillCandidate(entry) {
-  const linkedItems = (entry.vocabularyLinks || [])
-    .map(resolveVocabularyLink)
-    .filter(Boolean);
-
-  const candidates = linkedItems
-    .map((item) => {
-      const matchedSurface = findSurfaceMatch(entry.sentence, buildVocabularySurfaceForms(item));
-      if (!matchedSurface) return null;
-
-      return {
-        item,
-        answer: matchedSurface,
-        hint: item.hintDe,
-        categoryPriority: GAP_FILL_CATEGORY_PRIORITY[item.category] ?? 99
-      };
-    })
-    .filter(Boolean)
-    .sort((left, right) => (
-      left.categoryPriority - right.categoryPriority
-      || right.answer.length - left.answer.length
-    ));
-
-  return candidates[0] || null;
-}
-
-function replaceSurfaceWithGap(sentence, answer) {
-  const regex = new RegExp(`(^|[^\\p{L}])(${escapeRegExp(answer)})(?=$|[^\\p{L}])`, "u");
-  return sentence.replace(regex, (_, prefix) => `${prefix}___`);
-}
-
-function buildSentenceMatchPair(sentence) {
-  const tokens = tokenize(sentence);
-  if (tokens.length < 4) return null;
-
-  const commaIndex = tokens.indexOf(",");
-  if (commaIndex > 0 && commaIndex < tokens.length - 2) {
-    return {
-      start: formatSentenceFromTokens(tokens.slice(0, commaIndex + 1)),
-      end: formatSentenceFromTokens(tokens.slice(commaIndex + 1))
-    };
-  }
-
-  const wordIndexes = tokens
-    .map((token, index) => ({ token, index }))
-    .filter(({ token }) => /\p{L}/u.test(token));
-
-  if (wordIndexes.length < 4) return null;
-
-  const splitWordIndex = Math.ceil(wordIndexes.length / 2) - 1;
-  const splitTokenIndex = wordIndexes[splitWordIndex]?.index + 1;
-
-  if (!splitTokenIndex || splitTokenIndex >= tokens.length) return null;
-
-  return {
-    start: formatSentenceFromTokens(tokens.slice(0, splitTokenIndex)),
-    end: formatSentenceFromTokens(tokens.slice(splitTokenIndex))
-  };
-}
-
-function buildSentenceBankTasks(entries) {
-  const perSentenceTasks = entries.flatMap((entry) => {
-    const uniqueCorrectAnswers = getUniqueSentenceAnswers([
-      entry.sentence,
-      ...(entry.alternativeCorrectAnswers || [])
-    ]);
-    const generatedErrorVariant = choosePilotErrorVariant(entry);
-    const generatedGapFill = buildGapFillCandidate(entry);
-
-    const tasksFromSentence = [
-      {
-        id: `pilot_sb_${entry.id}`,
-        type: "sentenceBuilder",
-        level: entry.level,
-        grammarFocus: entry.grammarFocus,
-        prompt: "Bringe die Wörter in die richtige Reihenfolge.",
-        correctAnswers: uniqueCorrectAnswers.length ? uniqueCorrectAnswers : [entry.sentence],
-        translations: entry.translations,
-        sentenceGrammarNotes: entry.sentenceGrammarNotes,
-        sourceSentenceId: entry.id
-      },
-      {
-        id: `pilot_mc_${entry.id}`,
-        type: "multipleChoice",
-        level: entry.level,
-        grammarFocus: entry.grammarFocus,
-        prompt: "Wähle den richtigen Satz.",
-        options: shuffle([entry.sentence, ...(entry.multipleChoice?.wrongOptions || [])]),
-        correctAnswers: [entry.sentence],
-        translations: entry.translations,
-        sentenceGrammarNotes: entry.sentenceGrammarNotes,
-        sourceSentenceId: entry.id
-      }
-    ];
-
-    if (generatedGapFill?.answer) {
-      tasksFromSentence.push({
-        id: `pilot_gf_${entry.id}`,
-        type: "gapFill",
-        level: entry.level,
-        grammarFocus: entry.grammarFocus,
-        prompt: "Schreibe das fehlende Wort.",
-        sentence: replaceSurfaceWithGap(entry.sentence, generatedGapFill.answer),
-        displaySentence: replaceSurfaceWithGap(entry.sentence, generatedGapFill.answer),
-        correctAnswers: [generatedGapFill.answer],
-        hint: generatedGapFill.hint,
-        translations: entry.translations,
-        sentenceGrammarNotes: entry.sentenceGrammarNotes,
-        sourceSentenceId: entry.id
-      });
-    }
-
-    tasksFromSentence.push({
-        id: `pilot_es_${entry.id}`,
-        type: "errorSearch",
-        level: entry.level,
-        grammarFocus: entry.grammarFocus,
-        prompt: "Klicke auf den Fehler oder wähle: Der Satz ist korrekt.",
-        sentence: generatedErrorVariant?.sentence || entry.sentence,
-        wrongWord: generatedErrorVariant?.wrongWord || null,
-        correctForm: generatedErrorVariant?.correctWord || null,
-        correctSentence: entry.sentence,
-        noMistake: !generatedErrorVariant,
-        translations: entry.translations,
-        sentenceGrammarNotes: entry.sentenceGrammarNotes,
-        sourceSentenceId: entry.id
-      }
-    );
-
-    return tasksFromSentence;
-  });
-
-  return perSentenceTasks;
-}
-
-function buildFormTrainingPool() {
-  return legacyFormTasks.flatMap((task) => {
-    if (getFormTrainingKind(task) !== "noun") return [task];
-
-    const base = {
-      ...task,
-      forms: { ...(task.forms || {}) }
-    };
-    const variants = [
-      {
-        ...base,
-        id: `${task.id}_article`,
-        missingForm: "article",
-        correctAnswers: [task.forms.article]
-      }
-    ];
-
-    if (task.forms?.plural) {
-      variants.push({
-        ...base,
-        id: `${task.id}_plural`,
-        missingForm: "plural",
-        correctAnswers: [task.forms.plural]
-      });
-    }
-
-    return variants;
-  });
-}
-
 function rebuildTaskBank() {
-  allTasks = [
-    ...buildSentenceBankTasks(sentenceBankV2),
-    ...buildFormTrainingPool()
-  ];
-}
-
-function getDifficultyModeHint() {
-  const available = getMaxAvailableTaskCount(selectedDifficultyMode);
-  if (selectedDifficultyMode === "mixed") {
-    return `${available} Aufgaben sind verfügbar für dieses Niveau. Gemischt = möglichst gleich verteilt.`;
-  }
-  return `${available} Aufgaben sind verfügbar für dieses Niveau. Nur ${getLevelLabel(selectedDifficultyMode)} wird gewählt.`;
+  // Runtime task generation is owned by task-factory.js. script.js keeps only
+  // the currently selected task bank used by round selection and rendering.
+  allTasks = taskFactory.buildAllTasks(sentenceBankV2, legacyFormTasks);
 }
 
 function getLevelTaskCounts() {
@@ -671,7 +195,7 @@ function getMaxMixedTaskCount() {
   let maxPossible = 0;
 
   for (let totalTasks = 1; totalTasks <= total; totalTasks += 1) {
-    const distribution = distributeEvenly(totalTasks, LEVELS);
+    const distribution = ROUND_POLICY.distributeEvenly(totalTasks, LEVELS);
     const possible = LEVELS.every((level) => distribution[level] <= levelCounts[level]);
     if (possible) {
       maxPossible = totalTasks;
@@ -803,8 +327,8 @@ function renderLevelBadge(level) {
 function updateNavState(activeView) {
   theoryNavButton.classList.toggle("is-active", activeView === "theory");
   testNavButton.classList.toggle("is-active", activeView === "test");
-  theoryNavButton.textContent = activeView === "theory" ? "Theorie" : "Zurück zur Theorie";
-  testNavButton.textContent = activeView === "theory" ? "Test starten" : "Im Test";
+  theoryNavButton.textContent = activeView === "theory" ? TEXT.theory : TEXT.backToTheory;
+  testNavButton.textContent = activeView === "theory" ? TEXT.testStart : TEXT.inTest;
 }
 
 function getTaskById(taskId) {
@@ -1132,9 +656,12 @@ function renderSentenceTheory() {
 }
 
 function renderTheoryView() {
+  // Theory panels should render directly from the lesson data files, not from the
+  // generated task bank. Otherwise grouped/generated task shapes can leak into the
+  // study view as awkward combined cards.
   topicTitle.textContent = settings.topicTitle;
-  roundLabel.textContent = "Theorie";
-  scoreLabel.textContent = testFinished ? "Ergebnis da" : "Bereit";
+  roundLabel.textContent = TEXT.theory;
+  scoreLabel.textContent = testFinished ? TEXT.resultReady : TEXT.ready;
   renderTestSettings();
   renderGrammarTheory();
   renderVocabularyTheory();
@@ -1145,7 +672,7 @@ function hasOngoingProgress() {
   return testActive && !testFinished && (currentIndex > 0 || results.length > 0 || locked);
 }
 
-function showConfirmModal({ title, text, acceptLabel = "Weiter", cancelLabel = "Abbrechen" }) {
+function showConfirmModal({ title, text, acceptLabel = TEXT.continue, cancelLabel = TEXT.cancel }) {
   confirmModalTitle.textContent = title;
   confirmModalText.textContent = text;
   confirmModalAccept.textContent = acceptLabel;
@@ -1173,10 +700,10 @@ function closeConfirmModal(accepted) {
 async function goToTheory(force = false) {
   if (!force && hasOngoingProgress()) {
     const confirmed = await showConfirmModal({
-      title: "Fortschritt verlieren?",
-      text: "Wenn du jetzt zur Theorie gehst, verlierst du deinen aktuellen Testfortschritt.",
-      acceptLabel: "Zur Theorie",
-      cancelLabel: "Im Test bleiben"
+      title: TEXT.loseProgressTitle,
+      text: TEXT.loseProgressText,
+      acceptLabel: TEXT.toTheory,
+      cancelLabel: TEXT.stayInTest
     });
     if (!confirmed) return;
     resetTestState();
@@ -1196,216 +723,474 @@ function goToTestView() {
   updateNavState("test");
 }
 
-function selectRoundTasks() {
-  return selectedDifficultyMode === "mixed"
-    ? selectMixedRoundTasks(selectedQuestionCount)
-    : selectSingleLevelRoundTasks(selectedDifficultyMode, selectedQuestionCount);
-}
+const ROUND_POLICY = {
+  selectRoundTasks() {
+    return selectedDifficultyMode === "mixed"
+      ? this.selectMixedRoundTasks(selectedQuestionCount)
+      : this.selectSingleLevelRoundTasks(selectedDifficultyMode, selectedQuestionCount);
+  },
 
-function distributeEvenly(total, buckets) {
-  const counts = Object.fromEntries(buckets.map((bucket) => [bucket, 0]));
-  const shuffledBuckets = shuffle(buckets);
-  const base = Math.floor(total / buckets.length);
-  let remainder = total % buckets.length;
+  distributeEvenly(total, buckets) {
+    const counts = Object.fromEntries(buckets.map((bucket) => [bucket, 0]));
+    const shuffledBuckets = shuffle(buckets);
+    const base = Math.floor(total / buckets.length);
+    let remainder = total % buckets.length;
 
-  buckets.forEach((bucket) => {
-    counts[bucket] = base;
-  });
+    buckets.forEach((bucket) => {
+      counts[bucket] = base;
+    });
 
-  shuffledBuckets.forEach((bucket) => {
-    if (remainder <= 0) return;
-    counts[bucket] += 1;
-    remainder -= 1;
-  });
+    shuffledBuckets.forEach((bucket) => {
+      if (remainder <= 0) return;
+      counts[bucket] += 1;
+      remainder -= 1;
+    });
 
-  return counts;
-}
+    return counts;
+  },
 
-function getFormVariantKey(task) {
-  if (task?.type !== "formTraining") return "";
-  const kind = getFormTrainingKind(task);
-  if (kind === "noun") return `noun_${task.missingForm || "other"}`;
-  if (kind === "verb" && isParticiplePrompt(task)) return "verb_participle";
-  return `${kind}_${task.missingForm || "other"}`;
-}
+  getFormVariantKey(task) {
+    if (task?.type !== "formTraining") return "";
+    const kind = getFormTrainingKind(task);
+    if (kind === "noun") return `noun_${task.missingForm || "other"}`;
+    if (kind === "verb" && isParticiplePrompt(task)) return "verb_participle";
+    return `${kind}_${task.missingForm || "other"}`;
+  },
 
-function getFormRecencyKey(task) {
-  const kind = getFormTrainingKind(task);
-  if (kind === "noun") return `noun:${task.forms?.singular || task.id}`;
-  if (kind === "adjective") return `adjective:${task.forms?.positive || task.id}`;
-  return `verb:${task.forms?.infinitive || task.id}`;
-}
+  getFormRecencyKey(task) {
+    const kind = getFormTrainingKind(task);
+    if (kind === "noun") return `noun:${task.forms?.singular || task.id}`;
+    if (kind === "adjective") return `adjective:${task.forms?.positive || task.id}`;
+    return `verb:${task.forms?.infinitive || task.id}`;
+  },
 
-function rememberRecentFormTask(task) {
-  const key = getFormRecencyKey(task);
-  recentFormKeys = [key, ...recentFormKeys.filter((item) => item !== key)].slice(0, RECENT_FORM_HISTORY_LIMIT);
-}
+  rememberRecentFormTask(task) {
+    const key = this.getFormRecencyKey(task);
+    recentFormKeys = [key, ...recentFormKeys.filter((item) => item !== key)].slice(0, RECENT_FORM_HISTORY_LIMIT);
+  },
 
-function rememberRecentSentenceMatch(level, entryIds) {
-  const current = recentSentenceMatchIdsByLevel[level] || [];
-  recentSentenceMatchIdsByLevel[level] = [...entryIds, ...current.filter((id) => !entryIds.includes(id))]
-    .slice(0, RECENT_SENTENCE_MATCH_HISTORY_LIMIT);
-}
+  rememberRecentSentenceMatch(level, entryIds) {
+    const current = recentSentenceMatchIdsByLevel[level] || [];
+    recentSentenceMatchIdsByLevel[level] = [...entryIds, ...current.filter((id) => !entryIds.includes(id))]
+      .slice(0, RECENT_SENTENCE_MATCH_HISTORY_LIMIT);
+  },
 
-function pickTaskFromPool(pool, usedIds, usedFormKinds, usedFormVariants) {
-  const available = pool.filter((task) => !usedIds.has(task.id));
-  if (!available.length) return null;
+  pickTaskFromPool(pool, usedIds, usedFormKinds, usedFormVariants) {
+    const available = pool.filter((task) => !usedIds.has(task.id));
+    if (!available.length) return null;
 
-  if (available[0]?.type === "formTraining") {
-    const freshByRecency = available.filter((task) => !recentFormKeys.includes(getFormRecencyKey(task)));
-    let preferred = freshByRecency.filter((task) => !usedFormKinds.has(getFormTrainingKind(task)));
-    if (!preferred.length) {
-      preferred = available.filter((task) => !usedFormKinds.has(getFormTrainingKind(task)));
+    if (available[0]?.type === "formTraining") {
+      const freshByRecency = available.filter((task) => !recentFormKeys.includes(this.getFormRecencyKey(task)));
+      let preferred = freshByRecency.filter((task) => !usedFormKinds.has(getFormTrainingKind(task)));
+      if (!preferred.length) {
+        preferred = available.filter((task) => !usedFormKinds.has(getFormTrainingKind(task)));
+      }
+      if (!preferred.length) {
+        preferred = freshByRecency.filter((task) => !usedFormVariants.has(this.getFormVariantKey(task)));
+      }
+      if (!preferred.length) {
+        preferred = available.filter((task) => !usedFormVariants.has(this.getFormVariantKey(task)));
+      }
+      if (!preferred.length) {
+        preferred = freshByRecency;
+      }
+      if (!preferred.length) {
+        preferred = available;
+      }
+      const choice = shuffle(preferred)[0];
+      usedFormKinds.add(getFormTrainingKind(choice));
+      usedFormVariants.add(this.getFormVariantKey(choice));
+      usedIds.add(choice.id);
+      this.rememberRecentFormTask(choice);
+      return choice;
     }
-    if (!preferred.length) {
-      preferred = freshByRecency.filter((task) => !usedFormVariants.has(getFormVariantKey(task)));
-    }
-    if (!preferred.length) {
-      preferred = available.filter((task) => !usedFormVariants.has(getFormVariantKey(task)));
-    }
-    if (!preferred.length) {
-      preferred = freshByRecency;
-    }
-    if (!preferred.length) {
-      preferred = available;
-    }
-    const choice = shuffle(preferred)[0];
-    usedFormKinds.add(getFormTrainingKind(choice));
-    usedFormVariants.add(getFormVariantKey(choice));
+
+    const choice = shuffle(available)[0];
     usedIds.add(choice.id);
-    rememberRecentFormTask(choice);
     return choice;
+  },
+
+  buildSentenceMatchTask(level) {
+    const matchingEntries = sentenceBankV2
+      .filter((entry) => entry.level === level)
+      .map((entry) => ({
+        entry,
+        pair: taskFactory.buildSentenceMatchPair(entry.sentence)
+      }))
+      .filter((item) => item.pair?.start && item.pair?.end);
+
+    if (matchingEntries.length < SENTENCE_MATCH_PAIRS_PER_BOARD) return null;
+
+    const recentIds = new Set(recentSentenceMatchIdsByLevel[level] || []);
+    let freshEntries = shuffle(matchingEntries.filter(({ entry }) => !recentIds.has(entry.id)));
+    const selectedEntries = [];
+
+    while (selectedEntries.length < SENTENCE_MATCH_PAIRS_PER_BOARD && freshEntries.length) {
+      selectedEntries.push(freshEntries.pop());
+    }
+
+    if (selectedEntries.length < SENTENCE_MATCH_PAIRS_PER_BOARD) {
+      const fallback = shuffle(
+        matchingEntries.filter(({ entry }) => !selectedEntries.some((selected) => selected.entry.id === entry.id))
+      );
+      while (selectedEntries.length < SENTENCE_MATCH_PAIRS_PER_BOARD && fallback.length) {
+        selectedEntries.push(fallback.pop());
+      }
+    }
+
+    if (selectedEntries.length < SENTENCE_MATCH_PAIRS_PER_BOARD) return null;
+
+    this.rememberRecentSentenceMatch(level, selectedEntries.map(({ entry }) => entry.id));
+
+    return {
+      id: `sm_dynamic_${level.toLowerCase()}_${selectedEntries.map(({ entry }) => entry.id).join("_")}`,
+      type: "sentenceMatch",
+      level,
+      grammarFocus: null,
+      prompt: "Verbinde jeden Satzanfang mit dem passenden Satzende.",
+      pairs: selectedEntries.map(({ pair }) => ({
+        start: pair.start,
+        end: pair.end
+      })),
+      translations: {
+        en: selectedEntries.map(({ entry }, index) => `${index + 1}. ${entry.translations.en}`).join("\n"),
+        uk: selectedEntries.map(({ entry }, index) => `${index + 1}. ${entry.translations.uk}`).join("\n"),
+        ar: selectedEntries.map(({ entry }, index) => `${index + 1}. ${entry.translations.ar}`).join("\n")
+      },
+      sentenceGrammarNotes: selectedEntries.flatMap(({ entry }) => entry.sentenceGrammarNotes || []),
+      sourceSentenceId: selectedEntries.map(({ entry }) => entry.id).join(",")
+    };
+  },
+
+  pickTasksForLevel(level, count, usedIds) {
+    const selected = [];
+    const byType = Object.fromEntries(TASK_TYPES.map((type) => [type, allTasks.filter((task) => task.level === level && task.type === type)]));
+    const typeOrder = shuffle(TASK_TYPES);
+    const usedFormKinds = new Set();
+    const usedFormVariants = new Set();
+    let guard = 0;
+
+    if (count >= SENTENCE_MATCH_MIN_ROUND_COUNT) {
+      const sentenceMatchTask = this.buildSentenceMatchTask(level);
+      if (sentenceMatchTask) {
+        selected.push(sentenceMatchTask);
+      }
+    }
+
+    while (selected.length < count && guard < 200) {
+      const type = typeOrder[guard % typeOrder.length];
+      const task = this.pickTaskFromPool(byType[type], usedIds, usedFormKinds, usedFormVariants);
+      if (task) {
+        selected.push(task);
+      }
+      guard += 1;
+
+      const remainingAvailable = typeOrder.some((taskType) => byType[taskType].some((taskItem) => !usedIds.has(taskItem.id)));
+      if (!remainingAvailable) break;
+    }
+
+    return selected;
+  },
+
+  selectMixedRoundTasks(total) {
+    const usedIds = new Set();
+    const levelCounts = this.distributeEvenly(total, LEVELS);
+    const selected = [];
+
+    LEVELS.forEach((level) => {
+      selected.push(...this.pickTasksForLevel(level, levelCounts[level], usedIds));
+    });
+
+    return shuffle(selected).slice(0, total);
+  },
+
+  selectSingleLevelRoundTasks(level, total) {
+    const usedIds = new Set();
+    return shuffle(this.pickTasksForLevel(level, total, usedIds)).slice(0, total);
   }
+};
 
-  const choice = shuffle(available)[0];
-  usedIds.add(choice.id);
-  return choice;
-}
-
-function buildSentenceMatchTask(level) {
-  const matchingEntries = sentenceBankV2
-    .filter((entry) => entry.level === level)
-    .map((entry) => ({
-      entry,
-      pair: buildSentenceMatchPair(entry.sentence)
-    }))
-    .filter((item) => item.pair?.start && item.pair?.end);
-
-  if (matchingEntries.length < 4) return null;
-
-  const recentIds = new Set(recentSentenceMatchIdsByLevel[level] || []);
-  let candidateEntries = matchingEntries.filter(({ entry }) => !recentIds.has(entry.id));
-  if (candidateEntries.length < 4) {
-    candidateEntries = matchingEntries;
-  }
-
-  const selectedEntries = shuffle(candidateEntries).slice(0, 4);
-  rememberRecentSentenceMatch(level, selectedEntries.map(({ entry }) => entry.id));
-
-  return {
-    id: `sm_dynamic_${level.toLowerCase()}_${selectedEntries.map(({ entry }) => entry.id).join("_")}`,
-    type: "sentenceMatch",
-    level,
-    grammarFocus: null,
-    prompt: "Verbinde jeden Satzanfang mit dem passenden Satzende.",
-    pairs: selectedEntries.map(({ pair }) => ({
-      start: pair.start,
-      end: pair.end
-    })),
-    translations: {
-      en: selectedEntries.map(({ entry }, index) => `${index + 1}. ${entry.translations.en}`).join("\n"),
-      uk: selectedEntries.map(({ entry }, index) => `${index + 1}. ${entry.translations.uk}`).join("\n"),
-      ar: selectedEntries.map(({ entry }, index) => `${index + 1}. ${entry.translations.ar}`).join("\n")
+const TASK_CONTROLLERS = {
+  // Each task type owns its own render/validate/lock/clear behavior here.
+  // Future agents should prefer extending this table over adding more branching
+  // back into the generic task pipeline below.
+  sentenceBuilder: {
+    selectedAnswer() {
+      return formatSentenceFromTokens(Array.from(answerArea.querySelectorAll(".word-button")).map((button) => button.textContent));
     },
-    sentenceGrammarNotes: selectedEntries.flatMap(({ entry }) => entry.sentenceGrammarNotes || []),
-    sourceSentenceId: selectedEntries.map(({ entry }) => entry.id).join(",")
-  };
-}
-
-function pickTasksForLevel(level, count, usedIds) {
-  const selected = [];
-  const byType = Object.fromEntries(TASK_TYPES.map((type) => [type, allTasks.filter((task) => task.level === level && task.type === type)]));
-  const typeOrder = shuffle(TASK_TYPES);
-  const usedFormKinds = new Set();
-  const usedFormVariants = new Set();
-  let guard = 0;
-
-  if (count >= 4) {
-    const sentenceMatchTask = buildSentenceMatchTask(level);
-    if (sentenceMatchTask) {
-      selected.push(sentenceMatchTask);
+    expectedAnswer(task) {
+      return task.correctAnswers[0];
+    },
+    prompt(task) {
+      return task.sentence || task.correctAnswers[0];
+    },
+    render(task) {
+      answerArea.classList.add("sentence-builder");
+      wordBank.classList.remove("hidden");
+      shuffleSentenceParts(getSentenceBuilderParts(task), task.correctAnswers).forEach((part) => {
+        wordBank.appendChild(makeWordButton(part));
+      });
+    },
+    validateBeforeSubmit() {
+      if (answerArea.children.length) return true;
+      setFeedback("bad", "Wähle zuerst die Blöcke in der richtigen Reihenfolge aus.");
+      return false;
+    },
+    isCorrect(task) {
+      const candidate = this.selectedAnswer(task);
+      return task.correctAnswers.some((answer) => normalizeText(answer) === normalizeText(candidate));
+    },
+    lockUi() {
+      answerArea.querySelectorAll(".word-button").forEach((button) => {
+        button.draggable = false;
+        button.disabled = true;
+      });
+      wordBank.querySelectorAll(".word-button").forEach((button) => {
+        button.draggable = false;
+        button.disabled = true;
+      });
+    },
+    clear() {
+      Array.from(answerArea.children).forEach((button) => wordBank.appendChild(button));
+      hideFeedback();
     }
-  }
-
-  while (selected.length < count && guard < 200) {
-    const type = typeOrder[guard % typeOrder.length];
-    const task = pickTaskFromPool(byType[type], usedIds, usedFormKinds, usedFormVariants);
-    if (task) {
-      selected.push(task);
+  },
+  sentenceMatch: {
+    selectedAnswer(task) {
+      return getSentenceMatchSubmittedSummary(task);
+    },
+    expectedAnswer(task) {
+      return getSentenceMatchExpectedSummary(task);
+    },
+    prompt() {
+      return "Verbinde die passenden Satzhälften.";
+    },
+    render(task) {
+      answerArea.classList.add("sentence-match");
+      clearButton.classList.add("hidden");
+      renderSentenceMatch(task);
+    },
+    validateBeforeSubmit(task) {
+      if (Object.keys(sentenceMatchConnections).length >= getSentenceMatchPairs(task).length) return true;
+      setFeedback("bad", "Verbinde zuerst alle Satzanfänge mit einem Satzende.");
+      return false;
+    },
+    isCorrect(task) {
+      return getSentenceMatchCorrectCount(task) === getSentenceMatchPairs(task).length;
+    },
+    lockUi(task) {
+      const stage = answerArea.querySelector(".sentence-match-stage");
+      if (stage) {
+        updateSentenceMatchUi(stage, task);
+        stage.querySelectorAll(".match-button").forEach((button) => {
+          button.disabled = true;
+        });
+      }
+    },
+    clear(task) {
+      selectedMatchStart = null;
+      sentenceMatchConnections = {};
+      sentenceMatchConnectionColors = {};
+      const stage = answerArea.querySelector(".sentence-match-stage");
+      if (stage) updateSentenceMatchUi(stage, task);
+      hideFeedback();
     }
-    guard += 1;
+  },
 
-    const remainingAvailable = typeOrder.some((taskType) => byType[taskType].some((taskItem) => !usedIds.has(taskItem.id)));
-    if (!remainingAvailable) break;
+  multipleChoice: {
+    selectedAnswer() {
+      return selectedChoice || "";
+    },
+    expectedAnswer(task) {
+      return task.correctAnswers[0];
+    },
+    prompt(task) {
+      return task.correctAnswers[0];
+    },
+    render(task) {
+      answerArea.classList.add("choice-list");
+      clearButton.classList.add("hidden");
+      shuffle(task.options).forEach((option) => answerArea.appendChild(makeChoiceButton(option)));
+    },
+    validateBeforeSubmit() {
+      if (selectedChoice) return true;
+      setFeedback("bad", "Wähle zuerst eine Antwort aus.");
+      return false;
+    },
+    isCorrect(task) {
+      return task.correctAnswers.some((answer) => normalizeText(answer) === normalizeText(selectedChoice));
+    },
+    lockUi(task, isCorrect) {
+      answerArea.querySelectorAll(".choice-button").forEach((button) => {
+        const rawOption = button.dataset.raw || button.textContent;
+        const isRightChoice = task.correctAnswers.some((answer) => normalizeText(answer) === normalizeText(rawOption));
+        const isSelectedWrong = rawOption === selectedChoice && !isCorrect;
+        button.classList.toggle("correct", isRightChoice);
+        button.classList.toggle("incorrect", isSelectedWrong);
+        button.disabled = true;
+      });
+    },
+    clear() {}
+  },
+  gapFill: {
+    selectedAnswer() {
+      return gapInput ? gapInput.value : "";
+    },
+    expectedAnswer(task) {
+      return task.correctAnswers[0];
+    },
+    prompt(task) {
+      return task.displaySentence || task.sentence;
+    },
+    render(task) {
+      answerArea.classList.add("gap-fill");
+      charToolbar.classList.remove("hidden");
+      renderGapFill(task);
+    },
+    validateBeforeSubmit() {
+      if (gapInput && normalizeWord(gapInput.value)) return true;
+      setFeedback("bad", "Schreibe zuerst das fehlende Wort in die Lücke.");
+      return false;
+    },
+    isCorrect(task) {
+      return task.correctAnswers.some((answer) => normalizeWord(answer) === normalizeWord(gapInput.value));
+    },
+    lockUi() {
+      if (gapInput) gapInput.disabled = true;
+    },
+    clear() {
+      if (!gapInput) return;
+      gapInput.value = "";
+      gapInput.focus();
+      hideFeedback();
+    }
+  },
+  formTraining: {
+    selectedAnswer(task) {
+      if (isArticlePrompt(task)) return selectedFormChoice || "";
+      if (!formInput) return "";
+      if (!isParticiplePrompt(task)) return formInput.value;
+      return `${selectedFormChoice || ""} ${formInput.value}`.trim();
+    },
+    expectedAnswer(task) {
+      return expectedFormAnswer(task);
+    },
+    prompt(task) {
+      return getFormSummary(task);
+    },
+    render(task) {
+      answerArea.classList.add("form-training");
+      charToolbar.classList.remove("hidden");
+      renderFormTraining(task);
+    },
+    validateBeforeSubmit(task) {
+      if ((isParticiplePrompt(task) || isArticlePrompt(task)) && !selectedFormChoice) {
+        setFeedback("bad", isArticlePrompt(task)
+          ? "Wähle zuerst den richtigen Artikel aus."
+          : "Wähle zuerst hat oder ist aus.");
+        return false;
+      }
+
+      if (isArticlePrompt(task)) return true;
+
+      if (formInput && normalizeWord(formInput.value)) return true;
+
+      setFeedback("bad", isParticiplePrompt(task)
+        ? "Schreibe zuerst das Partizip II."
+        : "Schreibe zuerst die fehlende Form.");
+      return false;
+    },
+    isCorrect(task) {
+      const candidate = this.selectedAnswer(task);
+      return normalizeWord(expectedFormAnswer(task)) === normalizeWord(candidate);
+    },
+    lockUi(task, isCorrect) {
+      if (formInput) {
+        formInput.disabled = true;
+      }
+      formChoiceButtons.forEach((button) => {
+        const rawChoice = button.dataset.choice;
+        const expectedChoice = isArticlePrompt(task) ? task.forms.article : getPerfectFormParts(task).auxiliary;
+        const isExpected = rawChoice === expectedChoice;
+        const isSelectedWrong = rawChoice === selectedFormChoice && !isCorrect;
+        button.classList.toggle("correct", (isParticiplePrompt(task) || isArticlePrompt(task)) && isExpected);
+        button.classList.toggle("incorrect", (isParticiplePrompt(task) || isArticlePrompt(task)) && isSelectedWrong);
+        button.disabled = true;
+      });
+    },
+    clear() {
+      if (formInput) {
+        formInput.value = "";
+        formInput.focus();
+      }
+      selectedFormChoice = null;
+      formChoiceButtons.forEach((button) => button.classList.remove("is-active"));
+      hideFeedback();
+    }
+  },
+  errorSearch: {
+    selectedAnswer() {
+      return selectedErrorWord === "__correct__" ? TEXT.errorSearchCorrect : selectedErrorWord || "";
+    },
+    expectedAnswer(task) {
+      return task.correctForm || TEXT.errorSearchCorrect;
+    },
+    prompt(task) {
+      return task.sentence || task.correctAnswers[0];
+    },
+    render(task) {
+      answerArea.classList.add("error-search");
+      clearButton.classList.add("hidden");
+      renderErrorSearch(task);
+    },
+    validateBeforeSubmit() {
+      if (selectedErrorWord) return true;
+      setFeedback("bad", "Klicke zuerst auf den Fehler oder auf „Der Satz ist korrekt“.");
+      return false;
+    },
+    isCorrect(task) {
+      if (task.noMistake) return selectedErrorWord === "__correct__";
+      return selectedErrorWord === task.wrongWord;
+    },
+    lockUi(task, isCorrect) {
+      answerArea.querySelectorAll(".error-word").forEach((button) => {
+        const rawWord = button.dataset.raw || button.textContent;
+        const isCorrectWord = !task.noMistake && normalizeWord(rawWord) === normalizeWord(task.wrongWord);
+        const isSelectedWrong = normalizeWord(selectedErrorWord) === normalizeWord(rawWord) && !isCorrect;
+        button.classList.toggle("correct", isCorrectWord);
+        button.classList.toggle("incorrect", isSelectedWrong);
+        button.disabled = true;
+      });
+
+      const correctSentenceButton = answerArea.querySelector(".correct-sentence-button");
+      if (correctSentenceButton) {
+        correctSentenceButton.classList.toggle("correct", task.noMistake);
+        correctSentenceButton.classList.toggle("incorrect", selectedErrorWord === "__correct__" && !isCorrect);
+        correctSentenceButton.disabled = true;
+      }
+    },
+    clear() {}
   }
-
-  return selected;
-}
-
-function selectMixedRoundTasks(total) {
-  const usedIds = new Set();
-  const levelCounts = distributeEvenly(total, LEVELS);
-  const selected = [];
-
-  LEVELS.forEach((level) => {
-    selected.push(...pickTasksForLevel(level, levelCounts[level], usedIds));
-  });
-
-  return shuffle(selected).slice(0, total);
-}
-
-function selectSingleLevelRoundTasks(level, total) {
-  const usedIds = new Set();
-  return shuffle(pickTasksForLevel(level, total, usedIds)).slice(0, total);
-}
+};
 
 function selectedAnswerForTask(taskMode, task = tasks[currentIndex]) {
-  if (taskMode === "sentenceBuilder") {
-    return formatSentenceFromTokens(Array.from(answerArea.querySelectorAll(".word-button")).map((button) => button.textContent));
-  }
-
-  if (taskMode === "sentenceMatch") return getSentenceMatchSubmittedSummary(task);
-  if (taskMode === "multipleChoice") return selectedChoice || "";
-  if (taskMode === "gapFill" && gapInput) return gapInput.value;
-  if (taskMode === "formTraining") {
-    if (isArticlePrompt(task)) return selectedFormChoice || "";
-    if (!formInput) return "";
-    if (!isParticiplePrompt(task)) return formInput.value;
-    return `${selectedFormChoice || ""} ${formInput.value}`.trim();
-  }
-  if (taskMode === "errorSearch") return selectedErrorWord === "__correct__" ? "Der Satz ist korrekt." : selectedErrorWord || "";
+  const controller = TASK_CONTROLLERS[taskMode];
+  if (controller?.selectedAnswer) return controller.selectedAnswer(task);
 
   return "";
 }
 
 function expectedAnswerForTask(task) {
-  if (task.type === "errorSearch") return task.correctForm || "Der Satz ist korrekt.";
-  if (task.type === "sentenceMatch") return getSentenceMatchExpectedSummary(task);
-  if (task.type === "formTraining") return expectedFormAnswer(task);
+  const controller = TASK_CONTROLLERS[task.type];
+  if (controller?.expectedAnswer) return controller.expectedAnswer(task);
+
+  if (task.type === "errorSearch") return task.correctForm || TEXT.errorSearchCorrect;
   return task.correctAnswers[0];
 }
 
 function promptForTask(task) {
-  if (task.type === "sentenceMatch") return "Verbinde die passenden Satzhälften.";
-  if (task.type === "gapFill") return task.displaySentence || task.sentence;
-
-  if (task.type === "formTraining") {
-    return getFormSummary(task);
-  }
-
-  if (task.type === "multipleChoice") {
-    return task.correctAnswers[0];
-  }
+  const controller = TASK_CONTROLLERS[task.type];
+  if (controller?.prompt) return controller.prompt(task);
 
   return task.sentence || task.correctAnswers[0];
 }
@@ -1918,7 +1703,7 @@ function renderErrorSearch(task) {
   const correctButton = document.createElement("button");
   correctButton.type = "button";
   correctButton.className = "choice-button correct-sentence-button";
-  correctButton.textContent = "Der Satz ist korrekt.";
+  correctButton.textContent = TEXT.errorSearchCorrect;
   correctButton.addEventListener("click", () => {
     if (locked) return;
     selectedErrorWord = "__correct__";
@@ -1941,8 +1726,8 @@ function hideFeedback() {
 
 function updateStats() {
   if (!testActive) {
-    roundLabel.textContent = "Theorie";
-    scoreLabel.textContent = "Bereit";
+    roundLabel.textContent = TEXT.theory;
+    scoreLabel.textContent = TEXT.ready;
     return;
   }
 
@@ -2239,32 +2024,10 @@ function renderTask() {
   charToolbar.classList.add("hidden");
   clearButton.classList.remove("hidden");
 
-  if (task.type === "sentenceBuilder") {
-    answerArea.classList.add("sentence-builder");
-    wordBank.classList.remove("hidden");
-    shuffleSentenceParts(getSentenceBuilderParts(task), task.correctAnswers).forEach((part) => {
-      wordBank.appendChild(makeWordButton(part));
-    });
-  } else if (task.type === "sentenceMatch") {
-    answerArea.classList.add("sentence-match");
-    clearButton.classList.add("hidden");
-    renderSentenceMatch(task);
-  } else if (task.type === "multipleChoice") {
-    answerArea.classList.add("choice-list");
-    clearButton.classList.add("hidden");
-    shuffle(task.options).forEach((option) => answerArea.appendChild(makeChoiceButton(option)));
-  } else if (task.type === "gapFill") {
-    answerArea.classList.add("gap-fill");
-    charToolbar.classList.remove("hidden");
-    renderGapFill(task);
-  } else if (task.type === "formTraining") {
-    answerArea.classList.add("form-training");
-    charToolbar.classList.remove("hidden");
-    renderFormTraining(task);
-  } else if (task.type === "errorSearch") {
-    answerArea.classList.add("error-search");
-    clearButton.classList.add("hidden");
-    renderErrorSearch(task);
+  const controller = TASK_CONTROLLERS[task.type];
+
+  if (controller?.render) {
+    controller.render(task);
   }
 
   checkButton.classList.remove("hidden");
@@ -2275,149 +2038,22 @@ function renderTask() {
 }
 
 function validateBeforeSubmit(task) {
-  if (task.type === "sentenceBuilder" && !answerArea.children.length) {
-    setFeedback("bad", "Wähle zuerst die Blöcke in der richtigen Reihenfolge aus.");
-    return false;
-  }
-
-  if (task.type === "multipleChoice" && !selectedChoice) {
-    setFeedback("bad", "Wähle zuerst eine Antwort aus.");
-    return false;
-  }
-
-  if (task.type === "sentenceMatch" && Object.keys(sentenceMatchConnections).length < getSentenceMatchPairs(task).length) {
-    setFeedback("bad", "Verbinde zuerst alle Satzanfänge mit einem Satzende.");
-    return false;
-  }
-
-  if (task.type === "gapFill" && !normalizeWord(gapInput.value)) {
-    setFeedback("bad", "Schreibe zuerst das fehlende Wort in die Lücke.");
-    return false;
-  }
-
-  if (task.type === "formTraining") {
-    if ((isParticiplePrompt(task) || isArticlePrompt(task)) && !selectedFormChoice) {
-      setFeedback("bad", isArticlePrompt(task)
-        ? "Wähle zuerst den richtigen Artikel aus."
-        : "Wähle zuerst hat oder ist aus.");
-      return false;
-    }
-
-    if (isArticlePrompt(task)) return true;
-
-    if (!normalizeWord(formInput.value)) {
-      setFeedback("bad", isParticiplePrompt(task)
-        ? "Schreibe zuerst das Partizip II."
-        : "Schreibe zuerst die fehlende Form.");
-      return false;
-    }
-  }
-
-  if (task.type === "errorSearch" && !selectedErrorWord) {
-    setFeedback("bad", "Klicke zuerst auf den Fehler oder auf „Der Satz ist korrekt“.");
-    return false;
-  }
+  const controller = TASK_CONTROLLERS[task.type];
+  if (controller?.validateBeforeSubmit) return controller.validateBeforeSubmit(task);
 
   return true;
 }
 
 function isTaskCorrect(task) {
-  if (task.type === "sentenceBuilder") {
-    const candidate = selectedAnswerForTask(task.type);
-    return task.correctAnswers.some((answer) => normalizeText(answer) === normalizeText(candidate));
-  }
-
-  if (task.type === "multipleChoice") {
-    return task.correctAnswers.some((answer) => normalizeText(answer) === normalizeText(selectedChoice));
-  }
-
-  if (task.type === "sentenceMatch") {
-    return getSentenceMatchCorrectCount(task) === getSentenceMatchPairs(task).length;
-  }
-
-  if (task.type === "gapFill") {
-    return task.correctAnswers.some((answer) => normalizeWord(answer) === normalizeWord(gapInput.value));
-  }
-
-  if (task.type === "formTraining") {
-    const candidate = selectedAnswerForTask(task.type, task);
-    return normalizeWord(expectedFormAnswer(task)) === normalizeWord(candidate);
-  }
-
-  if (task.type === "errorSearch") {
-    if (task.noMistake) return selectedErrorWord === "__correct__";
-    return selectedErrorWord === task.wrongWord;
-  }
+  const controller = TASK_CONTROLLERS[task.type];
+  if (controller?.isCorrect) return controller.isCorrect(task);
 
   return false;
 }
 
 function lockTaskUi(task, isCorrect) {
-  if (task.type === "multipleChoice") {
-    answerArea.querySelectorAll(".choice-button").forEach((button) => {
-      const rawOption = button.dataset.raw || button.textContent;
-      const isRightChoice = task.correctAnswers.some((answer) => normalizeText(answer) === normalizeText(rawOption));
-      const isSelectedWrong = rawOption === selectedChoice && !isCorrect;
-      button.classList.toggle("correct", isRightChoice);
-      button.classList.toggle("incorrect", isSelectedWrong);
-      button.disabled = true;
-    });
-  }
-
-  if (task.type === "sentenceMatch") {
-    const stage = answerArea.querySelector(".sentence-match-stage");
-    if (stage) {
-      updateSentenceMatchUi(stage, task);
-      stage.querySelectorAll(".match-button").forEach((button) => {
-        button.disabled = true;
-      });
-    }
-  }
-
-  if (task.type === "gapFill" && gapInput) gapInput.disabled = true;
-  if (task.type === "formTraining" && formInput) {
-    formInput.disabled = true;
-  }
-  if (task.type === "formTraining") {
-    formChoiceButtons.forEach((button) => {
-      const rawChoice = button.dataset.choice;
-      const expectedChoice = isArticlePrompt(task) ? task.forms.article : getPerfectFormParts(task).auxiliary;
-      const isExpected = rawChoice === expectedChoice;
-      const isSelectedWrong = rawChoice === selectedFormChoice && !isCorrect;
-      button.classList.toggle("correct", (isParticiplePrompt(task) || isArticlePrompt(task)) && isExpected);
-      button.classList.toggle("incorrect", (isParticiplePrompt(task) || isArticlePrompt(task)) && isSelectedWrong);
-      button.disabled = true;
-    });
-  }
-
-  if (task.type === "sentenceBuilder") {
-    answerArea.querySelectorAll(".word-button").forEach((button) => {
-      button.draggable = false;
-      button.disabled = true;
-    });
-    wordBank.querySelectorAll(".word-button").forEach((button) => {
-      button.draggable = false;
-      button.disabled = true;
-    });
-  }
-
-  if (task.type === "errorSearch") {
-    answerArea.querySelectorAll(".error-word").forEach((button) => {
-      const rawWord = button.dataset.raw || button.textContent;
-      const isCorrectWord = !task.noMistake && normalizeWord(rawWord) === normalizeWord(task.wrongWord);
-      const isSelectedWrong = normalizeWord(selectedErrorWord) === normalizeWord(rawWord) && !isCorrect;
-      button.classList.toggle("correct", isCorrectWord);
-      button.classList.toggle("incorrect", isSelectedWrong);
-      button.disabled = true;
-    });
-
-    const correctSentenceButton = answerArea.querySelector(".correct-sentence-button");
-    if (correctSentenceButton) {
-      correctSentenceButton.classList.toggle("correct", task.noMistake);
-      correctSentenceButton.classList.toggle("incorrect", selectedErrorWord === "__correct__" && !isCorrect);
-      correctSentenceButton.disabled = true;
-    }
-  }
+  const controller = TASK_CONTROLLERS[task.type];
+  controller?.lockUi?.(task, isCorrect);
 }
 
 function checkAnswer() {
@@ -2489,35 +2125,11 @@ function checkAnswer() {
 function clearAnswer() {
   if (locked) return;
   const task = tasks[currentIndex];
+  const controller = TASK_CONTROLLERS[task.type];
 
-  if (task.type === "gapFill" && gapInput) {
-    gapInput.value = "";
-    gapInput.focus();
-    hideFeedback();
+  if (controller?.clear) {
+    controller.clear(task);
     return;
-  }
-
-  if (task.type === "formTraining") {
-    if (formInput) {
-      formInput.value = "";
-      formInput.focus();
-    }
-    selectedFormChoice = null;
-    formChoiceButtons.forEach((button) => button.classList.remove("is-active"));
-    hideFeedback();
-    return;
-  }
-
-  if (task.type === "sentenceBuilder") {
-    Array.from(answerArea.children).forEach((button) => wordBank.appendChild(button));
-  }
-
-  if (task.type === "sentenceMatch") {
-    selectedMatchStart = null;
-    sentenceMatchConnections = {};
-    sentenceMatchConnectionColors = {};
-    const stage = answerArea.querySelector(".sentence-match-stage");
-    if (stage) updateSentenceMatchUi(stage, task);
   }
 
   hideFeedback();
@@ -2677,10 +2289,12 @@ function resetTestState() {
 
 function startRound() {
   try {
+    // Always rebuild before starting so generated tasks reflect the latest
+    // sentence/vocabulary state and the current test settings.
     rebuildTaskBank();
     clampSelectedQuestionCount();
     resetTestState();
-    tasks = selectRoundTasks();
+    tasks = ROUND_POLICY.selectRoundTasks();
     if (!tasks.length) {
       throw new Error("Keine Aufgaben für diese Auswahl verfügbar.");
     }
@@ -2748,10 +2362,10 @@ theoryNavButton.addEventListener("click", () => {
 testNavButton.addEventListener("click", async () => {
   if (hasOngoingProgress()) {
     const confirmed = await showConfirmModal({
-      title: "Neuen Test starten?",
-      text: "Wenn du jetzt einen neuen Test startest, verlierst du deinen aktuellen Fortschritt.",
-      acceptLabel: "Neu starten",
-      cancelLabel: "Abbrechen"
+      title: TEXT.restartTitle,
+      text: TEXT.restartText,
+      acceptLabel: TEXT.restartAccept,
+      cancelLabel: TEXT.cancel
     });
     if (!confirmed) return;
   }
