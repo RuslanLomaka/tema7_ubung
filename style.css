@@ -422,32 +422,77 @@ h2 {
 
 .theory-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 12px;
 }
 
 .theory-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
   padding: 16px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--panel);
 }
 
-.theory-card h3 {
+.theory-card.collapsible {
+  padding-bottom: 64px;
+}
+
+.theory-card-header h3 {
   margin-bottom: 10px;
   font-size: 1.06rem;
 }
 
-.theory-card p {
-  margin: 8px 0 0;
+.theory-card-header .short-rule {
+  margin: 0;
   line-height: 1.5;
 }
 
-.theory-card ul {
+.theory-card-content {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.theory-text {
+  white-space: pre-line;
+  margin: 16px 0 !important;
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+.mistake-box {
+  padding: 12px;
+  border-left: 4px solid var(--warn);
+  background: var(--warn-soft);
+  border-radius: 4px;
+}
+
+.example-box {
+  padding: 12px;
+  border-left: 4px solid var(--accent);
+  background: var(--accent-soft);
+  border-radius: 4px;
+}
+
+.theory-card-content ul {
   margin: 10px 0 0;
   padding-left: 18px;
   color: var(--muted);
   line-height: 1.5;
+}
+
+.theory-card .toggle-details {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+}
+
+.theory-card.is-expanded {
+  background: var(--panel-soft);
 }
 
 .vocabulary-list,

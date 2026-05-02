@@ -337,21 +337,24 @@
         });
       }
 
-      tasksFromSentence.push({
+      const isCorrectSentence = randomInt(100) < 50;
+      const errorSearchTask = {
         id: `pilot_es_${entry.id}`,
         type: "errorSearch",
-        level: entry.level,
+        level: "B1", // 'find the misspelling always has to be medium'
         grammarFocus: entry.grammarFocus,
         prompt: "Klicke auf den Fehler oder wähle: Der Satz ist korrekt.",
-        sentence: generatedErrorVariant?.sentence || entry.sentence,
-        wrongWord: generatedErrorVariant?.wrongWord || null,
-        correctForm: generatedErrorVariant?.correctWord || null,
+        sentence: (isCorrectSentence || !generatedErrorVariant) ? entry.sentence : generatedErrorVariant.sentence,
+        wrongWord: (isCorrectSentence || !generatedErrorVariant) ? null : generatedErrorVariant.wrongWord,
+        correctForm: (isCorrectSentence || !generatedErrorVariant) ? null : generatedErrorVariant.correctWord,
         correctSentence: entry.sentence,
-        noMistake: !generatedErrorVariant,
+        noMistake: isCorrectSentence || !generatedErrorVariant,
         translations: entry.translations,
         sentenceGrammarNotes: entry.sentenceGrammarNotes,
         sourceSentenceId: entry.id
-      });
+      };
+
+      tasksFromSentence.push(errorSearchTask);
 
       return tasksFromSentence;
     });
@@ -359,10 +362,27 @@
 
   function buildFormTrainingPool(formTasks) {
     return formTasks.flatMap((task) => {
-      if (task.trainingKind !== "noun") return [task];
+      // Re-evaluate difficulty for verbs based on the form being asked
+      const baseLevel = task.level || "A2";
+      let taskLevel = baseLevel;
+
+      if (task.trainingKind === "verb" || task.trainingKind === "adjective") {
+        if (task.missingForm === "preterite" || task.missingForm === "participle" || task.missingForm === "comparative" || task.missingForm === "superlative") {
+          // If the word itself is already B1/B2, keep it. If it's A2, bump to B1 (Medium).
+          if (baseLevel === "A2") taskLevel = "B1";
+        }
+      }
+
+      if (task.trainingKind !== "noun") {
+        return [{
+          ...task,
+          level: taskLevel
+        }];
+      }
 
       const base = {
         ...task,
+        level: taskLevel,
         forms: { ...(task.forms || {}) }
       };
       const variants = [

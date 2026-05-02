@@ -527,28 +527,37 @@ function collectTheorySentences() {
 function renderGrammarTheory() {
   grammarTheoryList.innerHTML = "";
 
+  const fragment = document.createDocumentFragment();
   Object.values(grammarConcepts).forEach((concept) => {
     const card = document.createElement("article");
-    card.className = "theory-card";
-    const title = document.createElement("h3");
-    title.textContent = displayGerman(concept.title);
-    const shortRule = document.createElement("p");
-    shortRule.innerHTML = `<strong>Kurzregel:</strong> ${displayGerman(concept.shortRule)}`;
-    const example = document.createElement("p");
-    example.innerHTML = `<strong>Beispiel:</strong> ${displayGerman(concept.shortExample)}`;
-    const theory = document.createElement("p");
-    theory.textContent = displayGerman(concept.fullTheory);
-    const mistake = document.createElement("p");
-    mistake.innerHTML = `<strong>Häufiger Fehler:</strong> ${displayGerman(concept.commonMistake)}`;
-    const list = document.createElement("ul");
-    (concept.moreExamples || []).forEach((item) => {
-      const listItem = document.createElement("li");
-      listItem.textContent = displayGerman(item);
-      list.appendChild(listItem);
+    card.className = "theory-card collapsible";
+
+    card.innerHTML = `
+      <div class="theory-card-header">
+        <h3>${displayGerman(concept.title)}</h3>
+        <p class="short-rule"><strong>Kurzregel:</strong> ${displayGerman(concept.shortRule)}</p>
+      </div>
+      <div class="theory-card-content hidden">
+        <div class="example-box"><strong>Beispiel:</strong> ${displayGerman(concept.shortExample)}</div>
+        <div class="theory-text">${displayGerman(concept.fullTheory)}</div>
+        <div class="mistake-box"><strong>Häufiger Fehler:</strong> ${displayGerman(concept.commonMistake)}</div>
+        <ul class="example-list">
+          ${(concept.moreExamples || []).map((ex) => `<li>${displayGerman(ex)}</li>`).join("")}
+        </ul>
+      </div>
+      <button class="secondary-button toggle-details" type="button">Details anzeigen</button>
+    `;
+
+    card.querySelector(".toggle-details").addEventListener("click", (e) => {
+      const content = card.querySelector(".theory-card-content");
+      const isHidden = content.classList.toggle("hidden");
+      e.target.textContent = isHidden ? "Details anzeigen" : "Weniger anzeigen";
+      card.classList.toggle("is-expanded", !isHidden);
     });
-    card.append(title, shortRule, example, theory, mistake, list);
-    grammarTheoryList.appendChild(card);
+
+    fragment.appendChild(card);
   });
+  grammarTheoryList.appendChild(fragment);
 }
 
 function renderVocabularyTheory() {
@@ -644,7 +653,7 @@ function renderSentenceTheory() {
 
     const sentence = document.createElement("p");
     sentence.className = "sentence-de";
-    sentence.textContent = displayGerman(entry.text);
+    sentence.innerHTML = displayGerman(entry.text);
 
     const translation = document.createElement("p");
     translation.className = "sentence-translation";
@@ -1293,7 +1302,7 @@ function showAlternateAnswers(task, submittedAnswer) {
 
   answers.forEach((answer) => {
     const item = document.createElement("li");
-    item.textContent = displayGerman(answer);
+    item.innerHTML = displayGerman(answer);
     list.appendChild(item);
   });
 
@@ -1350,27 +1359,27 @@ function makeSentenceGrammarItem(note, showDetails = false) {
 
   const title = document.createElement("p");
   title.className = "sentence-grammar-item-title";
-  title.textContent = displayGerman(note.title || "Besonderheit");
+  title.innerHTML = displayGerman(note.title || "Besonderheit");
   wrapper.appendChild(title);
 
   if (note.summary) {
     const summary = document.createElement("p");
     summary.className = "sentence-grammar-item-text";
-    summary.textContent = displayGerman(note.summary);
+    summary.innerHTML = displayGerman(note.summary);
     wrapper.appendChild(summary);
   }
 
   if (showDetails && note.details) {
     const details = document.createElement("p");
     details.className = "sentence-grammar-item-text";
-    details.textContent = displayGerman(note.details);
+    details.innerHTML = displayGerman(note.details);
     wrapper.appendChild(details);
   }
 
   if (showDetails && note.example) {
     const example = document.createElement("p");
     example.className = "sentence-grammar-item-example";
-    example.textContent = `Beispiel im Satz: ${displayGerman(note.example)}`;
+    example.innerHTML = `Beispiel im Satz: ${displayGerman(note.example)}`;
     wrapper.appendChild(example);
   }
 
@@ -1407,18 +1416,18 @@ function fillRulePanel(task, expandFullTheory = false) {
   const concept = grammarConcepts[task.grammarFocus];
   if (!concept) return;
 
-  ruleTitle.textContent = displayGerman(concept.title);
-  ruleShort.textContent = displayGerman(concept.shortRule);
-  ruleExample.textContent = `Beispiel: ${displayGerman(concept.shortExample)}`;
-  ruleTheory.textContent = displayGerman(concept.fullTheory);
-  ruleMistake.textContent = `Häufiger Fehler: ${displayGerman(concept.commonMistake)}`;
+  ruleTitle.innerHTML = displayGerman(concept.title);
+  ruleShort.innerHTML = displayGerman(concept.shortRule);
+  ruleExample.innerHTML = `Beispiel: ${displayGerman(concept.shortExample)}`;
+  ruleTheory.innerHTML = displayGerman(concept.fullTheory);
+  ruleMistake.innerHTML = `Häufiger Fehler: ${displayGerman(concept.commonMistake)}`;
   ruleExamples.innerHTML = "";
   renderSentenceGrammarNotes(task, expandFullTheory);
 
   (concept.moreExamples || []).forEach((example) => {
     const item = document.createElement("div");
     item.className = "rule-example-item";
-    item.textContent = displayGerman(example);
+    item.innerHTML = displayGerman(example);
     ruleExamples.appendChild(item);
   });
 
@@ -1546,7 +1555,7 @@ function makeChoiceButton(option) {
   button.type = "button";
   button.className = "choice-button";
   button.dataset.raw = option;
-  button.textContent = displayGerman(option);
+  button.innerHTML = displayGerman(option);
   button.addEventListener("click", () => {
     if (locked) return;
     selectedChoice = option;
@@ -1560,7 +1569,7 @@ function makeChoiceButton(option) {
 function renderGapFill(task) {
   const sentence = document.createElement("p");
   sentence.className = "gap-sentence";
-  sentence.textContent = displayGerman(task.displaySentence || task.sentence);
+  sentence.innerHTML = displayGerman(task.displaySentence || task.sentence);
 
   const hint = document.createElement("p");
   hint.className = "gap-hint";
@@ -1606,7 +1615,7 @@ function renderFormTraining(task) {
         value.textContent = getMissingFormPlaceholder(task);
       }
     } else {
-      value.textContent = displayGerman(getFormDisplayValue(task, key));
+      value.innerHTML = displayGerman(getFormDisplayValue(task, key));
     }
     card.append(label, value);
     grid.appendChild(card);
@@ -2014,8 +2023,8 @@ function renderTask() {
 
   const task = tasks[currentIndex];
   taskType.textContent = TASK_TYPE_LABELS[task.type];
-  taskTitle.textContent = displayGerman(task.type === "formTraining" ? getFormTrainingPrompt(task) : task.prompt);
-  levelBadge.className = "level-badge";
+  taskTitle.innerHTML = displayGerman(task.type === "formTraining" ? getFormTrainingPrompt(task) : task.prompt);
+  levelBadge.classList.add("hidden");
   renderLevelBadge(task.level);
   renderTaskHelp(task);
 
