@@ -30,6 +30,8 @@ const FORM_TRAINING_KINDS = ["verb", "adjective", "noun"];
 const QUESTION_COUNT_OPTIONS = [15, 30, 60];
 const SENTENCE_MATCH_COLORS = ["#e11d48", "#d4a017", "#8b5e3c", "#2563eb"];
 const legacyFormTasks = mainTasks.filter((task) => task.type === "formTraining");
+const RECENT_SENTENCE_MATCH_HISTORY_LIMIT = 8;
+const RECENT_FORM_HISTORY_LIMIT = 10;
 const TASK_HELP_COPY = {
   en: {
     sentenceBuilder: {
@@ -231,6 +233,12 @@ let selectedQuestionCount = 15;
 let selectedDifficultyMode = "mixed";
 let selectedQuestionPreset = "15";
 let allTasks = [];
+let recentSentenceMatchIdsByLevel = {
+  A2: [],
+  B1: [],
+  B2: []
+};
+let recentFormKeys = [];
 
 const topicTitle = document.querySelector("#topicTitle");
 const theoryView = document.querySelector("#theoryView");
@@ -605,10 +613,40 @@ function buildSentenceBankTasks(entries) {
   return perSentenceTasks;
 }
 
+function buildFormTrainingPool() {
+  return legacyFormTasks.flatMap((task) => {
+    if (getFormTrainingKind(task) !== "noun") return [task];
+
+    const base = {
+      ...task,
+      forms: { ...(task.forms || {}) }
+    };
+    const variants = [
+      {
+        ...base,
+        id: `${task.id}_article`,
+        missingForm: "article",
+        correctAnswers: [task.forms.article]
+      }
+    ];
+
+    if (task.forms?.plural) {
+      variants.push({
+        ...base,
+        id: `${task.id}_plural`,
+        missingForm: "plural",
+        correctAnswers: [task.forms.plural]
+      });
+    }
+
+    return variants;
+  });
+}
+
 function rebuildTaskBank() {
   allTasks = [
     ...buildSentenceBankTasks(sentenceBankV2),
-    ...legacyFormTasks
+    ...buildFormTrainingPool()
   ];
 }
 
@@ -1191,20 +1229,42 @@ function getFormVariantKey(task) {
   return `${kind}_${task.missingForm || "other"}`;
 }
 
+function getFormRecencyKey(task) {
+  const kind = getFormTrainingKind(task);
+  if (kind === "noun") return `noun:${task.forms?.singular || task.id}`;
+  if (kind === "adjective") return `adjective:${task.forms?.positive || task.id}`;
+  return `verb:${task.forms?.infinitive || task.id}`;
+}
+
+function rememberRecentFormTask(task) {
+  const key = getFormRecencyKey(task);
+  recentFormKeys = [key, ...recentFormKeys.filter((item) => item !== key)].slice(0, RECENT_FORM_HISTORY_LIMIT);
+}
+
+function rememberRecentSentenceMatch(level, entryIds) {
+  const current = recentSentenceMatchIdsByLevel[level] || [];
+  recentSentenceMatchIdsByLevel[level] = [...entryIds, ...current.filter((id) => !entryIds.includes(id))]
+    .slice(0, RECENT_SENTENCE_MATCH_HISTORY_LIMIT);
+}
+
 function pickTaskFromPool(pool, usedIds, usedFormKinds, usedFormVariants) {
   const available = pool.filter((task) => !usedIds.has(task.id));
   if (!available.length) return null;
 
   if (available[0]?.type === "formTraining") {
-    let preferred = available.filter((task) => {
-      if (getFormTrainingKind(task) !== "noun") return false;
-      return task.missingForm === "article" && !usedFormVariants.has("noun_article");
-    });
+    const freshByRecency = available.filter((task) => !recentFormKeys.includes(getFormRecencyKey(task)));
+    let preferred = freshByRecency.filter((task) => !usedFormKinds.has(getFormTrainingKind(task)));
     if (!preferred.length) {
       preferred = available.filter((task) => !usedFormKinds.has(getFormTrainingKind(task)));
     }
     if (!preferred.length) {
+      preferred = freshByRecency.filter((task) => !usedFormVariants.has(getFormVariantKey(task)));
+    }
+    if (!preferred.length) {
       preferred = available.filter((task) => !usedFormVariants.has(getFormVariantKey(task)));
+    }
+    if (!preferred.length) {
+      preferred = freshByRecency;
     }
     if (!preferred.length) {
       preferred = available;
@@ -1213,6 +1273,7 @@ function pickTaskFromPool(pool, usedIds, usedFormKinds, usedFormVariants) {
     usedFormKinds.add(getFormTrainingKind(choice));
     usedFormVariants.add(getFormVariantKey(choice));
     usedIds.add(choice.id);
+    rememberRecentFormTask(choice);
     return choice;
   }
 
@@ -1232,10 +1293,17 @@ function buildSentenceMatchTask(level) {
 
   if (matchingEntries.length < 4) return null;
 
-  const selectedEntries = shuffle(matchingEntries).slice(0, 4);
+  const recentIds = new Set(recentSentenceMatchIdsByLevel[level] || []);
+  let candidateEntries = matchingEntries.filter(({ entry }) => !recentIds.has(entry.id));
+  if (candidateEntries.length < 4) {
+    candidateEntries = matchingEntries;
+  }
+
+  const selectedEntries = shuffle(candidateEntries).slice(0, 4);
+  rememberRecentSentenceMatch(level, selectedEntries.map(({ entry }) => entry.id));
 
   return {
-    id: `sm_dynamic_${level.toLowerCase()}_${selectedEntries.map((entry) => entry.id).join("_")}`,
+    id: `sm_dynamic_${level.toLowerCase()}_${selectedEntries.map(({ entry }) => entry.id).join("_")}`,
     type: "sentenceMatch",
     level,
     grammarFocus: null,

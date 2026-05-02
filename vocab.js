@@ -1,4 +1,4 @@
-window.appData = window.appData || {};
+﻿window.appData = window.appData || {};
 window.appData.vocabulary = [
   {
     "category": "noun",
@@ -7,7 +7,7 @@ window.appData.vocabulary = [
     "meaningEn": "rental contract",
     "meaningUk": "договір оренди",
     "meaningAr": "عقد الإيجار",
-    "hintDe": "Gesucht ist das Nomen Mietvertrag."
+    "hintDe": "Ein schriftlicher Vertrag zwischen Mieter und Vermieter für eine Wohnung."
   },
   {
     "category": "noun",
@@ -16,7 +16,7 @@ window.appData.vocabulary = [
     "meaningEn": "security deposit",
     "meaningUk": "застава",
     "meaningAr": "التأمين / الكفالة",
-    "hintDe": "Gesucht ist das Nomen Kaution."
+    "hintDe": "Geld, das man am Anfang zur Sicherheit bezahlt."
   },
   {
     "category": "noun",
@@ -25,7 +25,7 @@ window.appData.vocabulary = [
     "meaningEn": "utility costs",
     "meaningUk": "додаткові комунальні витрати",
     "meaningAr": "التكاليف الجانبية",
-    "hintDe": "Gesucht ist das Nomen Nebenkosten."
+    "hintDe": "Zusätzliche Kosten für Wohnen, zum Beispiel für Wasser oder Heizung."
   },
   {
     "category": "noun",
@@ -34,7 +34,7 @@ window.appData.vocabulary = [
     "meaningEn": "plot of land",
     "meaningUk": "земельна ділянка",
     "meaningAr": "قطعة أرض",
-    "hintDe": "Gesucht ist das Nomen Grundstück."
+    "hintDe": "Ein Stück Land, auf dem man bauen oder wohnen kann."
   },
   {
     "category": "noun",
@@ -43,7 +43,7 @@ window.appData.vocabulary = [
     "meaningEn": "house rules",
     "meaningUk": "правила будинку",
     "meaningAr": "قواعد المنزل",
-    "hintDe": "Gesucht ist das Nomen Hausordnung."
+    "hintDe": "Regeln, die in einem Haus für alle Bewohner gelten."
   },
   {
     "category": "noun",
@@ -52,7 +52,7 @@ window.appData.vocabulary = [
     "meaningEn": "tenant",
     "meaningUk": "орендар",
     "meaningAr": "المستأجر",
-    "hintDe": "Gesucht ist das Nomen Mieter."
+    "hintDe": "Eine Person, die in einer Wohnung lebt und dafür Miete zahlt."
   },
   {
     "category": "noun",
@@ -61,7 +61,7 @@ window.appData.vocabulary = [
     "meaningEn": "landlord",
     "meaningUk": "орендодавець",
     "meaningAr": "المالك",
-    "hintDe": "Gesucht ist das Nomen Vermieter."
+    "hintDe": "Eine Person, der die Wohnung gehört und die sie vermietet."
   },
   {
     "category": "noun",
@@ -70,7 +70,7 @@ window.appData.vocabulary = [
     "meaningEn": "notice period",
     "meaningUk": "строк попередження про розірвання",
     "meaningAr": "مهلة الإشعار",
-    "hintDe": "Gesucht ist das Nomen Kündigungsfrist."
+    "hintDe": "Die Zeit, die man vor dem Ende eines Vertrags warten muss."
   },
   {
     "category": "noun",
@@ -79,7 +79,7 @@ window.appData.vocabulary = [
     "meaningEn": "roof",
     "meaningUk": "дах",
     "meaningAr": "السقف",
-    "hintDe": "Gesucht ist das Nomen Dach."
+    "hintDe": "Der obere Teil eines Hauses, der vor Regen schützt."
   },
   {
     "category": "noun",
@@ -88,7 +88,7 @@ window.appData.vocabulary = [
     "meaningEn": "wall",
     "meaningUk": "мур",
     "meaningAr": "الجدار",
-    "hintDe": "Gesucht ist das Nomen Mauer."
+    "hintDe": "Eine feste Wand aus Stein oder Beton."
   },
   {
     "category": "noun",
@@ -97,7 +97,7 @@ window.appData.vocabulary = [
     "meaningEn": "stairs",
     "meaningUk": "сходи",
     "meaningAr": "الدرج",
-    "hintDe": "Gesucht ist das Nomen Treppe."
+    "hintDe": "Etwas mit Stufen, über das man nach oben oder unten geht."
   },
   {
     "category": "noun",
@@ -106,7 +106,7 @@ window.appData.vocabulary = [
     "meaningEn": "elevator",
     "meaningUk": "ліфт",
     "meaningAr": "المصعد",
-    "hintDe": "Gesucht ist das Nomen Lift."
+    "hintDe": "Eine Maschine im Haus, die Menschen nach oben oder unten führt."
   },
   {
     "category": "noun",
@@ -115,7 +115,7 @@ window.appData.vocabulary = [
     "meaningEn": "lawn",
     "meaningUk": "газон",
     "meaningAr": "العشب",
-    "hintDe": "Gesucht ist das Nomen Rasen."
+    "hintDe": "Kurzes grünes Gras im Garten oder vor dem Haus."
   },
   {
     "category": "noun",
@@ -124,7 +124,7 @@ window.appData.vocabulary = [
     "meaningEn": "step",
     "meaningUk": "сходинка",
     "meaningAr": "الدرجة",
-    "hintDe": "Gesucht ist das Nomen Stufe."
+    "hintDe": "Ein einzelner Teil einer Treppe."
   },
   {
     "category": "noun",
@@ -133,7 +133,7 @@ window.appData.vocabulary = [
     "meaningEn": "lawyer",
     "meaningUk": "адвокат",
     "meaningAr": "المحامي",
-    "hintDe": "Gesucht ist das Nomen Rechtsanwalt."
+    "hintDe": "Eine Person, die Menschen vor Gericht rechtlich hilft."
   },
   {
     "category": "noun",
@@ -142,7 +142,7 @@ window.appData.vocabulary = [
     "meaningEn": "court",
     "meaningUk": "суд",
     "meaningAr": "المحكمة",
-    "hintDe": "Gesucht ist das Nomen Gericht."
+    "hintDe": "Der Ort oder die Institution, wo ein rechtlicher Fall entschieden wird."
   },
   {
     "category": "noun",
@@ -151,7 +151,7 @@ window.appData.vocabulary = [
     "meaningEn": "lawsuit",
     "meaningUk": "судовий процес",
     "meaningAr": "الدعوى القضائية",
-    "hintDe": "Gesucht ist das Nomen Prozess."
+    "hintDe": "Ein Gerichtsfall oder ein längerer rechtlicher Ablauf."
   },
   {
     "category": "noun",
@@ -160,7 +160,7 @@ window.appData.vocabulary = [
     "meaningEn": "noise",
     "meaningUk": "шум",
     "meaningAr": "الضوضاء",
-    "hintDe": "Gesucht ist das Nomen Lärm."
+    "hintDe": "Laute Geräusche, die stören."
   },
   {
     "category": "noun",
@@ -169,7 +169,7 @@ window.appData.vocabulary = [
     "meaningEn": "peace",
     "meaningUk": "спокій / мир",
     "meaningAr": "الهدوء / السلام",
-    "hintDe": "Gesucht ist das Nomen Frieden."
+    "hintDe": "Ein ruhiger Zustand ohne Streit oder Konflikt."
   },
   {
     "category": "noun",
@@ -178,7 +178,7 @@ window.appData.vocabulary = [
     "meaningEn": "reality",
     "meaningUk": "реальність",
     "meaningAr": "الواقع",
-    "hintDe": "Gesucht ist das Nomen Wirklichkeit."
+    "hintDe": "Das, was in echt ist und wirklich passiert."
   },
   {
     "category": "noun",
@@ -187,7 +187,7 @@ window.appData.vocabulary = [
     "meaningEn": "property ownership",
     "meaningUk": "власність",
     "meaningAr": "الملكية",
-    "hintDe": "Gesucht ist das Nomen Eigentum."
+    "hintDe": "Etwas, das einer Person rechtlich gehört."
   },
   {
     "category": "noun",
@@ -196,7 +196,7 @@ window.appData.vocabulary = [
     "meaningEn": "duty",
     "meaningUk": "обов’язок",
     "meaningAr": "الواجب",
-    "hintDe": "Gesucht ist das Nomen Pflicht."
+    "hintDe": "Etwas, das man machen muss."
   },
   {
     "category": "noun",
@@ -205,7 +205,7 @@ window.appData.vocabulary = [
     "meaningEn": "ban",
     "meaningUk": "заборона",
     "meaningAr": "الحظر",
-    "hintDe": "Gesucht ist das Nomen Verbot."
+    "hintDe": "Eine Regel, dass etwas nicht erlaubt ist."
   },
   {
     "category": "noun",
@@ -214,7 +214,7 @@ window.appData.vocabulary = [
     "meaningEn": "approval",
     "meaningUk": "дозвіл",
     "meaningAr": "التصريح / الموافقة",
-    "hintDe": "Gesucht ist das Nomen Genehmigung."
+    "hintDe": "Eine offizielle Erlaubnis."
   },
   {
     "category": "noun",
@@ -223,7 +223,7 @@ window.appData.vocabulary = [
     "meaningEn": "move",
     "meaningUk": "переїзд",
     "meaningAr": "الانتقال",
-    "hintDe": "Gesucht ist das Nomen Umzug."
+    "hintDe": "Der Wechsel von einer Wohnung oder einem Haus in ein anderes."
   },
   {
     "category": "verb",
@@ -232,7 +232,7 @@ window.appData.vocabulary = [
     "meaningEn": "to move in",
     "meaningUk": "вселятися",
     "meaningAr": "ينتقل للسكن",
-    "hintDe": "Gesucht ist das Verb einziehen."
+    "hintDe": "In eine neue Wohnung oder ein neues Haus kommen, um dort zu wohnen."
   },
   {
     "category": "verb",
@@ -241,7 +241,7 @@ window.appData.vocabulary = [
     "meaningEn": "to move out",
     "meaningUk": "виїжджати",
     "meaningAr": "ينتقل من السكن",
-    "hintDe": "Gesucht ist das Verb ausziehen."
+    "hintDe": "Eine Wohnung oder ein Haus verlassen, um woanders zu wohnen."
   },
   {
     "category": "verb",
@@ -250,7 +250,7 @@ window.appData.vocabulary = [
     "meaningEn": "to terminate",
     "meaningUk": "розривати договір",
     "meaningAr": "يفسخ / ينهي العقد",
-    "hintDe": "Gesucht ist das Verb kündigen."
+    "hintDe": "Einen Vertrag offiziell beenden."
   },
   {
     "category": "verb",
@@ -259,7 +259,7 @@ window.appData.vocabulary = [
     "meaningEn": "to complain",
     "meaningUk": "скаржитися",
     "meaningAr": "يشتكي",
-    "hintDe": "Gesucht ist das Verb sich beschweren."
+    "hintDe": "Sagen, dass man mit etwas unzufrieden ist."
   },
   {
     "category": "verb",
@@ -268,7 +268,7 @@ window.appData.vocabulary = [
     "meaningEn": "to take care of",
     "meaningUk": "дбати про",
     "meaningAr": "يعتني بـ",
-    "hintDe": "Gesucht ist das Verb sich kümmern."
+    "hintDe": "Für etwas oder jemanden sorgen."
   },
   {
     "category": "verb",
@@ -277,7 +277,7 @@ window.appData.vocabulary = [
     "meaningEn": "to disturb",
     "meaningUk": "заважати",
     "meaningAr": "يزعج",
-    "hintDe": "Gesucht ist das Verb stören."
+    "hintDe": "Jemandem Ruhe oder Konzentration wegnehmen."
   },
   {
     "category": "verb",
@@ -286,7 +286,7 @@ window.appData.vocabulary = [
     "meaningEn": "to mow",
     "meaningUk": "косити",
     "meaningAr": "يقص العشب",
-    "hintDe": "Gesucht ist das Verb mähen."
+    "hintDe": "Gras mit einer Maschine oder einem Gerät kurz schneiden."
   },
   {
     "category": "verb",
@@ -295,7 +295,7 @@ window.appData.vocabulary = [
     "meaningEn": "to arrange",
     "meaningUk": "домовлятися",
     "meaningAr": "يتفق / يرتب",
-    "hintDe": "Gesucht ist das Verb vereinbaren."
+    "hintDe": "Etwas gemeinsam abmachen."
   },
   {
     "category": "verb",
@@ -304,7 +304,7 @@ window.appData.vocabulary = [
     "meaningEn": "to afford",
     "meaningUk": "мати змогу собі дозволити",
     "meaningAr": "يتحمل التكلفة",
-    "hintDe": "Gesucht ist das Verb sich leisten."
+    "hintDe": "Genug Geld haben, um etwas bezahlen zu können."
   },
   {
     "category": "verb",
@@ -313,7 +313,7 @@ window.appData.vocabulary = [
     "meaningEn": "to react",
     "meaningUk": "реагувати",
     "meaningAr": "يستجيب",
-    "hintDe": "Gesucht ist das Verb reagieren."
+    "hintDe": "Auf etwas antworten oder etwas als Folge tun."
   },
   {
     "category": "verb",
@@ -322,7 +322,7 @@ window.appData.vocabulary = [
     "meaningEn": "to demand",
     "meaningUk": "вимагати",
     "meaningAr": "يطالب",
-    "hintDe": "Gesucht ist das Verb verlangen."
+    "hintDe": "Etwas sehr deutlich fordern."
   },
   {
     "category": "verb",
@@ -331,7 +331,7 @@ window.appData.vocabulary = [
     "meaningEn": "to violate",
     "meaningUk": "порушувати",
     "meaningAr": "ينتهك",
-    "hintDe": "Gesucht ist das Verb verstoßen."
+    "hintDe": "Gegen eine Regel oder ein Gesetz handeln."
   },
   {
     "category": "verb",
@@ -340,7 +340,7 @@ window.appData.vocabulary = [
     "meaningEn": "to transfer money",
     "meaningUk": "переказувати гроші",
     "meaningAr": "يحوّل المال",
-    "hintDe": "Gesucht ist das Verb überweisen."
+    "hintDe": "Geld von einem Konto auf ein anderes schicken."
   },
   {
     "category": "verb",
@@ -349,7 +349,7 @@ window.appData.vocabulary = [
     "meaningEn": "to discover",
     "meaningUk": "виявляти",
     "meaningAr": "يكتشف",
-    "hintDe": "Gesucht ist das Verb entdecken."
+    "hintDe": "Etwas sehen oder finden, das man vorher nicht kannte."
   },
   {
     "category": "verb",
@@ -358,7 +358,7 @@ window.appData.vocabulary = [
     "meaningEn": "to scream",
     "meaningUk": "кричати",
     "meaningAr": "يصرخ",
-    "hintDe": "Gesucht ist das Verb schreien."
+    "hintDe": "Sehr laut sprechen oder rufen."
   },
   {
     "category": "verb",
@@ -367,7 +367,7 @@ window.appData.vocabulary = [
     "meaningEn": "to avoid",
     "meaningUk": "уникати",
     "meaningAr": "يتجنب",
-    "hintDe": "Gesucht ist das Verb vermeiden."
+    "hintDe": "Dafür sorgen, dass etwas nicht passiert."
   },
   {
     "category": "noun",
@@ -376,7 +376,7 @@ window.appData.vocabulary = [
     "meaningEn": "cut / trim",
     "meaningUk": "зріз / підрізання",
     "meaningAr": "قص / تقليم",
-    "hintDe": "Gesucht ist das Nomen Schnitt."
+    "hintDe": "Das Kürzen oder Schneiden von Pflanzen oder anderen Dingen."
   },
   {
     "category": "adjective",
@@ -385,7 +385,7 @@ window.appData.vocabulary = [
     "meaningEn": "cheap",
     "meaningUk": "вигідний / недорогий",
     "meaningAr": "رخيص / مناسب",
-    "hintDe": "Gesucht ist das Adjektiv günstig."
+    "hintDe": "Nicht teuer und vom Preis her gut."
   },
   {
     "category": "adjective",
@@ -394,7 +394,7 @@ window.appData.vocabulary = [
     "meaningEn": "quiet",
     "meaningUk": "тихий",
     "meaningAr": "هادئ",
-    "hintDe": "Gesucht ist das Adjektiv ruhig."
+    "hintDe": "Ohne viel Lärm oder Bewegung."
   },
   {
     "category": "adjective",
@@ -403,7 +403,7 @@ window.appData.vocabulary = [
     "meaningEn": "central",
     "meaningUk": "центральний",
     "meaningAr": "مركزي",
-    "hintDe": "Gesucht ist das Adjektiv zentral."
+    "hintDe": "Mitten in der Stadt oder gut erreichbar gelegen."
   },
   {
     "category": "adjective",
@@ -412,7 +412,7 @@ window.appData.vocabulary = [
     "meaningEn": "loud",
     "meaningUk": "гучний",
     "meaningAr": "صاخب",
-    "hintDe": "Gesucht ist das Adjektiv laut."
+    "hintDe": "So, dass man es stark hören kann."
   },
   {
     "category": "adjective",
@@ -421,7 +421,7 @@ window.appData.vocabulary = [
     "meaningEn": "inconsiderate",
     "meaningUk": "безвідповідальний до інших",
     "meaningAr": "غير مراعٍ",
-    "hintDe": "Gesucht ist das Adjektiv rücksichtslos."
+    "hintDe": "So, dass man nicht an andere denkt."
   },
   {
     "category": "adjective",
@@ -430,7 +430,7 @@ window.appData.vocabulary = [
     "meaningEn": "polite",
     "meaningUk": "ввічливий",
     "meaningAr": "مهذب",
-    "hintDe": "Gesucht ist das Adjektiv höflich."
+    "hintDe": "Freundlich und respektvoll im Verhalten."
   },
   {
     "category": "adjective",
@@ -439,7 +439,7 @@ window.appData.vocabulary = [
     "meaningEn": "tiny",
     "meaningUk": "крихітний",
     "meaningAr": "ضئيل جدًا",
-    "hintDe": "Gesucht ist das Adjektiv winzig."
+    "hintDe": "Sehr, sehr klein."
   },
   {
     "category": "adjective",
@@ -448,7 +448,7 @@ window.appData.vocabulary = [
     "meaningEn": "expensive",
     "meaningUk": "дорогий",
     "meaningAr": "غالي",
-    "hintDe": "Gesucht ist das Adjektiv teuer."
+    "hintDe": "So, dass man viel Geld dafür bezahlen muss."
   },
   {
     "category": "adjective",
@@ -457,7 +457,7 @@ window.appData.vocabulary = [
     "meaningEn": "generous",
     "meaningUk": "просторий / щедрий",
     "meaningAr": "واسع / كريم",
-    "hintDe": "Gesucht ist das Adjektiv großzügig."
+    "hintDe": "Groß oder weit, oder so, dass man gern viel gibt."
   },
   {
     "category": "adjective",
@@ -466,7 +466,7 @@ window.appData.vocabulary = [
     "meaningEn": "clean",
     "meaningUk": "чистий",
     "meaningAr": "نظيف",
-    "hintDe": "Gesucht ist das Adjektiv sauber."
+    "hintDe": "Ohne Schmutz."
   },
   {
     "category": "grammar",
@@ -475,7 +475,7 @@ window.appData.vocabulary = [
     "meaningEn": "about it / about that",
     "meaningUk": "про це",
     "meaningAr": "عن ذلك",
-    "hintDe": "Gesucht ist die Form darüber."
+    "hintDe": "Ein Wort für eine Sache, von der man spricht oder an die man denkt."
   },
   {
     "category": "grammar",
@@ -484,7 +484,7 @@ window.appData.vocabulary = [
     "meaningEn": "for it / for that",
     "meaningUk": "для цього / за це",
     "meaningAr": "لهذا / لذلك",
-    "hintDe": "Gesucht ist die Form dafür."
+    "hintDe": "Ein Wort für eine Sache, zu der etwas gehört oder für die etwas gilt."
   },
   {
     "category": "grammar",
@@ -493,7 +493,7 @@ window.appData.vocabulary = [
     "meaningEn": "what for / for what",
     "meaningUk": "для чого / за що",
     "meaningAr": "لأجل ماذا / لماذا",
-    "hintDe": "Gesucht ist die Form wofür."
+    "hintDe": "Ein Fragewort nach dem Zweck oder Grund bei Sachen."
   },
   {
     "category": "grammar",
@@ -502,7 +502,7 @@ window.appData.vocabulary = [
     "meaningEn": "about what",
     "meaningUk": "про що",
     "meaningAr": "عن ماذا",
-    "hintDe": "Gesucht ist die Form worüber."
+    "hintDe": "Ein Fragewort danach, von welcher Sache man spricht."
   },
   {
     "category": "grammar",
@@ -511,7 +511,7 @@ window.appData.vocabulary = [
     "meaningEn": "despite",
     "meaningUk": "попри / незважаючи на",
     "meaningAr": "على الرغم من",
-    "hintDe": "Gesucht ist die Form trotz."
+    "hintDe": "Zeigt einen Gegensatz: etwas passiert, obwohl ein Hindernis da ist."
   },
   {
     "category": "grammar",
@@ -520,7 +520,7 @@ window.appData.vocabulary = [
     "meaningEn": "but rather / but also",
     "meaningUk": "а навпаки / а також",
     "meaningAr": "بل / وإنما",
-    "hintDe": "Gesucht ist die Form sondern."
+    "hintDe": "Verbindet den zweiten Teil nach einer Verneinung oder nach nicht nur."
   },
   {
     "category": "grammar",
@@ -529,7 +529,7 @@ window.appData.vocabulary = [
     "meaningEn": "either",
     "meaningUk": "або",
     "meaningAr": "إما",
-    "hintDe": "Gesucht ist die Form entweder."
+    "hintDe": "Zeigt die erste von zwei Möglichkeiten."
   },
   {
     "category": "grammar",
@@ -538,7 +538,7 @@ window.appData.vocabulary = [
     "meaningEn": "would have / had (subjunctive)",
     "meaningUk": "мав би / якби мав",
     "meaningAr": "كان سيملك / لو كان قد",
-    "hintDe": "Gesucht ist die Form hätte."
+    "hintDe": "Form von haben für irreale oder gedachte Situationen in der Vergangenheit."
   },
   {
     "category": "grammar",
@@ -547,6 +547,7 @@ window.appData.vocabulary = [
     "meaningEn": "would be / had been (subjunctive)",
     "meaningUk": "були б / якби були",
     "meaningAr": "لكانوا / لو كانوا قد",
-    "hintDe": "Gesucht ist die Form wären."
+    "hintDe": "Form von sein für irreale oder gedachte Situationen in der Vergangenheit."
   }
 ];
+
