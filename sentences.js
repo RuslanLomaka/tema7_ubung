@@ -271,9 +271,9 @@ window.appData.sentenceBankV2 = [
     "errorSearch": {
       "typoOptions": {
         "sauber": [
-          "saüer",
+          "säubar",
           "sauberr",
-          "sauberr"
+          "saubar"
         ]
       }
     }
@@ -973,9 +973,9 @@ window.appData.sentenceBankV2 = [
     ],
     "multipleChoice": {
       "wrongOptions": [
-        "Entweder Sie überweisen die Miete bis zum dritten Werktag, oder erhalten Sie eine Abmahnung.",
-        "Entweder überweisen Sie die Miete bis zum dritten Werktag, oder Sie erhalten eine Abmahnung.",
-        "Entweder Sie überweisen die Miete, oder bis zum dritten Werktag Sie erhalten eine Abmahnung."
+        "Entweder Sie Miete überweisen bis zum dritten Werktag, oder Sie eine Abmahnung erhalten.",
+        "Entweder Sie überweisen die Miete bis dritter zum Werktag, oder Sie Abmahnung bekommen.",
+        "Entweder Sie die Miete überweisen Werktag dritten bis zum, oder Abmahnung Sie bekommen."
       ]
     },
     "errorSearch": {
@@ -1147,7 +1147,7 @@ window.appData.sentenceBankV2 = [
       "wrongOptions": [
         "Der Lift ist kaputt, deshalb wir heute die Treppe nehmen.",
         "Der Lift kaputt ist, deshalb nehmen wir heute die Treppe.",
-        "Der Lift ist kaputt, wir nehmen deshalb heute die Treppe."
+        "Der Lift ist kaputt, deshalb Treppe wir nehmen heute."
       ]
     },
     "errorSearch": {
@@ -1308,7 +1308,7 @@ window.appData.sentenceBankV2 = [
       "wrongOptions": [
         "Die Wohnung ist klein, aber ist die Lage sehr zentral.",
         "Die Wohnung klein ist, aber die Lage ist sehr zentral.",
-        "Die Wohnung ist klein, die Lage aber ist sehr zentral."
+        "Die Wohnung ist klein, aber die Lage ist zentral sehr."
       ]
     },
     "errorSearch": {
