@@ -10,6 +10,13 @@ window.appData = window.appData || {};
     decision, and closing. It is not a speaker-guessing task yet.
 
   Hard authoring rules for future agents:
+  - Draft every new dialog first as one solid, readable block of German text in
+    this comment section or in a nearby review note before converting it to data.
+    The draft should look like a real exchange, line by line, with speaker names.
+    This forces the authoring agent to focus on linguistic meaningfulness,
+    natural dialog flow, and grammatical correctness before thinking about JSON
+    structure. Only after that prose dialog is clear and unambiguous should it be
+    represented as a structured data entry in window.appData.dialogs.
   - Keep every dialog strongly unambiguous. If two neighboring lines can be swapped
     without changing the meaning, rewrite the dialog before adding it.
   - Give the first line an obvious opening signal, for example a greeting or a
