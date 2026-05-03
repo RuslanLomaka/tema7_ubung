@@ -45,6 +45,18 @@ window.appData = window.appData || {};
   - sentences.js owns standalone sentence examples.
   - task-factory.js may transform this data into tasks, but should not invent new
     dialog lines at runtime. Runtime generation may shuffle existing lines only.
+
+  Pilot dialog draft mirrored as data below:
+  Mieter: Guten Tag, ich interessiere mich für die Wohnung.
+  Vermieter: Guten Tag. Die Wohnung ist noch frei.
+  Mieter: Dann möchte ich die Wohnung gern besichtigen.
+  Vermieter: Eine Besichtigung ist am Donnerstag um 17 Uhr möglich.
+  Mieter: Danke, der Termin passt. Vorher habe ich eine Frage zu den Nebenkosten.
+  Vermieter: Die Nebenkosten stehen im Mietvertrag genau aufgelistet.
+  Mieter: Gut. Und wie hoch ist die Kaution?
+  Vermieter: Die Kaution beträgt zwei Monatsmieten.
+  Mieter: Dann komme ich am Donnerstag zur Besichtigung.
+  Vermieter: Sehr gut, ich bringe den Mietvertrag zur Besichtigung mit.
 */
 window.appData.dialogs = [
   {
@@ -69,37 +81,37 @@ window.appData.dialogs = [
       {
         id: "02",
         speaker: "Vermieter",
-        text: "Guten Tag. Welche Frage haben Sie zur Wohnung?"
+        text: "Guten Tag. Die Wohnung ist noch frei."
       },
       {
         id: "03",
         speaker: "Mieter",
-        text: "Ich habe eine Frage zu den Nebenkosten."
+        text: "Dann möchte ich die Wohnung gern besichtigen."
       },
       {
         id: "04",
         speaker: "Vermieter",
-        text: "Die Nebenkosten stehen im Mietvertrag genau aufgelistet."
+        text: "Eine Besichtigung ist am Donnerstag um 17 Uhr möglich."
       },
       {
         id: "05",
         speaker: "Mieter",
-        text: "Und wie hoch ist die Kaution?"
+        text: "Danke, der Termin passt. Vorher habe ich eine Frage zu den Nebenkosten."
       },
       {
         id: "06",
         speaker: "Vermieter",
-        text: "Die Kaution beträgt zwei Monatsmieten."
+        text: "Die Nebenkosten stehen im Mietvertrag genau aufgelistet."
       },
       {
         id: "07",
         speaker: "Mieter",
-        text: "Kann ich die Wohnung diese Woche besichtigen?"
+        text: "Gut. Und wie hoch ist die Kaution?"
       },
       {
         id: "08",
         speaker: "Vermieter",
-        text: "Ja, am Donnerstag um 17 Uhr passt es gut."
+        text: "Die Kaution beträgt zwei Monatsmieten."
       },
       {
         id: "09",
