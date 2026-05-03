@@ -1039,6 +1039,7 @@ const TASK_CONTROLLERS = {
       shuffle(task.lines).forEach((line) => {
         wordBank.appendChild(makeDialogLineButton(line));
       });
+      answerArea.parentElement.parentElement.insertBefore(wordBank, answerArea.parentElement);
     },
     validateBeforeSubmit(task) {
       if (getDialogSubmittedLineIds().length === task.correctOrder.length) return true;
@@ -2215,6 +2216,7 @@ function renderTask() {
   setTaskHelpOpen(false);
   answerArea.innerHTML = "";
   wordBank.innerHTML = "";
+  charToolbar.after(wordBank);
   hideFeedback();
   hidePostSubmitPanels();
 
