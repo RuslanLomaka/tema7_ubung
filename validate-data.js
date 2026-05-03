@@ -171,6 +171,20 @@ for (const dialog of dialogs) {
     addIssue("dialogs.js", dialog.id || "unknown", "Dialog must contain at least 4 lines.");
     continue;
   }
+  if (!dialog.certification) {
+    addIssue("dialogs.js", dialog.id || "unknown", "Dialog missing certification metadata.");
+  } else {
+    if (!["certified", "needs_review"].includes(dialog.certification.status)) {
+      addIssue("dialogs.js", dialog.id, "Dialog certification status must be certified or needs_review.");
+    }
+    if (dialog.certification.status === "certified") {
+      for (const field of ["certifiedBy", "certifiedOn", "notes"]) {
+        if (!dialog.certification[field]) {
+          addIssue("dialogs.js", dialog.id, `Certified dialog missing certification.${field}.`);
+        }
+      }
+    }
+  }
 
   const lineIds = new Set();
   const speakerCounts = {};

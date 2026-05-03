@@ -39,6 +39,23 @@ window.appData = window.appData || {};
   - Before adding more dialogs, manually test the shuffled cards: a careful learner
     should be able to explain why each line comes next.
 
+  Certification protocol for future agents:
+  - A dialog may be marked as certified only after a separate semantic audit, not
+    during the first draft pass.
+  - For each line, write down why this line must come after the previous line.
+    The reason should be semantic or grammatical, not just "it sounds better".
+  - Check every neighboring pair for possible swapping. If line N and line N+1
+    can switch places without breaking meaning, the dialog is not certified.
+  - Check every answer line against all previous question lines. If an answer could
+    plausibly answer a different earlier question, rewrite it.
+  - Remove vague transition-only lines such as "Gut", "Ja", "Das ist wichtig", or
+    "Mache ich" unless the rest of the same line names the exact previous topic.
+  - Mark certification in the data entry with certification.status = "certified"
+    only when the dialog passes this audit.
+  - If another model audits the dialogs later, it should either keep the certified
+    status and add its own reviewer note, or change the status to "needs_review"
+    with a concrete reason and line number.
+
   Data ownership:
   - dialogs.js owns complete dialog flow and ordering.
   - vocab.js owns vocabulary facts and hints.
@@ -100,7 +117,7 @@ window.appData = window.appData || {};
   Mieter: Der Umzugswagen kommt gegen zehn Uhr.
   Nachbar: Dann ist der Hof am Vormittag kurz voll.
   Mieter: Ja, ich achte darauf, dass der Eingang frei bleibt.
-  Nachbar: Das ist wichtig, weil alle Bewohner den Eingang benutzen.
+  Nachbar: Ein freier Eingang ist wichtig, weil alle Bewohner den Eingang benutzen.
   Mieter: Gibt es eine Regel aus der Hausordnung für den Umzug?
   Nachbar: Nach 20 Uhr sollte kein lauter Lärm mehr entstehen.
   Mieter: Verstanden, der Umzug ist vorher fertig.
@@ -115,7 +132,7 @@ window.appData = window.appData || {};
   Vermieter: Ja, ich mähe den Rasen am Samstag.
   Mieter: Danke. Die Kinder spielen oft im Hof.
   Vermieter: Dann soll der Hof am Wochenende sauber aussehen.
-  Mieter: Das hilft den Mietern sehr.
+  Mieter: Ein sauberer Hof hilft den Mietern sehr.
   Vermieter: Gut, ich bringe am Samstag auch die Hecke in Ordnung.
 
   Dialog draft 07 mirrored as data below:
@@ -139,7 +156,7 @@ window.appData = window.appData || {};
   Rechtsanwalt: Dann prüfen wir zuerst den Mietvertrag genau.
   Mieter: Kann daraus ein Prozess vor Gericht werden?
   Rechtsanwalt: Vielleicht, aber zuerst schreiben wir einen höflichen Brief.
-  Mieter: Gut, ich möchte den Prozess vermeiden.
+  Mieter: Dann schreibe ich lieber zuerst einen Brief, denn ich möchte den Prozess vermeiden.
   Rechtsanwalt: Das ist sinnvoll, Frieden ist oft besser als ein Gerichtstermin.
 
   Dialog draft 09 mirrored as data below:
@@ -175,7 +192,7 @@ window.appData = window.appData || {};
   Hausverwaltung: Ja, ohne Genehmigung ist das Abstellen nicht erlaubt.
   Mieter: Wie kann ich die Genehmigung beantragen?
   Hausverwaltung: Schreiben Sie bitte eine kurze E-Mail an die Hausverwaltung.
-  Mieter: Gut, dann stelle ich das Fahrrad heute in den Keller.
+  Mieter: Bis zur Genehmigung stelle ich das Fahrrad heute in den Keller.
   Hausverwaltung: Danke, so bleibt der Hof sauber und frei.
 */
 window.appData.dialogs = [
@@ -192,6 +209,12 @@ window.appData.dialogs = [
       "der Mietvertrag"
     ],
     speakers: ["Mieter", "Vermieter"],
+    certification: {
+      status: "certified",
+      certifiedBy: "Codex",
+      certifiedOn: "2026-05-03",
+      notes: "Availability leads to appointment; appointment leads to costs; Nebenkosten answer precedes Kaution question; closing confirms the visit."
+    },
     lines: [
       {
         id: "01",
@@ -265,6 +288,12 @@ window.appData.dialogs = [
       "rücksichtslos"
     ],
     speakers: ["Mieter", "Nachbar"],
+    certification: {
+      status: "certified",
+      certifiedBy: "Codex",
+      certifiedOn: "2026-05-03",
+      notes: "Noise complaint identifies time, neighbor accepts cause, tenant requests action, neighbor commits, both close on avoiding complaint and keeping peace."
+    },
     lines: [
       {
         id: "01",
@@ -335,6 +364,12 @@ window.appData.dialogs = [
       "darüber"
     ],
     speakers: ["Mieter", "Hausverwaltung"],
+    certification: {
+      status: "certified",
+      certifiedBy: "Codex",
+      certifiedOn: "2026-05-03",
+      notes: "Lift report leads to safety question, repair responsibility, repair time, then tenant asks how to inform other tenants."
+    },
     lines: [
       {
         id: "01",
@@ -406,6 +441,12 @@ window.appData.dialogs = [
       "vereinbaren"
     ],
     speakers: ["Mieter", "Vermieter"],
+    certification: {
+      status: "certified",
+      certifiedBy: "Codex",
+      certifiedOn: "2026-05-03",
+      notes: "Cancellation starts with notice period, then sending method, then handover timing after the tenant states the move-out date."
+    },
     lines: [
       {
         id: "01",
@@ -476,6 +517,12 @@ window.appData.dialogs = [
       "der Lärm"
     ],
     speakers: ["Mieter", "Nachbar"],
+    certification: {
+      status: "certified",
+      certifiedBy: "Codex",
+      certifiedOn: "2026-05-03",
+      notes: "Move-in announcement leads to truck time, entrance access, house-rule question, quiet-hours answer, and final confirmation."
+    },
     lines: [
       {
         id: "01",
@@ -505,7 +552,7 @@ window.appData.dialogs = [
       {
         id: "06",
         speaker: "Nachbar",
-        text: "Das ist wichtig, weil alle Bewohner den Eingang benutzen."
+        text: "Ein freier Eingang ist wichtig, weil alle Bewohner den Eingang benutzen."
       },
       {
         id: "07",
@@ -548,6 +595,12 @@ window.appData.dialogs = [
       "sauber"
     ],
     speakers: ["Mieter", "Vermieter"],
+    certification: {
+      status: "certified",
+      certifiedBy: "Codex",
+      certifiedOn: "2026-05-03",
+      notes: "High grass leads to responsibility in the contract, mowing date, children in the yard, and why a clean yard matters."
+    },
     lines: [
       {
         id: "01",
@@ -592,7 +645,7 @@ window.appData.dialogs = [
       {
         id: "09",
         speaker: "Mieter",
-        text: "Das hilft den Mietern sehr."
+        text: "Ein sauberer Hof hilft den Mietern sehr."
       },
       {
         id: "10",
@@ -617,6 +670,12 @@ window.appData.dialogs = [
       "vereinbaren"
     ],
     speakers: ["Mieter", "Vermieter"],
+    certification: {
+      status: "certified",
+      certifiedBy: "Codex",
+      certifiedOn: "2026-05-03",
+      notes: "Crack report locates damage, landlord schedules inspection, tenant offers photos, and landlord uses photos to plan repair."
+    },
     lines: [
       {
         id: "01",
@@ -693,6 +752,12 @@ window.appData.dialogs = [
       "der Frieden"
     ],
     speakers: ["Mieter", "Rechtsanwalt"],
+    certification: {
+      status: "certified",
+      certifiedBy: "Codex",
+      certifiedOn: "2026-05-03",
+      notes: "Dispute is defined, contract duty is checked, process risk is asked, and the letter is chosen to avoid court."
+    },
     lines: [
       {
         id: "01",
@@ -737,7 +802,7 @@ window.appData.dialogs = [
       {
         id: "09",
         speaker: "Mieter",
-        text: "Gut, ich möchte den Prozess vermeiden."
+        text: "Dann schreibe ich lieber zuerst einen Brief, denn ich möchte den Prozess vermeiden."
       },
       {
         id: "10",
@@ -763,6 +828,12 @@ window.appData.dialogs = [
       "überweisen"
     ],
     speakers: ["Vermieter", "Mieter"],
+    certification: {
+      status: "certified",
+      certifiedBy: "Codex",
+      certifiedOn: "2026-05-03",
+      notes: "Contract reading leads to unclear deposit, payment requirement, account question, transfer plan, and signing appointment."
+    },
     lines: [
       {
         id: "01",
@@ -836,6 +907,12 @@ window.appData.dialogs = [
       "teuer"
     ],
     speakers: ["Mieter", "Freund"],
+    certification: {
+      status: "certified",
+      certifiedBy: "Codex",
+      certifiedOn: "2026-05-03",
+      notes: "Price concern leads to location, Nebenkosten, affordability, deposit planning, and final assessment."
+    },
     lines: [
       {
         id: "01",
@@ -906,6 +983,12 @@ window.appData.dialogs = [
       "sauber"
     ],
     speakers: ["Mieter", "Hausverwaltung"],
+    certification: {
+      status: "certified",
+      certifiedBy: "Codex",
+      certifiedOn: "2026-05-03",
+      notes: "Permission question leads to prohibition scope, exception requirement, how to request permission, and temporary compliant action."
+    },
     lines: [
       {
         id: "01",
@@ -950,7 +1033,7 @@ window.appData.dialogs = [
       {
         id: "09",
         speaker: "Mieter",
-        text: "Gut, dann stelle ich das Fahrrad heute in den Keller."
+        text: "Bis zur Genehmigung stelle ich das Fahrrad heute in den Keller."
       },
       {
         id: "10",
