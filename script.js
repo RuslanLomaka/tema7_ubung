@@ -1405,7 +1405,7 @@ function showSentenceMatchSolutions(task) {
   postSubmitPanel.classList.remove("hidden");
 }
 
-function showDialogOrderSolution(task) {
+function showDialogOrderSolution(task, submittedLineIds = getDialogSubmittedLineIds()) {
   if (task.type !== "dialogOrder") return;
 
   const title = document.createElement("p");
@@ -1415,9 +1415,18 @@ function showDialogOrderSolution(task) {
   const list = document.createElement("ol");
   list.className = "alternate-list";
 
-  getDialogOrderedLines(task).forEach((line) => {
+  getDialogOrderedLines(task).forEach((line, index) => {
     const item = document.createElement("li");
-    item.textContent = formatDialogLine(line);
+    const speaker = document.createElement("span");
+    speaker.className = "dialog-line-speaker";
+    speaker.textContent = line.speaker;
+
+    const text = document.createElement("span");
+    text.textContent = line.text;
+
+    item.className = "dialog-solution-line";
+    item.classList.toggle("is-misplaced", submittedLineIds[index] !== line.id);
+    item.append(speaker, text);
     list.appendChild(item);
   });
 
@@ -1916,6 +1925,11 @@ function getDialogSubmittedLineIds() {
   return Array.from(answerArea.querySelectorAll(".dialog-line-button")).map((button) => button.dataset.lineId);
 }
 
+function getDialogCorrectPositionCount(task) {
+  const submitted = getDialogSubmittedLineIds();
+  return task.correctOrder.reduce((count, lineId, index) => count + (submitted[index] === lineId ? 1 : 0), 0);
+}
+
 function formatDialogLine(line) {
   return `${line.speaker}: ${line.text}`;
 }
@@ -2311,6 +2325,8 @@ function checkAnswer() {
     } else {
       if (Array.isArray(task.pairs)) {
         setFeedback("bad", `Hoppla, ${getSentenceMatchCorrectCount(task)} von ${getSentenceMatchPairs(task).length} Verbindungen waren richtig.`);
+      } else if (task.type === "dialogOrder") {
+        setFeedback("bad", `Hoppla, ${getDialogCorrectPositionCount(task)} von ${task.correctOrder.length} Zeilen waren richtig positioniert.`);
       } else {
         setFeedback("bad", `Hoppla, das war ein kleiner Fehler. Die richtige Version ist: ${displayGerman(expected)}`);
       }

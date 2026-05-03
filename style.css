@@ -702,6 +702,27 @@ h2 {
   line-height: 1.45;
 }
 
+.dialog-solution-line {
+  padding: 8px 10px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+}
+
+.dialog-solution-line::marker {
+  font-weight: 800;
+}
+
+.dialog-solution-line.is-misplaced {
+  border-color: #e7aaa0;
+  background: #fde4df;
+  color: #9b2b1c;
+}
+
+.dialog-solution-line .dialog-line-speaker {
+  display: inline-block;
+  margin-right: 8px;
+}
+
 .rule-title {
   margin: 0 0 10px;
   font-size: 1.05rem;
