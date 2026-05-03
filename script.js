@@ -1035,6 +1035,7 @@ const TASK_CONTROLLERS = {
     render(task) {
       answerArea.classList.add("dialog-order");
       wordBank.classList.add("dialog-bank");
+      wordBank.classList.remove("hidden");
       shuffle(task.lines).forEach((line) => {
         wordBank.appendChild(makeDialogLineButton(line));
       });
