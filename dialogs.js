@@ -67,7 +67,7 @@ window.appData.dialogs = [
       {
         id: "03",
         speaker: "Mieter",
-        text: "Ja, aber ich habe noch eine Frage zu den Nebenkosten."
+        text: "Ich habe eine Frage zu den Nebenkosten."
       },
       {
         id: "04",
