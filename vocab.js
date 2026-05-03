@@ -1,4 +1,4 @@
-﻿window.appData = window.appData || {};
+window.appData = window.appData || {};
 window.appData.vocabulary = [
   {
     "category": "noun",
@@ -52,7 +52,7 @@ window.appData.vocabulary = [
     "meaningEn": "tenant",
     "meaningUk": "орендар",
     "meaningAr": "المستأجر",
-    "hintDe": "Eine Person, die in einer Wohnung lebt und dafür Miete zahlt."
+    "hintDe": "Eine Person, die in einer Wohnung lebt und dafür regelmäßig Geld bezahlt."
   },
   {
     "category": "noun",
@@ -61,7 +61,7 @@ window.appData.vocabulary = [
     "meaningEn": "landlord",
     "meaningUk": "орендодавець",
     "meaningAr": "المالك",
-    "hintDe": "Eine Person, der die Wohnung gehört und die sie vermietet."
+    "hintDe": "Eine Person, der die Wohnung gehört und die sie anderen gegen Geld überlässt."
   },
   {
     "category": "noun",
