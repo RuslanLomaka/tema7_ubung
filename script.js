@@ -497,6 +497,9 @@ function getCorrectSentence(task) {
   if (Array.isArray(task.pairs)) {
     return getSentenceMatchExpectedSummary(task);
   }
+  if (task.type === "dialogOrder") {
+    return getDialogExpectedSummary(task);
+  }
   if (task.type === "gapFill") return getGapFillFullSentence(task);
   if (task.type === "formTraining") {
     return getFormOrder(task).map((key) => getFormDisplayValue(task, key)).join(" | ");
