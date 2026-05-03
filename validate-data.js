@@ -183,6 +183,9 @@ for (const dialog of dialogs) {
           addIssue("dialogs.js", dialog.id, `Certified dialog missing certification.${field}.`);
         }
       }
+      if (!Array.isArray(dialog.certification.reviewedBy) || dialog.certification.reviewedBy.length < 2) {
+        addIssue("dialogs.js", dialog.id, "Certified dialog must include at least two certification reviewers.");
+      }
     }
   }
 

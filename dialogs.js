@@ -68,9 +68,9 @@ window.appData = window.appData || {};
   Vermieter: Guten Tag. Die Wohnung ist noch frei.
   Mieter: Dann möchte ich die Wohnung gern besichtigen.
   Vermieter: Eine Besichtigung ist am Donnerstag um 17 Uhr möglich.
-  Mieter: Danke, der Termin passt. Vorher habe ich eine Frage zu den Nebenkosten.
+  Mieter: Der Termin passt. Vorher habe ich eine Frage zu den Nebenkosten.
   Vermieter: Die Nebenkosten stehen im Mietvertrag genau aufgelistet.
-  Mieter: Gut. Und wie hoch ist die Kaution?
+  Mieter: Zu den Nebenkosten habe ich alles verstanden. Wie hoch ist die Kaution?
   Vermieter: Die Kaution beträgt zwei Monatsmieten.
   Mieter: Dann komme ich am Donnerstag zur Besichtigung.
   Vermieter: Sehr gut, ich bringe den Mietvertrag zur Besichtigung mit.
@@ -106,7 +106,7 @@ window.appData = window.appData || {};
   Vermieter: Dann muss die Kündigung bis zum dritten Werktag ankommen.
   Mieter: Ich schicke die Kündigung heute per Post.
   Vermieter: Bitte senden Sie mir zusätzlich eine Kopie per E-Mail.
-  Mieter: Mache ich. Wann soll ich die Wohnung übergeben?
+  Mieter: Die Kopie per E-Mail sende ich auch. Wann soll ich die Wohnung übergeben?
   Vermieter: Wir vereinbaren den Termin nach dem Auszug.
   Mieter: Gut, ich ziehe Ende Juni aus.
   Vermieter: Dann planen wir die Übergabe für die letzte Juniwoche.
@@ -167,21 +167,21 @@ window.appData = window.appData || {};
   Vermieter: Die Kaution muss vor dem Einzug überwiesen werden.
   Mieter: Auf welches Konto soll ich die Kaution überweisen?
   Vermieter: Die Kontodaten stehen auf der letzten Seite.
-  Mieter: Gut, dann überweise ich die Kaution morgen.
+  Mieter: Mit den Kontodaten überweise ich die Kaution morgen.
   Vermieter: Danach können wir den Mietvertrag unterschreiben.
   Mieter: Einverstanden, ich bringe morgen meinen Ausweis mit.
 
   Dialog draft 10 mirrored as data below:
   Mieter: Die Wohnung gefällt mir, aber sie ist ziemlich teuer.
-  Freund: Ist die Lage wenigstens zentral?
-  Mieter: Ja, die Lage ist sehr zentral und die Wohnung ist ruhig.
-  Freund: Dann erklär mir zuerst die Nebenkosten.
+  Freund: Liegt die Wohnung wenigstens zentral?
+  Mieter: Ja, die Wohnung liegt sehr zentral und ist ruhig.
+  Freund: Erklär mir bitte zuerst die Nebenkosten.
   Mieter: Die Nebenkosten sind hoch, aber die Heizung ist schon enthalten.
   Freund: Kannst du dir die Wohnung trotzdem leisten?
   Mieter: Ja, wenn ich auf andere Ausgaben achte.
-  Freund: Dann solltest du auch die Kaution einplanen.
+  Freund: Plane auch die Kaution ein.
   Mieter: Stimmt, die Kaution zahle ich vor dem Einzug.
-  Freund: Dann ist die Wohnung teuer, aber vielleicht trotzdem passend.
+  Freund: Also ist die Wohnung teuer, aber vielleicht trotzdem passend.
 
   Dialog draft 11 mirrored as data below:
   Mieter: Guten Tag, darf ich im Hof Fahrräder abstellen?
@@ -196,6 +196,7 @@ window.appData = window.appData || {};
   Hausverwaltung: Danke, so bleibt der Hof sauber und frei.
 */
 window.appData.dialogs = [
+  // Certification signature: reviewed and certified by Codex and Gemini CLI on 2026-05-03.
   {
     id: "dlg_besichtigung_kaution_01",
     level: "A2",
@@ -211,8 +212,9 @@ window.appData.dialogs = [
     speakers: ["Mieter", "Vermieter"],
     certification: {
       status: "certified",
-      certifiedBy: "Codex",
+      certifiedBy: "Codex + Gemini CLI",
       certifiedOn: "2026-05-03",
+      reviewedBy: ["Codex", "Gemini CLI"],
       notes: "Availability leads to appointment; appointment leads to costs; Nebenkosten answer precedes Kaution question; closing confirms the visit."
     },
     lines: [
@@ -239,7 +241,7 @@ window.appData.dialogs = [
       {
         id: "05",
         speaker: "Mieter",
-        text: "Danke, der Termin passt. Vorher habe ich eine Frage zu den Nebenkosten."
+        text: "Der Termin passt. Vorher habe ich eine Frage zu den Nebenkosten."
       },
       {
         id: "06",
@@ -249,7 +251,7 @@ window.appData.dialogs = [
       {
         id: "07",
         speaker: "Mieter",
-        text: "Gut. Und wie hoch ist die Kaution?"
+        text: "Zu den Nebenkosten habe ich alles verstanden. Wie hoch ist die Kaution?"
       },
       {
         id: "08",
@@ -273,6 +275,7 @@ window.appData.dialogs = [
       ar: "يسأل المستأجر المالك عن التكاليف الجانبية والتأمين وموعد مشاهدة الشقة."
     }
   },
+  // Certification signature: reviewed and certified by Codex and Gemini CLI on 2026-05-03.
   {
     id: "dlg_hausordnung_laerm_02",
     level: "A2",
@@ -290,8 +293,9 @@ window.appData.dialogs = [
     speakers: ["Mieter", "Nachbar"],
     certification: {
       status: "certified",
-      certifiedBy: "Codex",
+      certifiedBy: "Codex + Gemini CLI",
       certifiedOn: "2026-05-03",
+      reviewedBy: ["Codex", "Gemini CLI"],
       notes: "Noise complaint identifies time, neighbor accepts cause, tenant requests action, neighbor commits, both close on avoiding complaint and keeping peace."
     },
     lines: [
@@ -352,6 +356,7 @@ window.appData.dialogs = [
       ar: "يتحدث المستأجر مع الجار عن الضجيج وقواعد المنزل والحفاظ على الهدوء في المبنى."
     }
   },
+  // Certification signature: reviewed and certified by Codex and Gemini CLI on 2026-05-03.
   {
     id: "dlg_lift_reparatur_03",
     level: "A2",
@@ -366,8 +371,9 @@ window.appData.dialogs = [
     speakers: ["Mieter", "Hausverwaltung"],
     certification: {
       status: "certified",
-      certifiedBy: "Codex",
+      certifiedBy: "Codex + Gemini CLI",
       certifiedOn: "2026-05-03",
+      reviewedBy: ["Codex", "Gemini CLI"],
       notes: "Lift report leads to safety question, repair responsibility, repair time, then tenant asks how to inform other tenants."
     },
     lines: [
@@ -428,6 +434,7 @@ window.appData.dialogs = [
       ar: "يبلغ المستأجر عن تعطل المصعد ويتفق على كيفية إبلاغ بقية السكان."
     }
   },
+  // Certification signature: reviewed and certified by Codex and Gemini CLI on 2026-05-03.
   {
     id: "dlg_kuendigungsfrist_auszug_04",
     level: "A2",
@@ -443,8 +450,9 @@ window.appData.dialogs = [
     speakers: ["Mieter", "Vermieter"],
     certification: {
       status: "certified",
-      certifiedBy: "Codex",
+      certifiedBy: "Codex + Gemini CLI",
       certifiedOn: "2026-05-03",
+      reviewedBy: ["Codex", "Gemini CLI"],
       notes: "Cancellation starts with notice period, then sending method, then handover timing after the tenant states the move-out date."
     },
     lines: [
@@ -481,7 +489,7 @@ window.appData.dialogs = [
       {
         id: "07",
         speaker: "Mieter",
-        text: "Mache ich. Wann soll ich die Wohnung übergeben?"
+        text: "Die Kopie per E-Mail sende ich auch. Wann soll ich die Wohnung übergeben?"
       },
       {
         id: "08",
@@ -505,6 +513,7 @@ window.appData.dialogs = [
       ar: "يلغي المستأجر عقد الإيجار ويناقش مهلة الإشعار وتسليم الشقة."
     }
   },
+  // Certification signature: reviewed and certified by Codex and Gemini CLI on 2026-05-03.
   {
     id: "dlg_umzug_einzug_05",
     level: "A2",
@@ -519,8 +528,9 @@ window.appData.dialogs = [
     speakers: ["Mieter", "Nachbar"],
     certification: {
       status: "certified",
-      certifiedBy: "Codex",
+      certifiedBy: "Codex + Gemini CLI",
       certifiedOn: "2026-05-03",
+      reviewedBy: ["Codex", "Gemini CLI"],
       notes: "Move-in announcement leads to truck time, entrance access, house-rule question, quiet-hours answer, and final confirmation."
     },
     lines: [
@@ -581,6 +591,7 @@ window.appData.dialogs = [
       ar: "يخبر المستأجر الجديد الجار عن الانتقال ويسأل عن قواعد المنزل."
     }
   },
+  // Certification signature: reviewed and certified by Codex and Gemini CLI on 2026-05-03.
   {
     id: "dlg_rasen_garten_06",
     level: "A2",
@@ -597,8 +608,9 @@ window.appData.dialogs = [
     speakers: ["Mieter", "Vermieter"],
     certification: {
       status: "certified",
-      certifiedBy: "Codex",
+      certifiedBy: "Codex + Gemini CLI",
       certifiedOn: "2026-05-03",
+      reviewedBy: ["Codex", "Gemini CLI"],
       notes: "High grass leads to responsibility in the contract, mowing date, children in the yard, and why a clean yard matters."
     },
     lines: [
@@ -659,6 +671,7 @@ window.appData.dialogs = [
       ar: "يسأل المستأجر المالك من المسؤول عن قص العشب."
     }
   },
+  // Certification signature: reviewed and certified by Codex and Gemini CLI on 2026-05-03.
   {
     id: "dlg_mauer_reparatur_07",
     level: "A2",
@@ -672,8 +685,9 @@ window.appData.dialogs = [
     speakers: ["Mieter", "Vermieter"],
     certification: {
       status: "certified",
-      certifiedBy: "Codex",
+      certifiedBy: "Codex + Gemini CLI",
       certifiedOn: "2026-05-03",
+      reviewedBy: ["Codex", "Gemini CLI"],
       notes: "Crack report locates damage, landlord schedules inspection, tenant offers photos, and landlord uses photos to plan repair."
     },
     lines: [
@@ -734,6 +748,7 @@ window.appData.dialogs = [
       ar: "يبلغ المستأجر عن شق في الجدار ويتفق على خطوات الإصلاح التالية."
     }
   },
+  // Certification signature: reviewed and certified by Codex and Gemini CLI on 2026-05-03.
   {
     id: "dlg_rechtsanwalt_prozess_08",
     level: "B1",
@@ -754,8 +769,9 @@ window.appData.dialogs = [
     speakers: ["Mieter", "Rechtsanwalt"],
     certification: {
       status: "certified",
-      certifiedBy: "Codex",
+      certifiedBy: "Codex + Gemini CLI",
       certifiedOn: "2026-05-03",
+      reviewedBy: ["Codex", "Gemini CLI"],
       notes: "Dispute is defined, contract duty is checked, process risk is asked, and the letter is chosen to avoid court."
     },
     lines: [
@@ -816,6 +832,7 @@ window.appData.dialogs = [
       ar: "يسأل المستأجر المحامي عن نزاع مع المالك واحتمال الوصول إلى المحكمة."
     }
   },
+  // Certification signature: reviewed and certified by Codex and Gemini CLI on 2026-05-03.
   {
     id: "dlg_mietvertrag_kaution_09",
     level: "A2",
@@ -830,8 +847,9 @@ window.appData.dialogs = [
     speakers: ["Vermieter", "Mieter"],
     certification: {
       status: "certified",
-      certifiedBy: "Codex",
+      certifiedBy: "Codex + Gemini CLI",
       certifiedOn: "2026-05-03",
+      reviewedBy: ["Codex", "Gemini CLI"],
       notes: "Contract reading leads to unclear deposit, payment requirement, account question, transfer plan, and signing appointment."
     },
     lines: [
@@ -873,7 +891,7 @@ window.appData.dialogs = [
       {
         id: "08",
         speaker: "Mieter",
-        text: "Gut, dann überweise ich die Kaution morgen."
+        text: "Mit den Kontodaten überweise ich die Kaution morgen."
       },
       {
         id: "09",
@@ -892,6 +910,7 @@ window.appData.dialogs = [
       ar: "يوضح المالك والمستأجر العقد والتأمين قبل التوقيع."
     }
   },
+  // Certification signature: reviewed and certified by Codex and Gemini CLI on 2026-05-03.
   {
     id: "dlg_teuer_zentral_10",
     level: "A2",
@@ -909,8 +928,9 @@ window.appData.dialogs = [
     speakers: ["Mieter", "Freund"],
     certification: {
       status: "certified",
-      certifiedBy: "Codex",
+      certifiedBy: "Codex + Gemini CLI",
       certifiedOn: "2026-05-03",
+      reviewedBy: ["Codex", "Gemini CLI"],
       notes: "Price concern leads to location, Nebenkosten, affordability, deposit planning, and final assessment."
     },
     lines: [
@@ -922,17 +942,17 @@ window.appData.dialogs = [
       {
         id: "02",
         speaker: "Freund",
-        text: "Ist die Lage wenigstens zentral?"
+        text: "Liegt die Wohnung wenigstens zentral?"
       },
       {
         id: "03",
         speaker: "Mieter",
-        text: "Ja, die Lage ist sehr zentral und die Wohnung ist ruhig."
+        text: "Ja, die Wohnung liegt sehr zentral und ist ruhig."
       },
       {
         id: "04",
         speaker: "Freund",
-        text: "Dann erklär mir zuerst die Nebenkosten."
+        text: "Erklär mir bitte zuerst die Nebenkosten."
       },
       {
         id: "05",
@@ -952,7 +972,7 @@ window.appData.dialogs = [
       {
         id: "08",
         speaker: "Freund",
-        text: "Dann solltest du auch die Kaution einplanen."
+        text: "Plane auch die Kaution ein."
       },
       {
         id: "09",
@@ -962,7 +982,7 @@ window.appData.dialogs = [
       {
         id: "10",
         speaker: "Freund",
-        text: "Dann ist die Wohnung teuer, aber vielleicht trotzdem passend."
+        text: "Also ist die Wohnung teuer, aber vielleicht trotzdem passend."
       }
     ],
     translations: {
@@ -971,6 +991,7 @@ window.appData.dialogs = [
       ar: "يناقش المستأجر ما إذا كانت الشقة الغالية والمركزية مناسبة ماديًا."
     }
   },
+  // Certification signature: reviewed and certified by Codex and Gemini CLI on 2026-05-03.
   {
     id: "dlg_verbot_genehmigung_11",
     level: "B1",
@@ -985,8 +1006,9 @@ window.appData.dialogs = [
     speakers: ["Mieter", "Hausverwaltung"],
     certification: {
       status: "certified",
-      certifiedBy: "Codex",
+      certifiedBy: "Codex + Gemini CLI",
       certifiedOn: "2026-05-03",
+      reviewedBy: ["Codex", "Gemini CLI"],
       notes: "Permission question leads to prohibition scope, exception requirement, how to request permission, and temporary compliant action."
     },
     lines: [
