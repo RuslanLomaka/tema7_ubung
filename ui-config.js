@@ -2,6 +2,7 @@ window.appData = window.appData || {};
 window.appData.uiConfig = {
   taskTypeLabels: {
     sentenceBuilder: "Satzbau",
+    dialogOrder: "Dialog",
     sentenceMatch: "Satzhälften",
     vocabHintMatch: "Wortpaare",
     multipleChoice: "Mehrfachauswahl",

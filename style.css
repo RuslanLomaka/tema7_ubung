@@ -891,6 +891,50 @@ h2 {
   font-weight: 700;
 }
 
+.answer-area.dialog-order,
+.word-bank.dialog-bank {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.answer-area.dialog-order {
+  min-height: 360px;
+}
+
+.answer-area.dialog-order:empty::before {
+  content: "Lege die Dialogzeilen hier in die richtige Reihenfolge.";
+  color: #7a8a82;
+  font-weight: 700;
+}
+
+.dialog-line-button {
+  width: 100%;
+  min-height: 58px;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 10px 12px;
+  text-align: left;
+  white-space: normal;
+}
+
+.dialog-line-speaker {
+  min-width: 96px;
+  padding: 6px 8px;
+  border-radius: 7px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.dialog-line-text {
+  flex: 1;
+  line-height: 1.35;
+}
+
 .answer-area.drop-ready,
 .word-bank.drop-ready {
   outline: 2px dashed rgba(33, 97, 90, 0.38);

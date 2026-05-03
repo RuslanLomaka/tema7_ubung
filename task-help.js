@@ -8,6 +8,13 @@ window.appData.taskHelpCopy = {
       example: "For example: “nicht nur” often goes together with “sondern auch”.",
       submit: "How to submit: place the blocks in the answer area in the final order and click “Prüfen”."
     },
+    dialogOrder: {
+      title: "In this task you should...",
+      body: "Put the shuffled dialog lines into a natural order.",
+      decide: "How to decide: find the greeting first, then match each question with the answer that directly follows it.",
+      example: "For example: a question about the Kaution should come before the answer with the amount.",
+      submit: "How to submit: place all dialog cards in the answer area in order and click “Prüfen”."
+    },
     sentenceMatch: {
       title: "In this task you should...",
       body: "Match each sentence beginning with the correct sentence ending.",
@@ -73,6 +80,13 @@ window.appData.taskHelpCopy = {
       example: "Наприклад: “nicht nur” часто поєднується з “sondern auch”.",
       submit: "Як перевірити: розташуй блоки в зоні відповіді у правильному порядку й натисни “Prüfen”."
     },
+    dialogOrder: {
+      title: "У цьому завданні потрібно...",
+      body: "розставити перемішані репліки діалогу в природному порядку.",
+      decide: "Як вирішувати: знайди привітання, потім поєднуй кожне питання з відповіддю, яка йде одразу після нього.",
+      example: "Наприклад: питання про Kaution має стояти перед відповіддю із сумою.",
+      submit: "Як перевірити: розташуй усі картки діалогу в зоні відповіді по порядку й натисни “Prüfen”."
+    },
     sentenceMatch: {
       title: "У цьому завданні потрібно...",
       body: "поєднати кожен початок речення з правильним закінченням.",
@@ -137,6 +151,13 @@ window.appData.taskHelpCopy = {
       decide: "كيف تقرر: ابحث عن الأجزاء الثابتة، ومكان الفعل، والروابط التي تأتي معًا.",
       example: "مثال: “nicht nur” غالبًا تأتي مع “sondern auch”.",
       submit: "كيف ترسل الإجابة: رتّب المقاطع في منطقة الإجابة بالترتيب الصحيح ثم اضغط “Prüfen”."
+    },
+    dialogOrder: {
+      title: "في هذا التمرين عليك أن...",
+      body: "ترتّب أسطر الحوار المخلوطة بترتيب طبيعي.",
+      decide: "كيف تقرر: ابحث عن التحية أولًا، ثم طابق كل سؤال مع الجواب الذي يأتي بعده مباشرة.",
+      example: "مثال: السؤال عن Kaution يجب أن يأتي قبل الجواب الذي يحتوي على المبلغ.",
+      submit: "كيف ترسل الإجابة: ضع كل بطاقات الحوار في منطقة الإجابة بالترتيب ثم اضغط “Prüfen”."
     },
     sentenceMatch: {
       title: "في هذا التمرين عليك أن...",

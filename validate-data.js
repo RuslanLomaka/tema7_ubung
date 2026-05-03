@@ -5,7 +5,7 @@ const vm = require("vm");
 const projectRoot = __dirname;
 // Mirror the browser loading order closely enough that validation catches
 // integration mistakes between split lesson files before the UI does.
-const filesToLoad = ["grammar.js", "vocab.js", "sentences.js", "data.js", "task-help.js", "ui-config.js", "task-factory.js"];
+const filesToLoad = ["grammar.js", "vocab.js", "sentences.js", "dialogs.js", "data.js", "task-help.js", "ui-config.js", "task-factory.js"];
 
 const sandbox = {
   window: { appData: {} },
@@ -19,7 +19,7 @@ for (const file of filesToLoad) {
   vm.runInNewContext(source, sandbox, { filename: fullPath });
 }
 
-const { grammarConcepts = {}, vocabulary = [], sentenceBankV2 = [], tasks = [], taskHelpCopy = {} } = sandbox.window.appData;
+const { grammarConcepts = {}, vocabulary = [], sentenceBankV2 = [], dialogs = [], tasks = [], taskHelpCopy = {} } = sandbox.window.appData;
 const taskFactory = sandbox.window.TaskFactory;
 const issues = [];
 const warnings = [];
@@ -41,6 +41,7 @@ const vocabularyByBasicForm = new Map(vocabulary.map((item) => [item.basicForm, 
 const helpLanguages = ["en", "uk", "ar"];
 const helpKeys = [
   "sentenceBuilder",
+  "dialogOrder",
   "sentenceMatch",
   "vocabHintMatch",
   "multipleChoice",
@@ -54,9 +55,9 @@ const helpKeys = [
 if (!taskFactory || typeof taskFactory.buildAllTasks !== "function") {
   addIssue("task-factory.js", "TaskFactory", "TaskFactory.buildAllTasks is not available.");
 } else {
-  const generatedTasks = taskFactory.buildAllTasks(sentenceBankV2, tasks.filter((task) => task.type === "formTraining"), vocabulary);
+  const generatedTasks = taskFactory.buildAllTasks(sentenceBankV2, tasks.filter((task) => task.type === "formTraining"), vocabulary, dialogs);
   const generatedTypes = new Set(generatedTasks.map((task) => task.type));
-  for (const type of ["sentenceBuilder", "multipleChoice", "gapFill", "formTraining", "errorSearch", "vocabHintMatch"]) {
+  for (const type of ["sentenceBuilder", "multipleChoice", "gapFill", "formTraining", "errorSearch", "vocabHintMatch", "dialogOrder"]) {
     if (!generatedTypes.has(type)) {
       addIssue("task-factory.js", type, "Generated task bank is missing this task type.");
     }
@@ -64,6 +65,9 @@ if (!taskFactory || typeof taskFactory.buildAllTasks !== "function") {
 }
 if (!sentenceBankV2.length) {
   addIssue("sentences.js", "sentenceBankV2", "No sentence entries found.");
+}
+if (!dialogs.length) {
+  addIssue("dialogs.js", "dialogs", "No dialog entries found.");
 }
 
 for (const [language, pack] of Object.entries(taskHelpCopy)) {
@@ -153,6 +157,50 @@ for (const entry of sentenceBankV2) {
   }
 }
 
+for (const dialog of dialogs) {
+  if (!dialog.id) addIssue("dialogs.js", "unknown", "Dialog entry missing id.");
+  if (!dialog.title) addIssue("dialogs.js", dialog.id || "unknown", "Dialog entry missing title.");
+  if (!dialog.level) addIssue("dialogs.js", dialog.id || "unknown", "Dialog entry missing level.");
+  if (dialog.grammarFocus && !grammarKeys.has(dialog.grammarFocus)) {
+    addIssue("dialogs.js", dialog.id, `Unknown grammarFocus: ${dialog.grammarFocus}`);
+  }
+  if (!hasTranslations(dialog.translations)) {
+    addIssue("dialogs.js", dialog.id || "unknown", "Dialog entry missing translations.");
+  }
+  if (!Array.isArray(dialog.lines) || dialog.lines.length < 4) {
+    addIssue("dialogs.js", dialog.id || "unknown", "Dialog must contain at least 4 lines.");
+    continue;
+  }
+
+  const lineIds = new Set();
+  const speakerCounts = {};
+  for (const line of dialog.lines) {
+    if (!line.id) addIssue("dialogs.js", dialog.id, "Dialog line missing id.");
+    if (line.id && lineIds.has(line.id)) addIssue("dialogs.js", dialog.id, `Duplicate dialog line id: ${line.id}`);
+    if (line.id) lineIds.add(line.id);
+    if (!line.speaker) addIssue("dialogs.js", dialog.id, `Dialog line ${line.id || "unknown"} missing speaker.`);
+    if (!line.text) addIssue("dialogs.js", dialog.id, `Dialog line ${line.id || "unknown"} missing text.`);
+    if (line.speaker) speakerCounts[line.speaker] = (speakerCounts[line.speaker] || 0) + 1;
+  }
+
+  const speakers = Object.keys(speakerCounts);
+  if (speakers.length !== 2) {
+    addIssue("dialogs.js", dialog.id, "Dialog should use exactly two speakers.");
+  }
+  if (dialog.lines.length !== 10) {
+    addWarning("dialogs.js", dialog.id, "Pilot dialog format expects 10 lines.");
+  }
+  if (speakers.length === 2 && speakerCounts[speakers[0]] !== speakerCounts[speakers[1]]) {
+    addWarning("dialogs.js", dialog.id, "Pilot dialog format expects balanced speaker turns.");
+  }
+
+  for (const link of dialog.vocabularyLinks || []) {
+    if (!vocabularyByBasicForm.has(link)) {
+      addWarning("dialogs.js", dialog.id, `Unknown vocabulary link: ${link}`);
+    }
+  }
+}
+
 for (const task of tasks.filter((task) => task.type === "formTraining")) {
   if (!task.id) addIssue("data.js", "unknown form task", "Missing form task id.");
   if (!task.forms) addIssue("data.js", task.id || "unknown", "Form task missing forms block.");
@@ -178,6 +226,7 @@ if (issues.length) {
   console.log(`Grammar concepts: ${Object.keys(grammarConcepts).length}`);
   console.log(`Vocabulary items: ${vocabulary.length}`);
   console.log(`Sentence entries: ${sentenceBankV2.length}`);
+  console.log(`Dialog entries: ${dialogs.length}`);
   console.log(`Form training tasks: ${tasks.filter((task) => task.type === "formTraining").length}`);
   if (warnings.length) {
     console.log("Warnings:");

@@ -443,13 +443,42 @@
     });
   }
 
-  function buildAllTasks(sentenceEntries, formTasks, vocabularyItems = []) {
+  function buildDialogOrderTasks(dialogEntries, options = {}) {
+    const levels = options.levels || ["A2", "B1", "B2"];
+    const usableDialogs = dialogEntries.filter((dialog) => {
+      return dialog.id && dialog.title && Array.isArray(dialog.lines) && dialog.lines.length >= 4;
+    });
+
+    return usableDialogs.flatMap((dialog) => {
+      const targetLevels = options.cloneForAllLevels === false ? [dialog.level || "A2"] : levels;
+      return targetLevels.map((level) => ({
+        id: `dialog_${level.toLowerCase()}_${dialog.id}`,
+        type: "dialogOrder",
+        level,
+        grammarFocus: dialog.grammarFocus || "wohnen_wortschatz",
+        prompt: `Bringe den Dialog in die richtige Reihenfolge: ${dialog.title}.`,
+        title: dialog.title,
+        lines: dialog.lines.map((line, index) => ({
+          id: line.id || String(index + 1).padStart(2, "0"),
+          speaker: line.speaker,
+          text: line.text
+        })),
+        correctOrder: dialog.lines.map((line, index) => line.id || String(index + 1).padStart(2, "0")),
+        translations: dialog.translations,
+        vocabularyLinks: dialog.vocabularyLinks || [],
+        sourceDialogId: dialog.id
+      }));
+    });
+  }
+
+  function buildAllTasks(sentenceEntries, formTasks, vocabularyItems = [], dialogEntries = []) {
     return [
       ...buildSentenceBankTasks(sentenceEntries),
       ...buildFormTrainingPool(formTasks),
       ...buildVocabularyHintMatchTasks(vocabularyItems, {
         pairsPerBoard: window.appData?.uiConfig?.roundPolicy?.vocabHintMatchPairsPerBoard
-      })
+      }),
+      ...buildDialogOrderTasks(dialogEntries)
     ];
   }
 
@@ -457,6 +486,7 @@
     buildSentenceBankTasks,
     buildFormTrainingPool,
     buildVocabularyHintMatchTasks,
+    buildDialogOrderTasks,
     buildSentenceMatchPair,
     buildAllTasks
   };

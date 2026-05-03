@@ -9,6 +9,7 @@ const {
   vocabulary,
   sentenceBankV2 = [],
   taskHelpCopy = {},
+  dialogs = [],
   uiConfig = {}
 } = window.appData;
 
@@ -180,7 +181,7 @@ function shuffle(items) {
 function rebuildTaskBank() {
   // Runtime task generation is owned by task-factory.js. script.js keeps only
   // the currently selected task bank used by round selection and rendering.
-  allTasks = taskFactory.buildAllTasks(sentenceBankV2, legacyFormTasks, vocabulary);
+  allTasks = taskFactory.buildAllTasks(sentenceBankV2, legacyFormTasks, vocabulary, dialogs);
 }
 
 function getLevelTaskCounts() {
@@ -735,9 +736,13 @@ function goToTestView() {
 
 const ROUND_POLICY = {
   selectRoundTasks() {
-    return selectedDifficultyMode === "mixed"
-      ? this.selectMixedRoundTasks(selectedQuestionCount)
-      : this.selectSingleLevelRoundTasks(selectedDifficultyMode, selectedQuestionCount);
+    const dialogTask = this.pickGuaranteedDialogTask();
+    const remainingCount = Math.max(0, selectedQuestionCount - (dialogTask ? 1 : 0));
+    const fillerTasks = selectedDifficultyMode === "mixed"
+      ? this.selectMixedRoundTasks(remainingCount)
+      : this.selectSingleLevelRoundTasks(selectedDifficultyMode, remainingCount);
+
+    return dialogTask ? [dialogTask, ...fillerTasks].slice(0, selectedQuestionCount) : fillerTasks;
   },
 
   distributeEvenly(total, buckets) {
@@ -783,6 +788,14 @@ const ROUND_POLICY = {
     const current = recentSentenceMatchIdsByLevel[level] || [];
     recentSentenceMatchIdsByLevel[level] = [...entryIds, ...current.filter((id) => !entryIds.includes(id))]
       .slice(0, RECENT_SENTENCE_MATCH_HISTORY_LIMIT);
+  },
+
+  pickGuaranteedDialogTask() {
+    const dialogTasks = allTasks.filter((task) => {
+      return task.type === "dialogOrder" && (selectedDifficultyMode === "mixed" || task.level === selectedDifficultyMode);
+    });
+    const fallbackTasks = allTasks.filter((task) => task.type === "dialogOrder");
+    return shuffle(dialogTasks.length ? dialogTasks : fallbackTasks)[0] || null;
   },
 
   pickTaskFromPool(pool, usedIds, usedFormKinds, usedFormVariants) {
@@ -1000,6 +1013,47 @@ const TASK_CONTROLLERS = {
         button.disabled = true;
       });
       wordBank.querySelectorAll(".word-button").forEach((button) => {
+        button.draggable = false;
+        button.disabled = true;
+      });
+    },
+    clear() {
+      Array.from(answerArea.children).forEach((button) => wordBank.appendChild(button));
+      hideFeedback();
+    }
+  },
+  dialogOrder: {
+    selectedAnswer() {
+      return getDialogSubmittedSummary();
+    },
+    expectedAnswer(task) {
+      return getDialogExpectedSummary(task);
+    },
+    prompt(task) {
+      return task.prompt;
+    },
+    render(task) {
+      answerArea.classList.add("dialog-order");
+      wordBank.classList.add("dialog-bank");
+      shuffle(task.lines).forEach((line) => {
+        wordBank.appendChild(makeDialogLineButton(line));
+      });
+    },
+    validateBeforeSubmit(task) {
+      if (getDialogSubmittedLineIds().length === task.correctOrder.length) return true;
+      setFeedback("bad", "Lege zuerst alle Dialogzeilen in die richtige Reihenfolge.");
+      return false;
+    },
+    isCorrect(task) {
+      const submitted = getDialogSubmittedLineIds();
+      return task.correctOrder.every((lineId, index) => submitted[index] === lineId);
+    },
+    lockUi() {
+      answerArea.querySelectorAll(".dialog-line-button").forEach((button) => {
+        button.draggable = false;
+        button.disabled = true;
+      });
+      wordBank.querySelectorAll(".dialog-line-button").forEach((button) => {
         button.draggable = false;
         button.disabled = true;
       });
@@ -1346,6 +1400,28 @@ function showSentenceMatchSolutions(task) {
   postSubmitPanel.classList.remove("hidden");
 }
 
+function showDialogOrderSolution(task) {
+  if (task.type !== "dialogOrder") return;
+
+  const title = document.createElement("p");
+  title.className = "alternate-title";
+  title.textContent = "Der richtige Dialog:";
+
+  const list = document.createElement("ol");
+  list.className = "alternate-list";
+
+  getDialogOrderedLines(task).forEach((line) => {
+    const item = document.createElement("li");
+    item.textContent = formatDialogLine(line);
+    list.appendChild(item);
+  });
+
+  alternatePanel.classList.remove("hidden");
+  alternatePanel.classList.add("alternate-panel");
+  alternatePanel.replaceChildren(title, list);
+  postSubmitPanel.classList.remove("hidden");
+}
+
 function getSentenceGrammarNotes(task) {
   if (Array.isArray(task.sentenceGrammarNotes) && task.sentenceGrammarNotes.length) return task.sentenceGrammarNotes;
   if (task.sentenceGrammarNote) return [task.sentenceGrammarNote];
@@ -1455,6 +1531,8 @@ function setupPostSubmitState(task, isCorrect, submittedAnswer) {
   showTranslation(task);
   if (Array.isArray(task.pairs)) {
     showSentenceMatchSolutions(task);
+  } else if (task.type === "dialogOrder") {
+    showDialogOrderSolution(task);
   } else if (isCorrect) {
     showAlternateAnswers(task, submittedAnswer);
   }
@@ -1489,6 +1567,19 @@ function getDragInsertTarget(container, xPosition) {
   }, { offset: Number.NEGATIVE_INFINITY, element: null }).element;
 }
 
+function getVerticalDragInsertTarget(container, yPosition) {
+  const draggableButtons = Array.from(container.querySelectorAll(".word-button:not(.dragging)"));
+
+  return draggableButtons.reduce((closest, child) => {
+    const box = child.getBoundingClientRect();
+    const offset = yPosition - box.top - box.height / 2;
+    if (offset < 0 && offset > closest.offset) {
+      return { offset, element: child };
+    }
+    return closest;
+  }, { offset: Number.NEGATIVE_INFINITY, element: null }).element;
+}
+
 function showWordDropHints() {
   answerArea.classList.add("drop-ready");
   wordBank.classList.add("drop-ready");
@@ -1505,7 +1596,9 @@ function handleWordDragOver(event) {
   const container = event.currentTarget;
   container.classList.add("drop-over");
   if (container === answerArea) {
-    const insertBefore = getDragInsertTarget(container, event.clientX);
+    const insertBefore = container.classList.contains("dialog-order")
+      ? getVerticalDragInsertTarget(container, event.clientY)
+      : getDragInsertTarget(container, event.clientX);
     container.insertBefore(draggedWordButton, insertBefore);
   }
 }
@@ -1515,7 +1608,9 @@ function handleWordDrop(event) {
   event.preventDefault();
   const container = event.currentTarget;
   if (container === answerArea) {
-    const insertBefore = getDragInsertTarget(container, event.clientX);
+    const insertBefore = container.classList.contains("dialog-order")
+      ? getVerticalDragInsertTarget(container, event.clientY)
+      : getDragInsertTarget(container, event.clientX);
     container.insertBefore(draggedWordButton, insertBefore);
   } else {
     container.appendChild(draggedWordButton);
@@ -1812,6 +1907,72 @@ function getSentenceMatchPairs(task) {
   return task.pairs || [];
 }
 
+function getDialogSubmittedLineIds() {
+  return Array.from(answerArea.querySelectorAll(".dialog-line-button")).map((button) => button.dataset.lineId);
+}
+
+function formatDialogLine(line) {
+  return `${line.speaker}: ${line.text}`;
+}
+
+function getDialogOrderedLines(task) {
+  const linesById = new Map(task.lines.map((line) => [line.id, line]));
+  return task.correctOrder.map((lineId) => linesById.get(lineId)).filter(Boolean);
+}
+
+function getDialogSubmittedSummary() {
+  return Array.from(answerArea.querySelectorAll(".dialog-line-button"))
+    .map((button) => `${button.dataset.speaker}: ${button.dataset.text}`)
+    .join(" | ");
+}
+
+function getDialogExpectedSummary(task) {
+  return getDialogOrderedLines(task).map(formatDialogLine).join(" | ");
+}
+
+function makeDialogLineButton(line) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "word-button dialog-line-button";
+  button.dataset.lineId = line.id;
+  button.dataset.speaker = line.speaker;
+  button.dataset.text = line.text;
+  button.draggable = true;
+
+  const speaker = document.createElement("span");
+  speaker.className = "dialog-line-speaker";
+  speaker.textContent = line.speaker;
+
+  const text = document.createElement("span");
+  text.className = "dialog-line-text";
+  text.textContent = displayGerman(line.text);
+
+  button.append(speaker, text);
+
+  button.addEventListener("dragstart", (event) => {
+    if (locked) {
+      event.preventDefault();
+      return;
+    }
+    draggedWordButton = button;
+    button.classList.add("dragging");
+    event.dataTransfer.effectAllowed = "move";
+    showWordDropHints();
+  });
+  button.addEventListener("dragend", () => {
+    draggedWordButton = null;
+    button.classList.remove("dragging");
+    hideWordDropHints();
+  });
+  button.addEventListener("click", () => {
+    if (locked) return;
+    const destination = button.parentElement === wordBank ? answerArea : wordBank;
+    destination.appendChild(button);
+  });
+
+  return button;
+}
+
 function formatMatchPair(task, pair) {
   return `${pair.start}${task.matchSummarySeparator || " "}${pair.end}`;
 }
@@ -2063,7 +2224,8 @@ function renderTask() {
   renderLevelBadge(task.level);
   renderTaskHelp(task);
 
-  answerArea.classList.remove("choice-list", "gap-fill", "form-training", "error-search", "sentence-builder", "sentence-match");
+  answerArea.classList.remove("choice-list", "gap-fill", "form-training", "error-search", "sentence-builder", "sentence-match", "dialog-order");
+  wordBank.classList.remove("dialog-bank");
   wordBank.classList.add("hidden");
   charToolbar.classList.add("hidden");
   clearButton.classList.remove("hidden");
