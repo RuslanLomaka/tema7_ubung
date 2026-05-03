@@ -407,16 +407,54 @@
     });
   }
 
-  function buildAllTasks(sentenceEntries, formTasks) {
+  function buildVocabularyHintMatchTasks(vocabularyItems, options = {}) {
+    const pairsPerBoard = options.pairsPerBoard || 4;
+    const levels = options.levels || ["A2", "B1", "B2"];
+    const usableItems = vocabularyItems.filter((item) => item.basicForm && item.hintDe);
+
+    return levels.flatMap((level) => {
+      const levelItems = shuffle(usableItems);
+      const tasks = [];
+
+      for (let index = 0; index + pairsPerBoard <= levelItems.length; index += pairsPerBoard) {
+        const selectedItems = levelItems.slice(index, index + pairsPerBoard);
+        tasks.push({
+          id: `vhm_${level.toLowerCase()}_${index / pairsPerBoard + 1}`,
+          type: "vocabHintMatch",
+          level,
+          grammarFocus: "wohnen_wortschatz",
+          prompt: "Verbinde jedes Wort mit der passenden Erklärung.",
+          pairs: selectedItems.map((item) => ({
+            start: item.basicForm,
+            end: item.hintDe
+          })),
+          matchSummarySeparator: " → ",
+          solutionTitle: "Die richtigen Wortpaare:",
+          translations: {
+            en: selectedItems.map((item, itemIndex) => `${itemIndex + 1}. ${item.basicForm}: ${item.meaningEn}`).join("\n"),
+            uk: selectedItems.map((item, itemIndex) => `${itemIndex + 1}. ${item.basicForm}: ${item.meaningUk}`).join("\n"),
+            ar: selectedItems.map((item, itemIndex) => `${itemIndex + 1}. ${item.basicForm}: ${item.meaningAr}`).join("\n")
+          },
+          sourceVocabulary: selectedItems.map((item) => item.basicForm).join(",")
+        });
+      }
+
+      return tasks;
+    });
+  }
+
+  function buildAllTasks(sentenceEntries, formTasks, vocabularyItems = []) {
     return [
       ...buildSentenceBankTasks(sentenceEntries),
-      ...buildFormTrainingPool(formTasks)
+      ...buildFormTrainingPool(formTasks),
+      ...buildVocabularyHintMatchTasks(vocabularyItems)
     ];
   }
 
   window.TaskFactory = {
     buildSentenceBankTasks,
     buildFormTrainingPool,
+    buildVocabularyHintMatchTasks,
     buildSentenceMatchPair,
     buildAllTasks
   };

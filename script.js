@@ -14,7 +14,7 @@ const {
 
 const LEVELS = ["A2", "B1", "B2"];
 const ROUND_POLICY_CONFIG = uiConfig.roundPolicy || {};
-const TASK_TYPES = ROUND_POLICY_CONFIG.taskTypes || ["sentenceBuilder", "sentenceMatch", "multipleChoice", "gapFill", "formTraining", "errorSearch"];
+const TASK_TYPES = ROUND_POLICY_CONFIG.taskTypes || ["sentenceBuilder", "sentenceMatch", "vocabHintMatch", "multipleChoice", "gapFill", "formTraining", "errorSearch"];
 const TASK_TYPE_LABELS = uiConfig.taskTypeLabels || {};
 const LEVEL_LABELS = uiConfig.levelLabels || {};
 const FORM_TRAINING_KINDS = uiConfig.formTrainingKinds || ["verb", "adjective", "noun"];
@@ -179,7 +179,7 @@ function shuffle(items) {
 function rebuildTaskBank() {
   // Runtime task generation is owned by task-factory.js. script.js keeps only
   // the currently selected task bank used by round selection and rendering.
-  allTasks = taskFactory.buildAllTasks(sentenceBankV2, legacyFormTasks);
+  allTasks = taskFactory.buildAllTasks(sentenceBankV2, legacyFormTasks, vocabulary);
 }
 
 function getLevelTaskCounts() {
@@ -492,7 +492,7 @@ function getGapFillFullSentence(task) {
 }
 
 function getCorrectSentence(task) {
-  if (task.type === "sentenceMatch") {
+  if (Array.isArray(task.pairs)) {
     return getSentenceMatchExpectedSummary(task);
   }
   if (task.type === "gapFill") return getGapFillFullSentence(task);
@@ -919,6 +919,50 @@ const ROUND_POLICY = {
   }
 };
 
+function createPairMatchController(options) {
+  return {
+    selectedAnswer(task) {
+      return getSentenceMatchSubmittedSummary(task);
+    },
+    expectedAnswer(task) {
+      return getSentenceMatchExpectedSummary(task);
+    },
+    prompt() {
+      return options.prompt;
+    },
+    render(task) {
+      answerArea.classList.add("sentence-match");
+      clearButton.classList.add("hidden");
+      renderSentenceMatch(task);
+    },
+    validateBeforeSubmit(task) {
+      if (Object.keys(sentenceMatchConnections).length >= getSentenceMatchPairs(task).length) return true;
+      setFeedback("bad", options.incompleteFeedback);
+      return false;
+    },
+    isCorrect(task) {
+      return getSentenceMatchCorrectCount(task) === getSentenceMatchPairs(task).length;
+    },
+    lockUi(task) {
+      const stage = answerArea.querySelector(".sentence-match-stage");
+      if (stage) {
+        updateSentenceMatchUi(stage, task);
+        stage.querySelectorAll(".match-button").forEach((button) => {
+          button.disabled = true;
+        });
+      }
+    },
+    clear(task) {
+      selectedMatchStart = null;
+      sentenceMatchConnections = {};
+      sentenceMatchConnectionColors = {};
+      const stage = answerArea.querySelector(".sentence-match-stage");
+      if (stage) updateSentenceMatchUi(stage, task);
+      hideFeedback();
+    }
+  };
+}
+
 const TASK_CONTROLLERS = {
   // Each task type owns its own render/validate/lock/clear behavior here.
   // Future agents should prefer extending this table over adding more branching
@@ -964,47 +1008,14 @@ const TASK_CONTROLLERS = {
       hideFeedback();
     }
   },
-  sentenceMatch: {
-    selectedAnswer(task) {
-      return getSentenceMatchSubmittedSummary(task);
-    },
-    expectedAnswer(task) {
-      return getSentenceMatchExpectedSummary(task);
-    },
-    prompt() {
-      return "Verbinde die passenden Satzhälften.";
-    },
-    render(task) {
-      answerArea.classList.add("sentence-match");
-      clearButton.classList.add("hidden");
-      renderSentenceMatch(task);
-    },
-    validateBeforeSubmit(task) {
-      if (Object.keys(sentenceMatchConnections).length >= getSentenceMatchPairs(task).length) return true;
-      setFeedback("bad", "Verbinde zuerst alle Satzanfänge mit einem Satzende.");
-      return false;
-    },
-    isCorrect(task) {
-      return getSentenceMatchCorrectCount(task) === getSentenceMatchPairs(task).length;
-    },
-    lockUi(task) {
-      const stage = answerArea.querySelector(".sentence-match-stage");
-      if (stage) {
-        updateSentenceMatchUi(stage, task);
-        stage.querySelectorAll(".match-button").forEach((button) => {
-          button.disabled = true;
-        });
-      }
-    },
-    clear(task) {
-      selectedMatchStart = null;
-      sentenceMatchConnections = {};
-      sentenceMatchConnectionColors = {};
-      const stage = answerArea.querySelector(".sentence-match-stage");
-      if (stage) updateSentenceMatchUi(stage, task);
-      hideFeedback();
-    }
-  },
+  sentenceMatch: createPairMatchController({
+    prompt: "Verbinde die passenden Satzhälften.",
+    incompleteFeedback: "Verbinde zuerst alle Satzanfänge mit einem Satzende."
+  }),
+  vocabHintMatch: createPairMatchController({
+    prompt: "Verbinde Wort und Erklärung.",
+    incompleteFeedback: "Verbinde zuerst alle Wörter mit einer Erklärung."
+  }),
 
   multipleChoice: {
     selectedAnswer() {
@@ -1313,18 +1324,18 @@ function showAlternateAnswers(task, submittedAnswer) {
 }
 
 function showSentenceMatchSolutions(task) {
-  if (task.type !== "sentenceMatch") return;
+  if (!Array.isArray(task.pairs)) return;
 
   const title = document.createElement("p");
   title.className = "alternate-title";
-  title.textContent = "Die richtigen Sätze:";
+  title.textContent = task.solutionTitle || "Die richtigen Sätze:";
 
   const list = document.createElement("ul");
   list.className = "alternate-list";
 
   getSentenceMatchPairs(task).forEach((pair) => {
     const item = document.createElement("li");
-    item.textContent = `${displayGerman(pair.start)} ${displayGerman(pair.end)}`;
+    item.textContent = formatMatchPair(task, pair);
     list.appendChild(item);
   });
 
@@ -1441,7 +1452,7 @@ function fillRulePanel(task, expandFullTheory = false) {
 
 function setupPostSubmitState(task, isCorrect, submittedAnswer) {
   showTranslation(task);
-  if (task.type === "sentenceMatch") {
+  if (Array.isArray(task.pairs)) {
     showSentenceMatchSolutions(task);
   } else if (isCorrect) {
     showAlternateAnswers(task, submittedAnswer);
@@ -1800,6 +1811,10 @@ function getSentenceMatchPairs(task) {
   return task.pairs || [];
 }
 
+function formatMatchPair(task, pair) {
+  return `${pair.start}${task.matchSummarySeparator || " "}${pair.end}`;
+}
+
 function getSentenceMatchCorrectCount(task) {
   return getSentenceMatchPairs(task).reduce((count, pair, index) => {
     return count + (Number(sentenceMatchConnections[index]) === index ? 1 : 0);
@@ -1810,12 +1825,12 @@ function getSentenceMatchSubmittedSummary(task) {
   return getSentenceMatchPairs(task).map((pair, index) => {
     const connectedIndex = sentenceMatchConnections[index];
     const ending = Number.isInteger(connectedIndex) ? task.pairs[connectedIndex]?.end || "—" : "—";
-    return `${pair.start} ${ending}`;
+    return formatMatchPair(task, { start: pair.start, end: ending });
   }).join(" | ");
 }
 
 function getSentenceMatchExpectedSummary(task) {
-  return getSentenceMatchPairs(task).map((pair) => `${pair.start} ${pair.end}`).join(" | ");
+  return getSentenceMatchPairs(task).map((pair) => formatMatchPair(task, pair)).join(" | ");
 }
 
 function getSentenceMatchConnectedLeftIndex(rightIndex) {
@@ -1930,6 +1945,30 @@ function updateSentenceMatchUi(stage, task = tasks[currentIndex]) {
   requestAnimationFrame(() => updateSentenceMatchLines(stage, task));
 }
 
+function makeMatchButton(item, side, onClick) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = `match-button match-button--${side}`;
+  button.dataset.pairIndex = String(item.pairIndex);
+
+  const dot = document.createElement("span");
+  dot.className = "match-dot";
+  dot.setAttribute("aria-hidden", "true");
+
+  const text = document.createElement("span");
+  text.className = "match-text";
+  text.textContent = displayGerman(item.text);
+
+  if (side === "left") {
+    button.append(text, dot);
+  } else {
+    button.append(dot, text);
+  }
+
+  button.addEventListener("click", onClick);
+  return button;
+}
+
 function renderSentenceMatch(task) {
   const stage = document.createElement("div");
   stage.className = "sentence-match-stage";
@@ -1952,12 +1991,7 @@ function renderSentenceMatch(task) {
   const shuffledRight = shuffle(getSentenceMatchPairs(task).map((pair, pairIndex) => ({ pairIndex, text: pair.end })));
 
   shuffledLeft.forEach((item) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "match-button match-button--left";
-    button.dataset.pairIndex = String(item.pairIndex);
-    button.innerHTML = `<span class="match-text">${displayGerman(item.text)}</span><span class="match-dot" aria-hidden="true"></span>`;
-    button.addEventListener("click", () => {
+    const button = makeMatchButton(item, "left", () => {
       if (locked) return;
       selectedMatchStart = selectedMatchStart === item.pairIndex ? null : item.pairIndex;
       updateSentenceMatchUi(stage, task);
@@ -1966,12 +2000,7 @@ function renderSentenceMatch(task) {
   });
 
   shuffledRight.forEach((item) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "match-button match-button--right";
-    button.dataset.pairIndex = String(item.pairIndex);
-    button.innerHTML = `<span class="match-dot" aria-hidden="true"></span><span class="match-text">${displayGerman(item.text)}</span>`;
-    button.addEventListener("click", () => {
+    const button = makeMatchButton(item, "right", () => {
       if (locked) return;
 
       const existingLeftIndex = getSentenceMatchConnectedLeftIndex(item.pairIndex);
@@ -2099,14 +2128,14 @@ function checkAnswer() {
 
     if (isCorrect) {
       score += 1;
-      const successText = task.type === "sentenceMatch"
+      const successText = Array.isArray(task.pairs)
         ? `Sehr gut, alle ${getSentenceMatchPairs(task).length} Verbindungen sind richtig.`
         : task.type === "errorSearch" && task.correctForm
         ? `Sehr gut, das ist richtig. Die richtige Schreibweise ist: ${displayGerman(task.correctForm)}`
         : "Sehr gut, das ist richtig.";
       setFeedback("good", successText);
     } else {
-      if (task.type === "sentenceMatch") {
+      if (Array.isArray(task.pairs)) {
         setFeedback("bad", `Hoppla, ${getSentenceMatchCorrectCount(task)} von ${getSentenceMatchPairs(task).length} Verbindungen waren richtig.`);
       } else {
         setFeedback("bad", `Hoppla, das war ein kleiner Fehler. Die richtige Version ist: ${displayGerman(expected)}`);
@@ -2350,7 +2379,7 @@ difficultyModeSelect?.addEventListener("change", (event) => {
 
 window.addEventListener("resize", () => {
   const task = tasks[currentIndex];
-  if (currentView !== "test" || !task || task.type !== "sentenceMatch") return;
+  if (currentView !== "test" || !task || !Array.isArray(task.pairs)) return;
   const stage = answerArea.querySelector(".sentence-match-stage");
   if (stage) updateSentenceMatchUi(stage, task);
 });

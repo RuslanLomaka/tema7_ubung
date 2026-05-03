@@ -15,6 +15,13 @@ window.appData.taskHelpCopy = {
       example: "For example: “Nicht nur der Rasen muss gemäht werden, ...” fits with “... sondern auch die Hecken brauchen einen Schnitt.”",
       submit: "How to submit: click one beginning and then one ending until all pairs are connected. Then click “Prüfen”."
     },
+    vocabHintMatch: {
+      title: "In this task you should...",
+      body: "Match each German word with the correct German explanation.",
+      decide: "How to decide: read the explanation first, then look for the word that names that idea.",
+      example: "For example: “Geld, das man am Anfang zur Sicherheit bezahlt” points to “die Kaution”.",
+      submit: "How to submit: click one word and then one explanation until all pairs are connected. Then click “Prüfen”."
+    },
     multipleChoice: {
       title: "In this task you should...",
       body: "Choose the one sentence that is fully correct.",
@@ -73,6 +80,13 @@ window.appData.taskHelpCopy = {
       example: "Наприклад: “Nicht nur der Rasen muss gemäht werden, ...” поєднується з “... sondern auch die Hecken brauchen einen Schnitt.”",
       submit: "Як перевірити: натискай спочатку на початок, а потім на закінчення, доки всі пари не буде з’єднано. Потім натисни “Prüfen”."
     },
+    vocabHintMatch: {
+      title: "У цьому завданні потрібно...",
+      body: "поєднати кожне німецьке слово з правильним німецьким поясненням.",
+      decide: "Як вирішувати: спочатку прочитай пояснення, а потім знайди слово, яке називає цю ідею.",
+      example: "Наприклад: “Geld, das man am Anfang zur Sicherheit bezahlt” вказує на “die Kaution”.",
+      submit: "Як перевірити: натисни на слово, потім на пояснення, доки всі пари не буде з’єднано. Потім натисни “Prüfen”."
+    },
     multipleChoice: {
       title: "У цьому завданні потрібно...",
       body: "вибрати одне речення, яке є повністю правильним.",
@@ -130,6 +144,13 @@ window.appData.taskHelpCopy = {
       decide: "كيف تقرر: راقب المعنى، واستمرار القاعدة، وأي نهاية تنسجم طبيعيًا مع بداية الجملة.",
       example: "مثال: “Nicht nur der Rasen muss gemäht werden, ...” تناسب “... sondern auch die Hecken brauchen einen Schnitt.”",
       submit: "كيف ترسل الإجابة: اضغط أولًا على بداية الجملة ثم على النهاية حتى تكتمل جميع الأزواج، ثم اضغط “Prüfen”."
+    },
+    vocabHintMatch: {
+      title: "في هذا التمرين عليك أن...",
+      body: "تصل كل كلمة ألمانية بالشرح الألماني الصحيح لها.",
+      decide: "كيف تقرر: اقرأ الشرح أولًا، ثم ابحث عن الكلمة التي تعبّر عن هذه الفكرة.",
+      example: "مثال: “Geld, das man am Anfang zur Sicherheit bezahlt” تشير إلى “die Kaution”.",
+      submit: "كيف ترسل الإجابة: اضغط على كلمة ثم على شرح حتى تكتمل جميع الأزواج، ثم اضغط “Prüfen”."
     },
     multipleChoice: {
       title: "في هذا التمرين عليك أن...",

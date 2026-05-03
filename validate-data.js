@@ -42,6 +42,7 @@ const helpLanguages = ["en", "uk", "ar"];
 const helpKeys = [
   "sentenceBuilder",
   "sentenceMatch",
+  "vocabHintMatch",
   "multipleChoice",
   "gapFill",
   "formTraining_verb",
@@ -53,9 +54,9 @@ const helpKeys = [
 if (!taskFactory || typeof taskFactory.buildAllTasks !== "function") {
   addIssue("task-factory.js", "TaskFactory", "TaskFactory.buildAllTasks is not available.");
 } else {
-  const generatedTasks = taskFactory.buildAllTasks(sentenceBankV2, tasks.filter((task) => task.type === "formTraining"));
+  const generatedTasks = taskFactory.buildAllTasks(sentenceBankV2, tasks.filter((task) => task.type === "formTraining"), vocabulary);
   const generatedTypes = new Set(generatedTasks.map((task) => task.type));
-  for (const type of ["sentenceBuilder", "multipleChoice", "gapFill", "formTraining", "errorSearch"]) {
+  for (const type of ["sentenceBuilder", "multipleChoice", "gapFill", "formTraining", "errorSearch", "vocabHintMatch"]) {
     if (!generatedTypes.has(type)) {
       addIssue("task-factory.js", type, "Generated task bank is missing this task type.");
     }

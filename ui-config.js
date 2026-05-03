@@ -3,6 +3,7 @@ window.appData.uiConfig = {
   taskTypeLabels: {
     sentenceBuilder: "Satzbau",
     sentenceMatch: "Satzhälften",
+    vocabHintMatch: "Wortpaare",
     multipleChoice: "Mehrfachauswahl",
     gapFill: "Lückentext",
     formTraining: "Formen",
@@ -17,7 +18,7 @@ window.appData.uiConfig = {
   questionCountOptions: [15, 30, 60],
   sentenceMatchColors: ["#e11d48", "#d4a017", "#8b5e3c", "#2563eb"],
   roundPolicy: {
-    taskTypes: ["sentenceBuilder", "sentenceMatch", "multipleChoice", "gapFill", "formTraining", "errorSearch"],
+    taskTypes: ["sentenceBuilder", "sentenceMatch", "vocabHintMatch", "multipleChoice", "gapFill", "formTraining", "errorSearch"],
     sentenceMatchMinRoundCount: 4,
     sentenceMatchPairsPerBoard: 4,
     recentSentenceMatchHistoryLimit: 8,

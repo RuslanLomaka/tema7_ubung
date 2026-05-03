@@ -12,11 +12,13 @@ Object.assign(window.appData, {
     "mixedRound": {
       "total": 15,
       "byType": {
-        "sentenceBuilder": 3,
-        "multipleChoice": 3,
-        "gapFill": 3,
+        "sentenceBuilder": 2,
+        "sentenceMatch": 2,
+        "vocabHintMatch": 2,
+        "multipleChoice": 2,
+        "gapFill": 2,
         "formTraining": 3,
-        "errorSearch": 3
+        "errorSearch": 2
       },
       "byLevel": {
         "A2": 5,
