@@ -408,7 +408,7 @@
   }
 
   function buildVocabularyHintMatchTasks(vocabularyItems, options = {}) {
-    const pairsPerBoard = options.pairsPerBoard || 4;
+    const pairsPerBoard = options.pairsPerBoard || 6;
     const levels = options.levels || ["A2", "B1", "B2"];
     const usableItems = vocabularyItems.filter((item) => item.basicForm && item.hintDe);
 
@@ -447,7 +447,9 @@
     return [
       ...buildSentenceBankTasks(sentenceEntries),
       ...buildFormTrainingPool(formTasks),
-      ...buildVocabularyHintMatchTasks(vocabularyItems)
+      ...buildVocabularyHintMatchTasks(vocabularyItems, {
+        pairsPerBoard: window.appData?.uiConfig?.roundPolicy?.vocabHintMatchPairsPerBoard
+      })
     ];
   }
 

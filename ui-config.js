@@ -17,10 +17,12 @@ window.appData.uiConfig = {
   formTrainingKinds: ["verb", "adjective", "noun"],
   questionCountOptions: [15, 30, 60],
   sentenceMatchColors: ["#e11d48", "#d4a017", "#8b5e3c", "#2563eb"],
+  vocabHintMatchColors: ["#d81b60", "#1e88e5", "#43a047", "#f4511e", "#8e24aa", "#00acc1"],
   roundPolicy: {
     taskTypes: ["sentenceBuilder", "sentenceMatch", "vocabHintMatch", "multipleChoice", "gapFill", "formTraining", "errorSearch"],
     sentenceMatchMinRoundCount: 4,
     sentenceMatchPairsPerBoard: 4,
+    vocabHintMatchPairsPerBoard: 6,
     recentSentenceMatchHistoryLimit: 8,
     recentFormHistoryLimit: 10,
     mixedDistribution: "even"

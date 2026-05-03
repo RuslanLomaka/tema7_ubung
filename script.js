@@ -20,6 +20,7 @@ const LEVEL_LABELS = uiConfig.levelLabels || {};
 const FORM_TRAINING_KINDS = uiConfig.formTrainingKinds || ["verb", "adjective", "noun"];
 const QUESTION_COUNT_OPTIONS = uiConfig.questionCountOptions || [15, 30, 60];
 const SENTENCE_MATCH_COLORS = uiConfig.sentenceMatchColors || ["#e11d48", "#d4a017", "#8b5e3c", "#2563eb"];
+const VOCAB_HINT_MATCH_COLORS = uiConfig.vocabHintMatchColors || ["#d81b60", "#1e88e5", "#43a047", "#f4511e", "#8e24aa", "#00acc1"];
 const UI_TEXT = uiConfig.staticText || {};
 const TEXT = {
   theory: UI_TEXT.theory || "Theorie",
@@ -1842,15 +1843,20 @@ function getSentenceMatchConnectedLeftIndex(rightIndex) {
   return null;
 }
 
-function pickSentenceMatchColor() {
+function getMatchColorPalette(task = tasks[currentIndex]) {
+  return task?.type === "vocabHintMatch" ? VOCAB_HINT_MATCH_COLORS : SENTENCE_MATCH_COLORS;
+}
+
+function pickSentenceMatchColor(task) {
+  const colors = getMatchColorPalette(task);
   const usedColors = new Set(Object.values(sentenceMatchConnectionColors));
-  const availableColors = SENTENCE_MATCH_COLORS.filter((color) => !usedColors.has(color));
-  const palette = availableColors.length ? availableColors : SENTENCE_MATCH_COLORS;
+  const availableColors = colors.filter((color) => !usedColors.has(color));
+  const palette = availableColors.length ? availableColors : colors;
   return palette[randomInt(palette.length)];
 }
 
-function assignSentenceMatchColor(leftIndex) {
-  sentenceMatchConnectionColors[leftIndex] = pickSentenceMatchColor();
+function assignSentenceMatchColor(leftIndex, task) {
+  sentenceMatchConnectionColors[leftIndex] = pickSentenceMatchColor(task);
 }
 
 function updateSentenceMatchLines(stage, task = tasks[currentIndex]) {
@@ -1887,7 +1893,7 @@ function updateSentenceMatchLines(stage, task = tasks[currentIndex]) {
     line.setAttribute("x2", x2);
     line.setAttribute("y2", y2);
     line.setAttribute("class", `match-line${locked ? (isCorrect ? " is-correct" : " is-incorrect") : ""}`);
-    line.style.setProperty("--match-color", sentenceMatchConnectionColors[leftIndex] || SENTENCE_MATCH_COLORS[0]);
+    line.style.setProperty("--match-color", sentenceMatchConnectionColors[leftIndex] || getMatchColorPalette(task)[0]);
     svg.appendChild(line);
 
     if (locked && !isCorrect) {
@@ -2022,7 +2028,7 @@ function renderSentenceMatch(task) {
       }
 
       sentenceMatchConnections[selectedMatchStart] = item.pairIndex;
-      assignSentenceMatchColor(selectedMatchStart);
+      assignSentenceMatchColor(selectedMatchStart, task);
       selectedMatchStart = null;
       updateSentenceMatchUi(stage, task);
     });
