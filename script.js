@@ -739,13 +739,14 @@ function goToTestView() {
 
 const ROUND_POLICY = {
   selectRoundTasks() {
-    const dialogTask = this.pickGuaranteedDialogTask();
-    const remainingCount = Math.max(0, selectedQuestionCount - (dialogTask ? 1 : 0));
+    const dialogCount = this.getDialogMilestoneCount(selectedQuestionCount);
+    const dialogTasks = this.pickMilestoneDialogTasks(dialogCount);
+    const remainingCount = Math.max(0, selectedQuestionCount - dialogTasks.length);
     const fillerTasks = selectedDifficultyMode === "mixed"
       ? this.selectMixedRoundTasks(remainingCount)
       : this.selectSingleLevelRoundTasks(selectedDifficultyMode, remainingCount);
 
-    return dialogTask ? [dialogTask, ...fillerTasks].slice(0, selectedQuestionCount) : fillerTasks;
+    return this.insertMilestoneDialogTasks(fillerTasks, dialogTasks, selectedQuestionCount);
   },
 
   distributeEvenly(total, buckets) {
@@ -793,12 +794,37 @@ const ROUND_POLICY = {
       .slice(0, RECENT_SENTENCE_MATCH_HISTORY_LIMIT);
   },
 
-  pickGuaranteedDialogTask() {
+  getDialogMilestoneCount(total) {
+    return Math.floor(total / 15);
+  },
+
+  pickMilestoneDialogTasks(count) {
+    if (!count) return [];
     const dialogTasks = allTasks.filter((task) => {
       return task.type === "dialogOrder" && (selectedDifficultyMode === "mixed" || task.level === selectedDifficultyMode);
     });
     const fallbackTasks = allTasks.filter((task) => task.type === "dialogOrder");
-    return shuffle(dialogTasks.length ? dialogTasks : fallbackTasks)[0] || null;
+    return shuffle(dialogTasks.length ? dialogTasks : fallbackTasks).slice(0, count);
+  },
+
+  insertMilestoneDialogTasks(fillerTasks, dialogTasks, total) {
+    if (!dialogTasks.length) return fillerTasks.slice(0, total);
+
+    const selected = [];
+    let fillerIndex = 0;
+    let dialogIndex = 0;
+
+    for (let position = 1; position <= total; position += 1) {
+      if (position % 15 === 0 && dialogIndex < dialogTasks.length) {
+        selected.push(dialogTasks[dialogIndex]);
+        dialogIndex += 1;
+      } else if (fillerIndex < fillerTasks.length) {
+        selected.push(fillerTasks[fillerIndex]);
+        fillerIndex += 1;
+      }
+    }
+
+    return selected;
   },
 
   pickTaskFromPool(pool, usedIds, usedFormKinds, usedFormVariants) {
