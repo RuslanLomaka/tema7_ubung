@@ -8,7 +8,7 @@ Object.assign(window.appData, {
       "uk",
       "ar"
     ],
-    "defaultLanguage": "en",
+    "defaultLanguage": "uk",
     "mixedRound": {
       "total": 15,
       "byType": {
