@@ -16,10 +16,13 @@ const {
 const LEVELS = ["A2", "B1", "B2"];
 const ROUND_POLICY_CONFIG = uiConfig.roundPolicy || {};
 const TASK_TYPES = ROUND_POLICY_CONFIG.taskTypes || ["sentenceBuilder", "sentenceMatch", "vocabHintMatch", "multipleChoice", "gapFill", "formTraining", "errorSearch"];
+const DEFAULT_SELECTABLE_TASK_TYPES = ["sentenceBuilder", "dialogOrder", "sentenceMatch", "vocabHintMatch", "multipleChoice", "gapFill", "formTraining", "errorSearch"];
+const SELECTABLE_TASK_TYPES = ROUND_POLICY_CONFIG.selectableTaskTypes || DEFAULT_SELECTABLE_TASK_TYPES;
 const TASK_TYPE_LABELS = uiConfig.taskTypeLabels || {};
 const LEVEL_LABELS = uiConfig.levelLabels || {};
 const FORM_TRAINING_KINDS = uiConfig.formTrainingKinds || ["verb", "adjective", "noun"];
 const QUESTION_COUNT_OPTIONS = uiConfig.questionCountOptions || [15, 30, 60];
+const MAX_CONFIGURED_QUESTION_COUNT = Math.max(...QUESTION_COUNT_OPTIONS);
 const SENTENCE_MATCH_COLORS = uiConfig.sentenceMatchColors || ["#e11d48", "#d4a017", "#8b5e3c", "#2563eb"];
 const VOCAB_HINT_MATCH_COLORS = uiConfig.vocabHintMatchColors || ["#d81b60", "#1e88e5", "#43a047", "#f4511e", "#8e24aa", "#00acc1"];
 const UI_TEXT = uiConfig.staticText || {};
@@ -78,6 +81,7 @@ let sentenceMatchConnectionColors = {};
 let selectedLanguage = settings.defaultLanguage;
 let selectedQuestionCount = 15;
 let selectedDifficultyMode = "mixed";
+let selectedTaskTypeMode = "all";
 let selectedQuestionPreset = "15";
 let allTasks = [];
 let recentSentenceMatchIdsByLevel = {
@@ -149,7 +153,9 @@ const vocabularyList = document.querySelector("#vocabularyList");
 const sentenceLevelFilter = document.querySelector("#sentenceLevelFilter");
 const sentenceBank = document.querySelector("#sentenceBank");
 const questionCountPreset = document.querySelector("#questionCountPreset");
+const questionCountCustom = document.querySelector("#questionCountCustom");
 const difficultyModeSelect = document.querySelector("#difficultyModeSelect");
+const taskTypeModeSelect = document.querySelector("#taskTypeModeSelect");
 const confirmModal = document.querySelector("#confirmModal");
 const confirmModalTitle = document.querySelector("#confirmModalTitle");
 const confirmModalText = document.querySelector("#confirmModalText");
@@ -184,15 +190,45 @@ function rebuildTaskBank() {
   allTasks = taskFactory.buildAllTasks(sentenceBankV2, legacyFormTasks, vocabulary, dialogs);
 }
 
-function getLevelTaskCounts() {
+function getFilteredTaskPool(type = selectedTaskTypeMode, mode = selectedDifficultyMode) {
+  return allTasks.filter((task) => {
+    const matchesType = type === "all" || task.type === type;
+    const matchesLevel = mode === "mixed" || task.level === mode;
+    return matchesType && matchesLevel;
+  });
+}
+
+function canBuildSentenceMatchForLevel(level) {
+  const matchingCount = sentenceBankV2
+    .map((entry) => ({
+      entry,
+      pair: taskFactory.buildSentenceMatchPair(entry.sentence)
+    }))
+    .filter(({ entry, pair }) => entry.level === level && pair?.start && pair?.end).length;
+  return matchingCount >= SENTENCE_MATCH_PAIRS_PER_BOARD;
+}
+
+function canBuildSentenceMatchForMode(mode = selectedDifficultyMode) {
+  if (mode === "mixed") return LEVELS.some((level) => canBuildSentenceMatchForLevel(level));
+  return canBuildSentenceMatchForLevel(mode);
+}
+
+function hasTasksForSelection(type = selectedTaskTypeMode, mode = selectedDifficultyMode) {
+  if (type === "sentenceMatch") return canBuildSentenceMatchForMode(mode);
+  return getFilteredTaskPool(type, mode).length > 0;
+}
+
+function getLevelTaskCounts(type = "all") {
   return LEVELS.reduce((accumulator, level) => {
-    accumulator[level] = allTasks.filter((task) => task.level === level).length;
+    accumulator[level] = type === "sentenceMatch" && canBuildSentenceMatchForLevel(level)
+      ? MAX_CONFIGURED_QUESTION_COUNT
+      : getFilteredTaskPool(type, level).length;
     return accumulator;
   }, {});
 }
 
-function getMaxMixedTaskCount() {
-  const levelCounts = getLevelTaskCounts();
+function getMaxMixedTaskCount(type = "all") {
+  const levelCounts = getLevelTaskCounts(type);
   const total = Object.values(levelCounts).reduce((sum, count) => sum + count, 0);
   let maxPossible = 0;
 
@@ -207,22 +243,57 @@ function getMaxMixedTaskCount() {
   return maxPossible;
 }
 
-function getMaxAvailableTaskCount(mode = selectedDifficultyMode) {
-  if (mode === "mixed") return getMaxMixedTaskCount();
-  return allTasks.filter((task) => task.level === mode).length;
+function getMaxAvailableTaskCount(mode = selectedDifficultyMode, type = selectedTaskTypeMode) {
+  if (type !== "all") {
+    return hasTasksForSelection(type, mode) ? MAX_CONFIGURED_QUESTION_COUNT : 0;
+  }
+  if (mode === "mixed") return getMaxMixedTaskCount(type);
+  return getFilteredTaskPool(type, mode).length;
 }
 
 function clampSelectedQuestionCount() {
-  const maxAvailable = getMaxAvailableTaskCount(selectedDifficultyMode);
+  const maxAvailable = getMaxAvailableTaskCount(selectedDifficultyMode, selectedTaskTypeMode);
   selectedQuestionCount = Math.max(1, Math.min(selectedQuestionCount, maxAvailable || 1));
 }
 
+function ensureValidSettingsSelection() {
+  if (hasTasksForSelection(selectedTaskTypeMode, selectedDifficultyMode)) return;
+  if (hasTasksForSelection(selectedTaskTypeMode, "mixed")) {
+    selectedDifficultyMode = "mixed";
+    return;
+  }
+  selectedTaskTypeMode = "all";
+}
+
+function ensureTaskTypeOptions() {
+  if (!taskTypeModeSelect || taskTypeModeSelect.dataset.ready === "true") return;
+  SELECTABLE_TASK_TYPES.forEach((type) => {
+    const option = document.createElement("option");
+    option.value = type;
+    option.textContent = TASK_TYPE_LABELS[type] || type;
+    taskTypeModeSelect.appendChild(option);
+  });
+  taskTypeModeSelect.dataset.ready = "true";
+}
+
 function renderTestSettings() {
-  const maxAvailable = getMaxAvailableTaskCount(selectedDifficultyMode);
+  ensureValidSettingsSelection();
   clampSelectedQuestionCount();
+  const maxAvailable = getMaxAvailableTaskCount(selectedDifficultyMode, selectedTaskTypeMode);
 
   if (difficultyModeSelect) {
+    Array.from(difficultyModeSelect.options).forEach((option) => {
+      option.disabled = option.value !== "mixed" && !hasTasksForSelection(selectedTaskTypeMode, option.value);
+    });
     difficultyModeSelect.value = selectedDifficultyMode;
+  }
+
+  if (taskTypeModeSelect) {
+    ensureTaskTypeOptions();
+    Array.from(taskTypeModeSelect.options).forEach((option) => {
+      option.disabled = option.value !== "all" && !hasTasksForSelection(option.value, selectedDifficultyMode);
+    });
+    taskTypeModeSelect.value = selectedTaskTypeMode;
   }
 
   if (questionCountPreset) {
@@ -232,7 +303,16 @@ function renderTestSettings() {
       option.disabled = Number(option.value) > maxAvailable;
     });
     const hasPresetForCurrentCount = QUESTION_COUNT_OPTIONS.includes(selectedQuestionCount);
-    if (hasPresetForCurrentCount && Number(selectedQuestionPreset) <= maxAvailable) {
+    if (hasPresetForCurrentCount && selectedQuestionCount <= maxAvailable) {
+      selectedQuestionPreset = String(selectedQuestionCount);
+      questionCountPreset.value = selectedQuestionPreset;
+    } else if (!hasPresetForCurrentCount && selectedQuestionCount <= maxAvailable) {
+      selectedQuestionPreset = String(selectedQuestionCount);
+      const dynamicOption = document.createElement("option");
+      dynamicOption.value = selectedQuestionPreset;
+      dynamicOption.textContent = `${selectedQuestionCount} (eigene)`;
+      dynamicOption.dataset.dynamic = "true";
+      questionCountPreset.appendChild(dynamicOption);
       questionCountPreset.value = selectedQuestionPreset;
     } else {
       const fallback = [...QUESTION_COUNT_OPTIONS].reverse().find((value) => value <= maxAvailable);
@@ -250,6 +330,11 @@ function renderTestSettings() {
         questionCountPreset.value = selectedQuestionPreset;
       }
     }
+  }
+
+  if (questionCountCustom) {
+    questionCountCustom.max = String(Math.max(1, maxAvailable || 1));
+    questionCountCustom.value = String(selectedQuestionCount);
   }
 }
 
@@ -739,6 +824,10 @@ function goToTestView() {
 
 const ROUND_POLICY = {
   selectRoundTasks() {
+    if (selectedTaskTypeMode !== "all") {
+      return this.selectTaskTypeRoundTasks(selectedTaskTypeMode, selectedQuestionCount);
+    }
+
     const dialogCount = this.getDialogMilestoneCount(selectedQuestionCount);
     const dialogTasks = this.pickMilestoneDialogTasks(dialogCount);
     const remainingCount = Math.max(0, selectedQuestionCount - dialogTasks.length);
@@ -796,6 +885,63 @@ const ROUND_POLICY = {
 
   getDialogMilestoneCount(total) {
     return Math.floor(total / 15);
+  },
+
+  cloneTaskForRound(task, sequence) {
+    if (!sequence) return task;
+    return {
+      ...task,
+      id: `${task.id}_round_${sequence}`
+    };
+  },
+
+  pickRepeatableTasks(pool, total) {
+    if (!pool.length || total <= 0) return [];
+
+    const selected = [];
+    let cycle = 0;
+
+    while (selected.length < total) {
+      const shuffledPool = shuffle(pool);
+      shuffledPool.forEach((task) => {
+        if (selected.length >= total) return;
+        selected.push(this.cloneTaskForRound(task, cycle ? `${cycle}_${selected.length}` : ""));
+      });
+      cycle += 1;
+    }
+
+    return selected;
+  },
+
+  selectTaskTypeRoundTasks(type, total) {
+    if (type === "sentenceMatch") {
+      return this.selectSentenceMatchRoundTasks(total);
+    }
+
+    return this.pickRepeatableTasks(getFilteredTaskPool(type, selectedDifficultyMode), total);
+  },
+
+  selectSentenceMatchRoundTasks(total) {
+    const levels = selectedDifficultyMode === "mixed"
+      ? LEVELS.filter((level) => canBuildSentenceMatchForLevel(level))
+      : [selectedDifficultyMode].filter((level) => canBuildSentenceMatchForLevel(level));
+    if (!levels.length) return [];
+
+    const levelCounts = selectedDifficultyMode === "mixed"
+      ? this.distributeEvenly(total, levels)
+      : { [selectedDifficultyMode]: total };
+    const selected = [];
+
+    levels.forEach((level) => {
+      for (let index = 0; index < levelCounts[level]; index += 1) {
+        const task = this.buildSentenceMatchTask(level);
+        if (task) {
+          selected.push(this.cloneTaskForRound(task, `${level.toLowerCase()}_${index}`));
+        }
+      }
+    });
+
+    return selectedDifficultyMode === "mixed" ? shuffle(selected).slice(0, total) : selected.slice(0, total);
   },
 
   pickMilestoneDialogTasks(count) {
@@ -2587,8 +2733,20 @@ questionCountPreset?.addEventListener("change", (event) => {
   renderTestSettings();
 });
 
+questionCountCustom?.addEventListener("input", (event) => {
+  selectedQuestionCount = Math.max(1, Number(event.target.value) || 1);
+  selectedQuestionPreset = String(selectedQuestionCount);
+  renderTestSettings();
+});
+
 difficultyModeSelect?.addEventListener("change", (event) => {
   selectedDifficultyMode = event.target.value || "mixed";
+  clampSelectedQuestionCount();
+  renderTestSettings();
+});
+
+taskTypeModeSelect?.addEventListener("change", (event) => {
+  selectedTaskTypeMode = event.target.value || "all";
   clampSelectedQuestionCount();
   renderTestSettings();
 });
