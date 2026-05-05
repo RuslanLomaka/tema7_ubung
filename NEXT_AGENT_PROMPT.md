@@ -28,7 +28,7 @@ Use these files as the source of truth:
 - `data.js`  
   App settings and legacy explicit `formTraining` tasks.
 - `task-help.js`  
-  Multilingual "Was zu tun hier?" copy.
+  Multilingual "Hilfe?" copy.
 - `ui-config.js`  
   Static UI labels and round-policy config.
 - `script.js`  

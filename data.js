@@ -6,7 +6,8 @@ Object.assign(window.appData, {
     "languages": [
       "en",
       "uk",
-      "ar"
+      "ar",
+      "fa"
     ],
     "defaultLanguage": "uk",
     "mixedRound": {
@@ -46,7 +47,8 @@ Object.assign(window.appData, {
       "translations": {
         "en": "to move in - moved in - has moved in",
         "uk": "вселятися - вселився - вселився",
-        "ar": "ينتقل للسكن - انتقل للسكن - قد انتقل للسكن"
+        "ar": "ينتقل للسكن - انتقل للسكن - قد انتقل للسكن",
+        "fa": "نقل مکان کردن به خانه جدید - نقل مکان کرد - نقل مکان کرده است"
       }
     },
     {
@@ -67,7 +69,8 @@ Object.assign(window.appData, {
       "translations": {
         "en": "to move out - moved out - has moved out",
         "uk": "виїхати - виїхав - виїхав",
-        "ar": "ينتقل من السكن - انتقل من السكن - قد انتقل من السكن"
+        "ar": "ينتقل من السكن - انتقل من السكن - قد انتقل من السكن",
+        "fa": "تخليه کردن خانه - تخليه کرد - تخليه کرده است"
       }
     },
     {
@@ -88,7 +91,8 @@ Object.assign(window.appData, {
       "translations": {
         "en": "to terminate - terminated - has terminated",
         "uk": "розірвати - розірвав - розірвав",
-        "ar": "يُنهي / يفسخ - أنهى / فسخ - قد أنهى / فسخ"
+        "ar": "يُنهي / يفسخ - أنهى / فسخ - قد أنهى / فسخ",
+        "fa": "فسخ کردن / پايان دادن - فسخ کرد - فسخ کرده است"
       }
     },
     {
@@ -109,7 +113,8 @@ Object.assign(window.appData, {
       "translations": {
         "en": "to complain - complained - has complained",
         "uk": "скаржитися - скаржився - поскаржився",
-        "ar": "يشتكي - اشتكى - قد اشتكى"
+        "ar": "يشتكي - اشتكى - قد اشتكى",
+        "fa": "شکايت کردن - شکايت کرد - شکايت کرده است"
       }
     },
     {
@@ -130,7 +135,8 @@ Object.assign(window.appData, {
       "translations": {
         "en": "to take care of - took care of - has taken care of",
         "uk": "дбати про - дбав про - подбав про",
-        "ar": "يعتني بـ - اعتنى بـ - قد اعتنى بـ"
+        "ar": "يعتني بـ - اعتنى بـ - قد اعتنى بـ",
+        "fa": "مراقبت کردن / رسيدگی کردن - مراقبت کرد - مراقبت کرده است"
       }
     },
     {
@@ -151,7 +157,8 @@ Object.assign(window.appData, {
       "translations": {
         "en": "to transfer money - transferred - has transferred",
         "uk": "переказати гроші - переказав - переказав",
-        "ar": "يحوّل المال - حوّل - قد حوّل"
+        "ar": "يحوّل المال - حوّل - قد حوّل",
+        "fa": "انتقال دادن پول - انتقال داد - انتقال داده است"
       }
     },
     {
@@ -172,7 +179,8 @@ Object.assign(window.appData, {
       "translations": {
         "en": "to demand - demanded - has demanded",
         "uk": "вимагати - вимагав - вимагав",
-        "ar": "يطالب - طالب - قد طالب"
+        "ar": "يطالب - طالب - قد طالب",
+        "fa": "تقاضا کردن / مطالبه کردن - تقاضا کرد - تقاضا کرده است"
       }
     },
     {
@@ -193,7 +201,8 @@ Object.assign(window.appData, {
       "translations": {
         "en": "to mow - mowed - has mowed",
         "uk": "косити - косив - косив",
-        "ar": "يقص العشب - قصّ العشب - قد قصّ العشب"
+        "ar": "يقص العشب - قصّ العشب - قد قصّ العشب",
+        "fa": "چمن زدن - چمن زد - چمن زده است"
       }
     },
     {
@@ -214,7 +223,8 @@ Object.assign(window.appData, {
       "translations": {
         "en": "to react - reacted - has reacted",
         "uk": "реагувати - реагував - зреагував",
-        "ar": "يتفاعل / يستجيب - تفاعل / استجاب - قد تفاعل / استجاب"
+        "ar": "يتفاعل / يستجيب - تفاعل / استجاب - قد تفاعل / استجاب",
+        "fa": "واکنش نشان دادن - واکنش نشان داد - واکنش نشان داده است"
       }
     },
     {
@@ -235,7 +245,8 @@ Object.assign(window.appData, {
       "translations": {
         "en": "to violate - violated - has violated",
         "uk": "порушувати - порушив - порушив",
-        "ar": "ينتهك - انتهك - قد انتهك"
+        "ar": "ينتهك - انتهك - قد انتهك",
+        "fa": "نقض کردن / تخلف کردن - نقض کرد - نقض کرده است"
       }
     },
     {
@@ -257,7 +268,8 @@ Object.assign(window.appData, {
       "translations": {
         "en": "quiet - quieter - quietest",
         "uk": "тихий - тихіший - найтихіший",
-        "ar": "هادئ - أكثر هدوءًا - الأهدأ"
+        "ar": "هادئ - أكثر هدوءًا - الأهدأ",
+        "fa": "آرام - آرام‌تر - آرام‌ترین"
       }
     },
     {
@@ -279,7 +291,8 @@ Object.assign(window.appData, {
       "translations": {
         "en": "loud - louder - loudest",
         "uk": "гучний - гучніший - найгучніший",
-        "ar": "صاخب - أكثر صخبًا - الأشد صخبًا"
+        "ar": "صاخب - أكثر صخبًا - الأشد صخبًا",
+        "fa": "بلند / پرصدا - بلندتر - بلندترين"
       }
     },
     {
@@ -301,7 +314,8 @@ Object.assign(window.appData, {
       "translations": {
         "en": "expensive - more expensive - most expensive",
         "uk": "дорогий - дорожчий - найдорожчий",
-        "ar": "غالي - أغلى - الأغلى"
+        "ar": "غالي - أغلى - الأغلى",
+        "fa": "گران - گران‌تر - گران‌ترین"
       }
     },
     {
@@ -323,7 +337,8 @@ Object.assign(window.appData, {
       "translations": {
         "en": "clean - cleaner - cleanest",
         "uk": "чистий - чистіший - найчистіший",
-        "ar": "نظيف - أنظف - الأنظف"
+        "ar": "نظيف - أنظف - الأنظف",
+        "fa": "پاک / تمیز - پاک‌تر - پاک‌ترین"
       }
     },
     {
@@ -345,7 +360,8 @@ Object.assign(window.appData, {
       "translations": {
         "en": "generous / spacious - more generous / more spacious - most generous / most spacious",
         "uk": "просторий / щедрий - просторіший / щедріший - найпросторіший / найщедріший",
-        "ar": "واسع / كريم - أكثر اتساعًا / أكثر كرمًا - الأوسع / الأكرم"
+        "ar": "واسع / كريم - أكثر اتساعًا / أكثر كرمًا - الأوسع / الأكرم",
+        "fa": "دلباز / جادار - دلبازتر / جادارتر - دلبازترین / جادارترین"
       }
     },
     {
@@ -367,7 +383,8 @@ Object.assign(window.appData, {
       "translations": {
         "en": "inconsiderate - more inconsiderate - most inconsiderate",
         "uk": "безвідповідальний / нечемний до інших - ще безвідповідальніший - найбезвідповідальніший",
-        "ar": "عديم المراعاة - أكثر عدمًا للمراعاة - الأشد عدمًا للمراعاة"
+        "ar": "عديم المراعاة - أكثر عدمًا للمراعاة - الأشد عدمًا للمراعاة",
+        "fa": "بی‌ملاحظه - بی‌ملاحظه‌تر - بی‌ملاحظه‌ترین"
       }
     },
     {
@@ -389,7 +406,8 @@ Object.assign(window.appData, {
       "translations": {
         "en": "tenant - tenants",
         "uk": "орендар - орендарі",
-        "ar": "مستأجر - مستأجرون"
+        "ar": "مستأجر - مستأجرون",
+        "fa": "مستأجر - مستأجران"
       }
     },
     {
@@ -411,7 +429,8 @@ Object.assign(window.appData, {
       "translations": {
         "en": "staircase / stairs - staircases / stairs",
         "uk": "сходи / сходова клітка - сходи",
-        "ar": "درج - سلالم"
+        "ar": "درج - سلالم",
+        "fa": "راه پله / پله‌ها - راه پله‌ها / پله‌ها"
       }
     },
     {
@@ -433,7 +452,8 @@ Object.assign(window.appData, {
       "translations": {
         "en": "roof - roofs",
         "uk": "дах - дахи",
-        "ar": "سقف - أسقف"
+        "ar": "سقف - أسقف",
+        "fa": "بام / سقف - بام‌ها / سقف‌ها"
       }
     },
     {
@@ -455,7 +475,8 @@ Object.assign(window.appData, {
       "translations": {
         "en": "security deposit - security deposits",
         "uk": "застава - застави",
-        "ar": "تأمين / كفالة - تأمينات / كفالات"
+        "ar": "تأمين / كفالة - تأمينات / كفالات",
+        "fa": "پول ضمانت - پول‌های ضمانت"
       }
     },
     {
@@ -477,7 +498,8 @@ Object.assign(window.appData, {
       "translations": {
         "en": "lawyer - lawyers",
         "uk": "адвокат - адвокати",
-        "ar": "محامٍ - محامون"
+        "ar": "محامٍ - محامون",
+        "fa": "وکیل مدافع - وکلای مدافع"
       }
     },
     {
@@ -499,7 +521,8 @@ Object.assign(window.appData, {
       "translations": {
         "en": "notice period - notice periods",
         "uk": "строк попередження про розірвання - строки попередження про розірвання",
-        "ar": "مهلة الإشعار بإنهاء العقد - مهل الإشعار بإنهاء العقد"
+        "ar": "مهلة الإشعار بإنهاء العقد - مهل الإشعار بإنهاء العقد",
+        "fa": "مهلت فسخ قرارداد - مهلت‌های فسخ قرارداد"
       }
     }
   ]

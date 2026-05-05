@@ -7,6 +7,7 @@ window.appData.vocabulary = [
     "meaningEn": "rental contract",
     "meaningUk": "договір оренди",
     "meaningAr": "عقد الإيجار",
+    "meaningFa": "قرارداد اجاره",
     "hintDe": "Ein schriftlicher Vertrag zwischen Mieter und Vermieter für eine Wohnung."
   },
   {
@@ -16,6 +17,7 @@ window.appData.vocabulary = [
     "meaningEn": "security deposit",
     "meaningUk": "застава",
     "meaningAr": "التأمين / الكفالة",
+    "meaningFa": "پول ضمانت (بیعانه)",
     "hintDe": "Geld, das man am Anfang zur Sicherheit bezahlt."
   },
   {
@@ -25,6 +27,7 @@ window.appData.vocabulary = [
     "meaningEn": "utility costs",
     "meaningUk": "додаткові комунальні витрати",
     "meaningAr": "التكاليف الجانبية",
+    "meaningFa": "هزینه‌های جانبی",
     "hintDe": "Zusätzliche Kosten für Wohnen, zum Beispiel für Wasser oder Heizung."
   },
   {
@@ -34,6 +37,7 @@ window.appData.vocabulary = [
     "meaningEn": "plot of land",
     "meaningUk": "земельна ділянка",
     "meaningAr": "قطعة أرض",
+    "meaningFa": "قطعه زمین",
     "hintDe": "Ein Stück Land, auf dem man bauen oder wohnen kann."
   },
   {
@@ -43,6 +47,7 @@ window.appData.vocabulary = [
     "meaningEn": "house rules",
     "meaningUk": "правила будинку",
     "meaningAr": "قواعد المنزل",
+    "meaningFa": "قوانین ساختمان",
     "hintDe": "Regeln, die in einem Haus für alle Bewohner gelten."
   },
   {
@@ -52,6 +57,7 @@ window.appData.vocabulary = [
     "meaningEn": "tenant",
     "meaningUk": "орендар",
     "meaningAr": "المستأجر",
+    "meaningFa": "مستأجر",
     "hintDe": "Eine Person, die in einer Wohnung lebt und dafür regelmäßig Geld bezahlt."
   },
   {
@@ -61,6 +67,7 @@ window.appData.vocabulary = [
     "meaningEn": "landlord",
     "meaningUk": "орендодавець",
     "meaningAr": "المالك",
+    "meaningFa": "صاحب‌خانه",
     "hintDe": "Eine Person, der die Wohnung gehört und die sie anderen gegen Geld überlässt."
   },
   {
@@ -70,6 +77,7 @@ window.appData.vocabulary = [
     "meaningEn": "notice period",
     "meaningUk": "строк попередження про розірвання",
     "meaningAr": "مهلة الإشعار",
+    "meaningFa": "مهلت فسخ قرارداد",
     "hintDe": "Die Zeit, die man vor dem Ende eines Vertrags warten muss."
   },
   {
@@ -79,6 +87,7 @@ window.appData.vocabulary = [
     "meaningEn": "roof",
     "meaningUk": "дах",
     "meaningAr": "السقف",
+    "meaningFa": "بام (سقف)",
     "hintDe": "Der obere Teil eines Hauses, der vor Regen schützt."
   },
   {
@@ -88,6 +97,7 @@ window.appData.vocabulary = [
     "meaningEn": "wall",
     "meaningUk": "мур",
     "meaningAr": "الجدار",
+    "meaningFa": "دیوار",
     "hintDe": "Eine feste Wand aus Stein oder Beton."
   },
   {
@@ -97,6 +107,7 @@ window.appData.vocabulary = [
     "meaningEn": "stairs",
     "meaningUk": "сходи",
     "meaningAr": "الدرج",
+    "meaningFa": "زینه (پله)",
     "hintDe": "Etwas mit Stufen, über das man nach oben oder unten geht."
   },
   {
@@ -106,6 +117,7 @@ window.appData.vocabulary = [
     "meaningEn": "elevator",
     "meaningUk": "ліфт",
     "meaningAr": "المصعد",
+    "meaningFa": "لفت (آسانسور)",
     "hintDe": "Eine Maschine im Haus, die Menschen nach oben oder unten führt."
   },
   {
@@ -115,6 +127,7 @@ window.appData.vocabulary = [
     "meaningEn": "lawn",
     "meaningUk": "газон",
     "meaningAr": "العشب",
+    "meaningFa": "چمن",
     "hintDe": "Kurzes grünes Gras im Garten oder vor dem Haus."
   },
   {
@@ -124,6 +137,7 @@ window.appData.vocabulary = [
     "meaningEn": "step",
     "meaningUk": "сходинка",
     "meaningAr": "الدرجة",
+    "meaningFa": "زینه (پله)",
     "hintDe": "Ein einzelner Teil einer Treppe."
   },
   {
@@ -133,6 +147,7 @@ window.appData.vocabulary = [
     "meaningEn": "lawyer",
     "meaningUk": "адвокат",
     "meaningAr": "المحامي",
+    "meaningFa": "وکیل مدافع",
     "hintDe": "Eine Person, die Menschen vor Gericht rechtlich hilft."
   },
   {
@@ -142,6 +157,7 @@ window.appData.vocabulary = [
     "meaningEn": "court",
     "meaningUk": "суд",
     "meaningAr": "المحكمة",
+    "meaningFa": "محکمه (دادگاه)",
     "hintDe": "Der Ort oder die Institution, wo ein rechtlicher Fall entschieden wird."
   },
   {
@@ -151,6 +167,7 @@ window.appData.vocabulary = [
     "meaningEn": "lawsuit",
     "meaningUk": "судовий процес",
     "meaningAr": "الدعوى القضائية",
+    "meaningFa": "پرونده قضایی",
     "hintDe": "Ein Gerichtsfall oder ein längerer rechtlicher Ablauf."
   },
   {
@@ -160,6 +177,7 @@ window.appData.vocabulary = [
     "meaningEn": "noise",
     "meaningUk": "шум",
     "meaningAr": "الضوضاء",
+    "meaningFa": "سر و صدا",
     "hintDe": "Laute Geräusche, die stören."
   },
   {
@@ -169,6 +187,7 @@ window.appData.vocabulary = [
     "meaningEn": "peace",
     "meaningUk": "спокій / мир",
     "meaningAr": "الهدوء / السلام",
+    "meaningFa": "آرامش (صلح)",
     "hintDe": "Ein ruhiger Zustand ohne Streit oder Konflikt."
   },
   {
@@ -178,6 +197,7 @@ window.appData.vocabulary = [
     "meaningEn": "reality",
     "meaningUk": "реальність",
     "meaningAr": "الواقع",
+    "meaningFa": "واقعیت",
     "hintDe": "Das, was in echt ist und wirklich passiert."
   },
   {
@@ -187,6 +207,7 @@ window.appData.vocabulary = [
     "meaningEn": "property ownership",
     "meaningUk": "власність",
     "meaningAr": "الملكية",
+    "meaningFa": "ملکیت (دارایی)",
     "hintDe": "Etwas, das einer Person rechtlich gehört."
   },
   {
@@ -196,6 +217,7 @@ window.appData.vocabulary = [
     "meaningEn": "duty",
     "meaningUk": "обов’язок",
     "meaningAr": "الواجب",
+    "meaningFa": "وظیفه (مکلفیت)",
     "hintDe": "Etwas, das man machen muss."
   },
   {
@@ -205,6 +227,7 @@ window.appData.vocabulary = [
     "meaningEn": "ban",
     "meaningUk": "заборона",
     "meaningAr": "الحظر",
+    "meaningFa": "ممنوعیت",
     "hintDe": "Eine Regel, dass etwas nicht erlaubt ist."
   },
   {
@@ -214,6 +237,7 @@ window.appData.vocabulary = [
     "meaningEn": "approval",
     "meaningUk": "дозвіл",
     "meaningAr": "التصريح / الموافقة",
+    "meaningFa": "اجازه‌نامه (موافقت)",
     "hintDe": "Eine offizielle Erlaubnis."
   },
   {
@@ -223,6 +247,7 @@ window.appData.vocabulary = [
     "meaningEn": "move",
     "meaningUk": "переїзд",
     "meaningAr": "الانتقال",
+    "meaningFa": "نقل مکان",
     "hintDe": "Der Wechsel von einer Wohnung oder einem Haus in ein anderes."
   },
   {
@@ -232,6 +257,7 @@ window.appData.vocabulary = [
     "meaningEn": "to move in",
     "meaningUk": "вселятися",
     "meaningAr": "ينتقل للسكن",
+    "meaningFa": "نقل مکان به خانه جدید",
     "hintDe": "In eine neue Wohnung oder ein neues Haus kommen, um dort zu wohnen."
   },
   {
@@ -241,6 +267,7 @@ window.appData.vocabulary = [
     "meaningEn": "to move out",
     "meaningUk": "виїжджати",
     "meaningAr": "ينتقل من السكن",
+    "meaningFa": "تخلیه خانه",
     "hintDe": "Eine Wohnung oder ein Haus verlassen, um woanders zu wohnen."
   },
   {
@@ -250,6 +277,7 @@ window.appData.vocabulary = [
     "meaningEn": "to terminate",
     "meaningUk": "розривати договір",
     "meaningAr": "يفسخ / ينهي العقد",
+    "meaningFa": "فسخ کردن قرارداد",
     "hintDe": "Einen Vertrag offiziell beenden."
   },
   {
@@ -259,6 +287,7 @@ window.appData.vocabulary = [
     "meaningEn": "to complain",
     "meaningUk": "скаржитися",
     "meaningAr": "يشتكي",
+    "meaningFa": "شکایت کردن",
     "hintDe": "Sagen, dass man mit etwas unzufrieden ist."
   },
   {
@@ -268,6 +297,7 @@ window.appData.vocabulary = [
     "meaningEn": "to take care of",
     "meaningUk": "дбати про",
     "meaningAr": "يعتني بـ",
+    "meaningFa": "رسیدگی کردن",
     "hintDe": "Für etwas oder jemanden sorgen."
   },
   {
@@ -277,6 +307,7 @@ window.appData.vocabulary = [
     "meaningEn": "to disturb",
     "meaningUk": "заважати",
     "meaningAr": "يزعج",
+    "meaningFa": "مزاحم شدن",
     "hintDe": "Jemandem Ruhe oder Konzentration wegnehmen."
   },
   {
@@ -286,6 +317,7 @@ window.appData.vocabulary = [
     "meaningEn": "to mow",
     "meaningUk": "косити",
     "meaningAr": "يقص العشب",
+    "meaningFa": "چمن زدن",
     "hintDe": "Gras mit einer Maschine oder einem Gerät kurz schneiden."
   },
   {
@@ -295,6 +327,7 @@ window.appData.vocabulary = [
     "meaningEn": "to arrange",
     "meaningUk": "домовлятися",
     "meaningAr": "يتفق / يرتب",
+    "meaningFa": "قرار گذاشتن / توافق کردن",
     "hintDe": "Etwas gemeinsam abmachen."
   },
   {
@@ -304,6 +337,7 @@ window.appData.vocabulary = [
     "meaningEn": "to afford",
     "meaningUk": "мати змогу собі дозволити",
     "meaningAr": "يتحمل التكلفة",
+    "meaningFa": "توانایی مالی داشتن",
     "hintDe": "Genug Geld haben, um etwas bezahlen zu können."
   },
   {
@@ -313,6 +347,7 @@ window.appData.vocabulary = [
     "meaningEn": "to react",
     "meaningUk": "реагувати",
     "meaningAr": "يستجيب",
+    "meaningFa": "واکنش نشان دادن",
     "hintDe": "Auf etwas antworten oder etwas als Folge tun."
   },
   {
@@ -322,6 +357,7 @@ window.appData.vocabulary = [
     "meaningEn": "to demand",
     "meaningUk": "вимагати",
     "meaningAr": "يطالب",
+    "meaningFa": "تقاضا کردن / خواستن",
     "hintDe": "Etwas sehr deutlich fordern."
   },
   {
@@ -331,6 +367,7 @@ window.appData.vocabulary = [
     "meaningEn": "to violate",
     "meaningUk": "порушувати",
     "meaningAr": "ينتهك",
+    "meaningFa": "تخلف کردن",
     "hintDe": "Gegen eine Regel oder ein Gesetz handeln."
   },
   {
@@ -340,6 +377,7 @@ window.appData.vocabulary = [
     "meaningEn": "to transfer money",
     "meaningUk": "переказувати гроші",
     "meaningAr": "يحوّل المال",
+    "meaningFa": "انتقال پول (حواله)",
     "hintDe": "Geld von einem Konto auf ein anderes schicken."
   },
   {
@@ -349,7 +387,8 @@ window.appData.vocabulary = [
     "meaningEn": "to discover",
     "meaningUk": "виявляти",
     "meaningAr": "يكتشف",
-    "hintDe": "Etwas sehen oder finden, das man vorher nicht kannte."
+    "meaningFa": "کشف کردن (پیدا کردن)",
+    "hintDe": "Etwas sehen oder finden, das man vorher nicht kannته."
   },
   {
     "category": "verb",
@@ -358,6 +397,7 @@ window.appData.vocabulary = [
     "meaningEn": "to scream",
     "meaningUk": "кричати",
     "meaningAr": "يصرخ",
+    "meaningFa": "جیغ زدن (فریاد زدن)",
     "hintDe": "Sehr laut sprechen oder rufen."
   },
   {
@@ -367,6 +407,7 @@ window.appData.vocabulary = [
     "meaningEn": "to avoid",
     "meaningUk": "уникати",
     "meaningAr": "يتجنب",
+    "meaningFa": "اجتناب کردن (دوری کردن)",
     "hintDe": "Dafür sorgen, dass etwas nicht passiert."
   },
   {
@@ -376,6 +417,7 @@ window.appData.vocabulary = [
     "meaningEn": "cut / trim",
     "meaningUk": "зріз / підрізання",
     "meaningAr": "قص / تقليم",
+    "meaningFa": "برش / اصلاح",
     "hintDe": "Das Kürzen oder Schneiden von Pflanzen oder anderen Dingen."
   },
   {
@@ -385,6 +427,7 @@ window.appData.vocabulary = [
     "meaningEn": "cheap",
     "meaningUk": "вигідний / недорогий",
     "meaningAr": "رخيص / مناسب",
+    "meaningFa": "ارزان (مناسب)",
     "hintDe": "Nicht teuer und vom Preis her gut."
   },
   {
@@ -394,6 +437,7 @@ window.appData.vocabulary = [
     "meaningEn": "quiet",
     "meaningUk": "тихий",
     "meaningAr": "هادئ",
+    "meaningFa": "آرام",
     "hintDe": "Ohne viel Lärm oder Bewegung."
   },
   {
@@ -403,6 +447,7 @@ window.appData.vocabulary = [
     "meaningEn": "central",
     "meaningUk": "центральний",
     "meaningAr": "مركزي",
+    "meaningFa": "مرکزی",
     "hintDe": "Mitten in der Stadt oder gut erreichbar gelegen."
   },
   {
@@ -412,6 +457,7 @@ window.appData.vocabulary = [
     "meaningEn": "loud",
     "meaningUk": "гучний",
     "meaningAr": "صاخب",
+    "meaningFa": "بلند (پر سر و صدا)",
     "hintDe": "So, dass man es stark hören kann."
   },
   {
@@ -421,6 +467,7 @@ window.appData.vocabulary = [
     "meaningEn": "inconsiderate",
     "meaningUk": "безвідповідальний до інших",
     "meaningAr": "غير مراعٍ",
+    "meaningFa": "بی‌ملاحظه",
     "hintDe": "So, dass man nicht an andere denkt."
   },
   {
@@ -430,6 +477,7 @@ window.appData.vocabulary = [
     "meaningEn": "polite",
     "meaningUk": "ввічливий",
     "meaningAr": "مهذب",
+    "meaningFa": "مودب",
     "hintDe": "Freundlich und respektvoll im Verhalten."
   },
   {
@@ -439,6 +487,7 @@ window.appData.vocabulary = [
     "meaningEn": "tiny",
     "meaningUk": "крихітний",
     "meaningAr": "ضئيل جدًا",
+    "meaningFa": "بسیار کوچک",
     "hintDe": "Sehr, sehr klein."
   },
   {
@@ -448,6 +497,7 @@ window.appData.vocabulary = [
     "meaningEn": "expensive",
     "meaningUk": "дорогий",
     "meaningAr": "غالي",
+    "meaningFa": "قیمتی (گران)",
     "hintDe": "So, dass man viel Geld dafür bezahlen muss."
   },
   {
@@ -457,6 +507,7 @@ window.appData.vocabulary = [
     "meaningEn": "generous",
     "meaningUk": "просторий / щедрий",
     "meaningAr": "واسع / كريم",
+    "meaningFa": "جادار / بخشنده",
     "hintDe": "Groß oder weit, oder so, dass man gern viel gibt."
   },
   {
@@ -466,6 +517,7 @@ window.appData.vocabulary = [
     "meaningEn": "clean",
     "meaningUk": "чистий",
     "meaningAr": "نظيف",
+    "meaningFa": "پاک (تمیز)",
     "hintDe": "Ohne Schmutz."
   },
   {
@@ -475,6 +527,7 @@ window.appData.vocabulary = [
     "meaningEn": "about it / about that",
     "meaningUk": "про це",
     "meaningAr": "عن ذلك",
+    "meaningFa": "در مورد آن",
     "hintDe": "Ein Wort für eine Sache, von der man spricht oder an die man denkt."
   },
   {
@@ -484,6 +537,7 @@ window.appData.vocabulary = [
     "meaningEn": "for it / for that",
     "meaningUk": "для цього / за це",
     "meaningAr": "لهذا / لذلك",
+    "meaningFa": "برای آن",
     "hintDe": "Ein Wort für eine Sache, zu der etwas gehört oder für die etwas gilt."
   },
   {
@@ -493,6 +547,7 @@ window.appData.vocabulary = [
     "meaningEn": "what for / for what",
     "meaningUk": "для чого / за що",
     "meaningAr": "لأجل ماذا / لماذا",
+    "meaningFa": "برای چه",
     "hintDe": "Ein Fragewort nach dem Zweck oder Grund bei Sachen."
   },
   {
@@ -502,6 +557,7 @@ window.appData.vocabulary = [
     "meaningEn": "about what",
     "meaningUk": "про що",
     "meaningAr": "عن ماذا",
+    "meaningFa": "درباره چه",
     "hintDe": "Ein Fragewort danach, von welcher Sache man spricht."
   },
   {
@@ -511,6 +567,7 @@ window.appData.vocabulary = [
     "meaningEn": "despite",
     "meaningUk": "попри / незважаючи на",
     "meaningAr": "على الرغم من",
+    "meaningFa": "با وجودِ (علیرغم)",
     "hintDe": "Zeigt einen Gegensatz: etwas passiert, obwohl ein Hindernis da ist."
   },
   {
@@ -520,7 +577,8 @@ window.appData.vocabulary = [
     "meaningEn": "but rather / but also",
     "meaningUk": "а навпаки / а також",
     "meaningAr": "بل / وإنما",
-    "hintDe": "Verbindet den zweiten Teil nach einer Verneinung oder nach nicht nur."
+    "meaningFa": "بلکه",
+    "hintDe": "Verbindet den zweiten Teil nach einer Verneینung oder nach nicht nur."
   },
   {
     "category": "grammar",
@@ -529,6 +587,7 @@ window.appData.vocabulary = [
     "meaningEn": "either",
     "meaningUk": "або",
     "meaningAr": "إما",
+    "meaningFa": "یا (در عبارت یا... یا...)",
     "hintDe": "Zeigt die erste von zwei Möglichkeiten."
   },
   {
@@ -538,6 +597,7 @@ window.appData.vocabulary = [
     "meaningEn": "would have / had (subjunctive)",
     "meaningUk": "мав би / якби мав",
     "meaningAr": "كان سيملك / لو كان قد",
+    "meaningFa": "می‌داشتم (وجه التزامی)",
     "hintDe": "Form von haben für irreale oder gedachte Situationen in der Vergangenheit."
   },
   {
@@ -547,7 +607,7 @@ window.appData.vocabulary = [
     "meaningEn": "would be / had been (subjunctive)",
     "meaningUk": "були б / якби були",
     "meaningAr": "لكانوا / لو كانوا قد",
+    "meaningFa": "می‌بودیم (وجه التزامی)",
     "hintDe": "Form von sein für irreale oder gedachte Situationen in der Vergangenheit."
   }
 ];
-

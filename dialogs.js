@@ -272,7 +272,8 @@ window.appData.dialogs = [
     translations: {
       en: "A tenant asks a landlord about utility costs, the deposit, and a viewing appointment.",
       uk: "Орендар запитує орендодавця про комунальні витрати, заставу та огляд квартири.",
-      ar: "يسأل المستأجر المالك عن التكاليف الجانبية والتأمين وموعد مشاهدة الشقة."
+      ar: "يسأل المستأجر المالك عن التكاليف الجانبية والتأمين وموعد مشاهدة الشقة.",
+      fa: "یک مستأجر از صاحب‌خانه در مورد هزینه‌های جانبی، پول ضمانت و وقت بازدید سوال می‌کند."
     }
   },
   // Certification signature: reviewed and certified by Codex and Gemini CLI on 2026-05-03.
@@ -353,7 +354,8 @@ window.appData.dialogs = [
     translations: {
       en: "A tenant talks to a neighbor about noise, house rules, and keeping peace in the building.",
       uk: "Орендар говорить із сусідом про шум, правила будинку та спокій у домі.",
-      ar: "يتحدث المستأجر مع الجار عن الضجيج وقواعد المنزل والحفاظ على الهدوء في المبنى."
+      ar: "يتحدث المستأجر مع الجار عن الضجيج وقواعد المنزل والحفاظ على الهدوء في المبنى.",
+      fa: "یک مستأجر با همسایه‌ای در مورد سر و صدا، قوانین ساختمان و حفظ آرامش در آپارتمان صحبت می‌کند."
     }
   },
   // Certification signature: reviewed and certified by Codex and Gemini CLI on 2026-05-03.
@@ -431,7 +433,8 @@ window.appData.dialogs = [
     translations: {
       en: "A tenant reports a broken elevator and agrees how to inform the other tenants.",
       uk: "Орендар повідомляє про зламаний ліфт і домовляється, як повідомити інших мешканців.",
-      ar: "يبلغ المستأجر عن تعطل المصعد ويتفق على كيفية إبلاغ بقية السكان."
+      ar: "يبلغ المستأجر عن تعطل المصعد ويتفق على كيفية إبلاغ بقية السكان.",
+      fa: "یک مستأجر خرابی آسانسور را گزارش می‌دهد و در مورد نحوه اطلاع‌رسانی به سایر مستأجران توافق می‌کند."
     }
   },
   // Certification signature: reviewed and certified by Codex and Gemini CLI on 2026-05-03.
@@ -510,7 +513,8 @@ window.appData.dialogs = [
     translations: {
       en: "A tenant cancels the rental contract and discusses the notice period and handover.",
       uk: "Орендар розриває договір оренди та обговорює строк попередження і передачу квартири.",
-      ar: "يلغي المستأجر عقد الإيجار ويناقش مهلة الإشعار وتسليم الشقة."
+      ar: "يلغي المستأجر عقد الإيجار ويناقش مهلة الإشعار وتسليم الشقة.",
+      fa: "یک مستأجر قرارداد اجاره را فسخ می‌کند و در مورد مهلت فسخ و تحویل کلید بحث می‌کند."
     }
   },
   // Certification signature: reviewed and certified by Codex and Gemini CLI on 2026-05-03.
@@ -588,7 +592,8 @@ window.appData.dialogs = [
     translations: {
       en: "A new tenant tells a neighbor about the move-in and asks about house rules.",
       uk: "Новий орендар розповідає сусіду про вселення та питає про правила будинку.",
-      ar: "يخبر المستأجر الجديد الجار عن الانتقال ويسأل عن قواعد المنزل."
+      ar: "يخبر المستأجر الجديد الجار عن الانتقال ويسأل عن قواعد المنزل.",
+      fa: "یک مستأجر جدید به همسایه‌ای در مورد اسباب‌کشی می‌گوید و در مورد قوانین ساختمان سوال می‌کند."
     }
   },
   // Certification signature: reviewed and certified by Codex and Gemini CLI on 2026-05-03.
@@ -668,7 +673,8 @@ window.appData.dialogs = [
     translations: {
       en: "A tenant asks the landlord who is responsible for mowing the lawn.",
       uk: "Орендар питає орендодавця, хто відповідає за косіння газону.",
-      ar: "يسأل المستأجر المالك من المسؤول عن قص العشب."
+      ar: "يسأل المستأجر المالك من المسؤول عن قص العشب.",
+      fa: "یک مستأجر از صاحب‌خانه می‌پرسد که چه کسی مسئول چمن‌زنی است."
     }
   },
   // Certification signature: reviewed and certified by Codex and Gemini CLI on 2026-05-03.
@@ -745,7 +751,8 @@ window.appData.dialogs = [
     translations: {
       en: "A tenant reports a crack in the wall and arranges the next repair steps.",
       uk: "Орендар повідомляє про тріщину в стіні та домовляється про подальший ремонт.",
-      ar: "يبلغ المستأجر عن شق في الجدار ويتفق على خطوات الإصلاح التالية."
+      ar: "يبلغ المستأجر عن شق في الجدار ويتفق على خطوات الإصلاح التالية.",
+      fa: "یک مستأجر وجود تَرک در دیوار را گزارش می‌دهد و برای مراحل بعدی تعمیرات هماهنگی می‌کند."
     }
   },
   // Certification signature: reviewed and certified by Codex and Gemini CLI on 2026-05-03.
@@ -829,7 +836,8 @@ window.appData.dialogs = [
     translations: {
       en: "A tenant asks a lawyer about a dispute with the landlord and possible court action.",
       uk: "Орендар питає адвоката про суперечку з орендодавцем і можливий судовий процес.",
-      ar: "يسأل المستأجر المحامي عن نزاع مع المالك واحتمال الوصول إلى المحكمة."
+      ar: "يسأل المستأجر المحامي عن نزاع مع المالك واحتمال الوصول إلى المحكمة.",
+      fa: "یک مستأجر از یک وکیل در مورد اختلاف با صاحب‌خانه و اقدام احتمالی در دادگاه سوال می‌کند."
     }
   },
   // Certification signature: reviewed and certified by Codex and Gemini CLI on 2026-05-03.
@@ -907,7 +915,8 @@ window.appData.dialogs = [
     translations: {
       en: "A landlord and tenant clarify the contract and deposit before signing.",
       uk: "Орендодавець і орендар уточнюють договір та заставу перед підписанням.",
-      ar: "يوضح المالك والمستأجر العقد والتأمين قبل التوقيع."
+      ar: "يوضح المالك والمستأجر العقد والتأمين قبل التوقيع.",
+      fa: "صاحب‌خانه و مستأجر قبل از امضای قرارداد، در مورد قرارداد و پول ضمانت شفاف‌سازی می‌کنند."
     }
   },
   // Certification signature: reviewed and certified by Codex and Gemini CLI on 2026-05-03.
@@ -988,7 +997,8 @@ window.appData.dialogs = [
     translations: {
       en: "A tenant discusses whether an expensive but central apartment is affordable.",
       uk: "Орендар обговорює, чи може дозволити собі дорогу, але центральну квартиру.",
-      ar: "يناقش المستأجر ما إذا كانت الشقة الغالية والمركزية مناسبة ماديًا."
+      ar: "يناقش المستأجر ما إذا كانت الشقة الغالية والمركزية مناسبة ماديًا.",
+      fa: "یک مستأجر در مورد اینکه آیا یک آپارتمان گران اما در مرکز شهر مقرون به صرفه است یا خیر، بحث می‌کند."
     }
   },
   // Certification signature: reviewed and certified by Codex and Gemini CLI on 2026-05-03.
@@ -1066,7 +1076,8 @@ window.appData.dialogs = [
     translations: {
       en: "A tenant asks the property management about a ban and possible permission for bicycles in the courtyard.",
       uk: "Орендар питає управління будинку про заборону та можливий дозвіл на велосипеди у дворі.",
-      ar: "يسأل المستأجر إدارة المبنى عن الحظر وإمكانية الحصول على إذن لوضع الدراجات في الفناء."
+      ar: "يسأل المستأجر إدارة المبنى عن الحظر وإمكانية الحصول على إذن لوضع الدراجات في الفناء.",
+      fa: "یک مستأجر از مدیریت ساختمان در مورد ممنوعیت و اجازه احتمالی برای دوچرخه‌ها در حیاط سوال می‌کند."
     }
   }
 ];

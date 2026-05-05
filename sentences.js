@@ -8,7 +8,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "In Germany, you have to follow the house rules in order to avoid conflict.",
       "uk": "У Німеччині треба дотримуватися правил будинку, щоб уникнути конфлікту.",
-      "ar": "في ألمانيا يجب الالتزام بقواعد المنزل لتجنّب النزاع."
+      "ar": "في ألمانيا يجب الالتزام بقواعد المنزل لتجنّب النزاع.",
+      "fa": "در آلمان، برای جلوگیری از درگیری، باید قوانین ساختمان را رعایت کرد."
     },
     "sentenceGrammarNotes": [
       {
@@ -56,7 +57,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "The tenant transferred the deposit on time so that the rental contract becomes valid.",
       "uk": "Орендар вчасно переказав заставу, щоб договір оренди набув чинності.",
-      "ar": "حوّل المستأجر مبلغ التأمين في الوقت المناسب لكي يصبح عقد الإيجار ساريًا."
+      "ar": "حوّل المستأجر مبلغ التأمين في الوقت المناسب لكي يصبح عقد الإيجار ساريًا.",
+      "fa": "مستأجر مبلغ ضمانت (دیپوزیت) را به موقع حواله کرد تا قرارداد اجاره معتبر شود."
     },
     "sentenceGrammarNotes": [
       {
@@ -100,7 +102,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "The apartment is not only expensive, but also in poor condition.",
       "uk": "Квартира не лише дорога, а й у поганому стані.",
-      "ar": "الشقة ليست غالية فحسب، بل هي أيضًا في حالة سيئة."
+      "ar": "الشقة ليست غالية فحسب، بل هي أيضًا في حالة سيئة.",
+      "fa": "آپارتمان نه تنها گران است، بلکه وضعیت بدی هم دارد."
     },
     "sentenceGrammarNotes": [
       {
@@ -147,7 +150,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "Not only the lawn must be mowed, but the hedges also need trimming.",
       "uk": "Треба косити не лише газон, а й живопліт потребує підрізання.",
-      "ar": "لا بد من جزّ العشب، كما أن الشجيرات تحتاج أيضًا إلى تقليم."
+      "ar": "لا بد من جزّ العشب، كما أن الشجيرات تحتاج أيضًا إلى تقليم.",
+      "fa": "نه تنها چمن‌ها باید کوتاه شوند، بلکه پرچین‌ها هم به هرس نیاز دارند."
     },
     "sentenceGrammarNotes": [
       {
@@ -196,7 +200,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "The landlord demands the rent by the third working day.",
       "uk": "Орендодавець вимагає оплатити оренду до третього робочого дня.",
-      "ar": "يطلب المالك دفع الإيجار بحلول يوم العمل الثالث."
+      "ar": "يطلب المالك دفع الإيجار بحلول يوم العمل الثالث.",
+      "fa": "صاحبخانه اجاره را تا سومین روز کاری (هر ماه) طلب می‌کند."
     },
     "sentenceGrammarNotes": [
       {
@@ -244,7 +249,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "The stairs were cleaned so that the entrance area stays clean.",
       "uk": "Сходи прибрали, щоб зона входу залишалася чистою.",
-      "ar": "تم تنظيف الدرج لكي تبقى منطقة المدخل نظيفة."
+      "ar": "تم تنظيف الدرج لكي تبقى منطقة المدخل نظيفة.",
+      "fa": "پله‌ها تمیز شدند تا بخش ورودی پاکیزه بماند."
     },
     "sentenceGrammarNotes": [
       {
@@ -286,7 +292,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "The move was expensive but well organized.",
       "uk": "Переїзд був дорогим, але добре організованим.",
-      "ar": "كان الانتقال مكلفًا، لكنه كان منظمًا جيدًا."
+      "ar": "كان الانتقال مكلفًا، لكنه كان منظمًا جيدًا.",
+      "fa": "اسباب‌کشی گران بود، اما به خوبی برنامه‌ریزی شده بود."
     },
     "sentenceGrammarNotes": [
       {
@@ -328,7 +335,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "The tenant is moving into the new apartment next week.",
       "uk": "Орендар заселяється в нову квартиру наступного тижня.",
-      "ar": "سينتقل المستأجر إلى الشقة الجديدة الأسبوع المقبل."
+      "ar": "سينتقل المستأجر إلى الشقة الجديدة الأسبوع المقبل.",
+      "fa": "مستأجر هفته آینده به آپارتمان جدید نقل مکان می‌کند."
     },
     "sentenceGrammarNotes": [
       {
@@ -370,7 +378,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "Despite the high price, demand for housing remains strong.",
       "uk": "Попри високу ціну, попит на житло залишається високим.",
-      "ar": "رغم السعر المرتفع، يظل الطلب على السكن مرتفعًا."
+      "ar": "رغم السعر المرتفع، يظل الطلب على السكن مرتفعًا.",
+      "fa": "با وجود قیمت بالا، تقاضا برای مسکن همچنان پابرجاست."
     },
     "sentenceGrammarNotes": [
       {
@@ -415,7 +424,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "Have you already thought about who takes care of the garden?",
       "uk": "Чи ви вже думали про те, хто доглядатиме за садом?",
-      "ar": "هل فكّرتم بالفعل فيمن سيعتني بالحديقة؟"
+      "ar": "هل فكّرتم بالفعل فيمن سيعتني بالحديقة؟",
+      "fa": "آیا قبلاً در این مورد فکر کرده‌اید که چه کسی از باغچه مراقبت می‌کند؟"
     },
     "sentenceGrammarNotes": [
       {
@@ -467,7 +477,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "What exactly was this extra fee charged for in the utility costs?",
       "uk": "За що саме було нараховано цю додаткову плату в комунальних витратах?",
-      "ar": "مقابل ماذا بالضبط تم احتساب هذه الرسوم الإضافية ضمن التكاليف الجانبية؟"
+      "ar": "مقابل ماذا بالضبط تم احتساب هذه الرسوم الإضافية ضمن التكاليف الجانبية؟",
+      "fa": "این هزینه اضافی در هزینه‌های جانبی دقیقاً برای چه چیزی محاسبه شده است؟"
     },
     "sentenceGrammarNotes": [
       {
@@ -514,7 +525,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "What did the neighbor complain to the caretaker about yesterday?",
       "uk": "На що саме сусід учора скаржився двірнику?",
-      "ar": "عمّ اشتكى الجار بالأمس عند بواب المبنى؟"
+      "ar": "عمّ اشتكى الجار بالأمس عند بواب المبنى؟",
+      "fa": "همسایه دیروز در مورد چه چیزی به سرایدار شکایت کرد؟"
     },
     "sentenceGrammarNotes": [
       {
@@ -567,7 +579,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "Neither the landlord nor the building management felt responsible for the broken elevator.",
       "uk": "Ні орендодавець, ні адміністрація будинку не вважали себе відповідальними за зламаний ліфт.",
-      "ar": "لم يشعر لا المالك ولا إدارة المبنى بالمسؤولية عن المصعد المعطل."
+      "ar": "لم يشعر لا المالك ولا إدارة المبنى بالمسؤولية عن المصعد المعطل.",
+      "fa": "نه صاحبخانه و نه مدیریت ساختمان، خود را مسئول آسانسور خراب نمی‌دانستند."
     },
     "sentenceGrammarNotes": [
       {
@@ -609,7 +622,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "The location is very central, but the constant noise disturbs the night's peace.",
       "uk": "Розташування дуже центральне, але постійний шум порушує нічний спокій.",
-      "ar": "الموقع مركزي جدًا، لكن الضوضاء المستمرة تزعج هدوء الليل."
+      "ar": "الموقع مركزي جدًا، لكن الضوضاء المستمرة تزعج هدوء الليل.",
+      "fa": "اگرچه موقعیت مکانی بسیار مرکزی است، اما سر و صدای دائمی آرامش شبانه را مختل می‌کند."
     },
     "sentenceGrammarNotes": [
       {
@@ -651,7 +665,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "I am interested in whether the plot of land is already developed.",
       "uk": "Мене цікавить, чи ця ділянка вже підготовлена до забудови.",
-      "ar": "أنا مهتم بما إذا كانت قطعة الأرض مجهزة بالفعل."
+      "ar": "أنا مهتم بما إذا كانت قطعة الأرض مجهزة بالفعل.",
+      "fa": "من علاقه‌مندم بدانم که آیا زمین قبلاً آماده‌سازی (انشعابات وصل) شده است یا خیر."
     },
     "sentenceGrammarNotes": [
       {
@@ -693,7 +708,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "The deposit serves the landlord as security in case the tenant violates the contract.",
       "uk": "Застава слугує орендодавцеві гарантією, якщо орендар порушує договір.",
-      "ar": "يعمل مبلغ التأمين كضمان للمالك إذا خالف المستأجر العقد."
+      "ar": "يعمل مبلغ التأمين كضمان للمالك إذا خالف المستأجر العقد.",
+      "fa": "مبلغ ضمانت به عنوان وثیقه‌ای برای صاحبخانه عمل می‌کند در صورتی که مستأجر خلاف قرارداد عمل کند."
     },
     "sentenceGrammarNotes": [
       {
@@ -735,7 +751,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "Despite the strict bans, the neighbors grill on their balcony almost every evening.",
       "uk": "Попри суворі заборони, сусіди майже щовечора смажать на своєму балконі.",
-      "ar": "رغم القوانين الصارمة، يشوي الجيران على شرفتهم تقريبًا كل مساء."
+      "ar": "رغم القوانين الصارمة، يشوي الجيران على شرفتهم تقريبًا كل مساء.",
+      "fa": "با وجود ممنوعیت‌های شدید، همسایه‌ها تقریباً هر شب در بالکن خود کباب درست می‌کنند."
     },
     "sentenceGrammarNotes": [
       {
@@ -777,7 +794,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "If the government had reacted earlier, the shortage of affordable housing would have been smaller.",
       "uk": "Якби уряд відреагував раніше, нестача доступного житла була б меншою.",
-      "ar": "لو أن الحكومة تفاعلت في وقت أبكر، لكان النقص في المساكن الميسورة أقل."
+      "ar": "لو أن الحكومة تفاعلت في وقت أبكر، لكان النقص في المساكن الميسورة أقل.",
+      "fa": "اگر دولت زودتر واکنش نشان می‌داد، کمبود مسکن ارزان‌قیمت کمتر می‌بود."
     },
     "sentenceGrammarNotes": [
       {
@@ -828,7 +846,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "If only I had read the house rules, I might have avoided the mistake.",
       "uk": "Якби ж я прочитав правила будинку, я, можливо, уникнув би помилки.",
-      "ar": "ليتني قرأت قواعد المنزل، فربما كنت سأتجنب الخطأ."
+      "ar": "ليتني قرأت قواعد المنزل، فربما كنت سأتجنب الخطأ.",
+      "fa": "ای کاش فقط قوانین ساختمان را خوانده بودم، شاید از این اشتباه جلوگیری می‌کردم."
     },
     "sentenceGrammarNotes": [
       {
@@ -870,7 +889,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "If only we had moved out of this inconsiderate neighborhood earlier!",
       "uk": "Якби ж ми раніше виїхали з цього безвідповідального сусідства!",
-      "ar": "ليتنا انتقلنا من هذا الحي غير المراعي في وقت أبكر!"
+      "ar": "ليتنا انتقلنا من هذا الحي غير المراعي في وقت أبكر!",
+      "fa": "ای کاش زودتر از این محله بی‌ملاحظه نقل مکان کرده بودیم!"
     },
     "sentenceGrammarNotes": [
       {
@@ -912,7 +932,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "Despite the missing permit, the owner began building the wall.",
       "uk": "Попри відсутність дозволу, власник почав будувати мур.",
-      "ar": "رغم غياب التصريح، بدأ المالك ببناء الجدار."
+      "ar": "رغم غياب التصريح، بدأ المالك ببناء الجدار.",
+      "fa": "با وجود نداشتن مجوز، مالک شروع به ساخت دیوار کرد."
     },
     "sentenceGrammarNotes": [
       {
@@ -955,7 +976,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "Either you transfer the rent by the third working day, or you receive a warning.",
       "uk": "Або ви переказуєте орендну плату до третього робочого дня, або отримуєте попередження.",
-      "ar": "إما أن تحول الإيجار بحلول يوم العمل الثالث، أو تتلقى إنذارًا."
+      "ar": "إما أن تحول الإيجار بحلول يوم العمل الثالث، أو تتلقى إنذارًا.",
+      "fa": "یا اجاره را تا سومین روز کاری حواله کنید، یا اخطاریه دریافت خواهید کرد."
     },
     "sentenceGrammarNotes": [
       {
@@ -996,7 +1018,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "If the window were better insulated, we would have much lower heating costs in winter.",
       "uk": "Якби вікно було краще ізольоване, взимку ми мали б значно менші витрати на опалення.",
-      "ar": "لو كانت النافذة معزولة بشكل أفضل، لكانت تكاليف التدفئة لدينا أقل بكثير في الشتاء."
+      "ar": "لو كانت النافذة معزولة بشكل أفضل، لكانت تكاليف التدفئة لدينا أقل بكثير في الشتاء.",
+      "fa": "اگر پنجره بهتر عایق‌بندی شده بود، در زمستان هزینه‌های گرمایشی بسیار کمتری می‌داشتیم."
     },
     "sentenceGrammarNotes": [
       {
@@ -1038,7 +1061,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "If the residents had protested earlier, the high-rise would probably not have been built.",
       "uk": "Якби мешканці раніше протестували, висотку, ймовірно, не збудували б.",
-      "ar": "لو أن السكان احتجوا في وقت أبكر، فربما لم يكن البرج الشاهق قد بُني."
+      "ar": "لو أن السكان احتجوا في وقت أبكر، فربما لم يكن البرج الشاهق قد بُني.",
+      "fa": "اگر ساکنان زودتر اعتراض کرده بودند، احتمالاً این برج ساخته نمی‌شد."
     },
     "sentenceGrammarNotes": [
       {
@@ -1080,7 +1104,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "Not only is the roof leaking, but there are also problems with the wall's structural stability.",
       "uk": "Не лише дах протікає, а й є проблеми зі статикою муру.",
-      "ar": "ليس السقف وحده يتسرّب، بل توجد أيضًا مشكلات في ثبات الجدار الإنشائي."
+      "ar": "ليس السقف وحده يتسرّب، بل توجد أيضًا مشكلات في ثبات الجدار الإنشائي.",
+      "fa": "نه تنها سقف نشتی دارد، بلکه مشکلاتی در ایستایی دیوار نیز وجود دارد."
     },
     "sentenceGrammarNotes": [
       {
@@ -1128,7 +1153,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "The elevator is broken, so we are taking the stairs today.",
       "uk": "Ліфт зламаний, тому сьогодні ми користуємося сходами.",
-      "ar": "المصعد معطل، لذلك نستخدم الدرج اليوم."
+      "ar": "المصعد معطل، لذلك نستخدم الدرج اليوم.",
+      "fa": "آسانسور خراب است، به همین دلیل امروز از پله‌ها می‌رویم."
     },
     "sentenceGrammarNotes": [
       {
@@ -1168,7 +1194,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "Before the move, the tenant reads the rental contract once again.",
       "uk": "Перед переїздом орендар ще раз читає договір оренди.",
-      "ar": "قبل الانتقال يقرأ المستأجر عقد الإيجار مرة أخرى."
+      "ar": "قبل الانتقال يقرأ المستأجر عقد الإيجار مرة أخرى.",
+      "fa": "مستأجر قبل از اسباب‌کشی، یک بار دیگر قرارداد اجاره را می‌خواند."
     },
     "sentenceGrammarNotes": [
       {
@@ -1209,7 +1236,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "In summer, the landlord mows the lawn on Saturday.",
       "uk": "Влітку орендодавець косить газон у суботу.",
-      "ar": "في الصيف يجزّ المؤجر العشب يوم السبت."
+      "ar": "في الصيف يجزّ المؤجر العشب يوم السبت.",
+      "fa": "در تابستان، صاحبخانه روز شنبه چمن‌ها را کوتاه می‌کند."
     },
     "sentenceGrammarNotes": [
       {
@@ -1250,7 +1278,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "The neighbors are polite, so there is usually peace in the building.",
       "uk": "Сусіди ввічливі, тому в будинку зазвичай панує мир.",
-      "ar": "الجيران مؤدبون، لذلك يسود الهدوء في المبنى غالبًا."
+      "ar": "الجيران مؤدبون، لذلك يسود الهدوء في المبنى غالبًا.",
+      "fa": "همسایه‌ها مودب هستند، به همین دلیل معمولاً در ساختمان آرامش برقرار است."
     },
     "sentenceGrammarNotes": [
       {
@@ -1290,7 +1319,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "The apartment is small, but the location is very central.",
       "uk": "Квартира маленька, але розташування дуже центральне.",
-      "ar": "الشقة صغيرة، لكن موقعها مركزي جدًا."
+      "ar": "الشقة صغيرة، لكن موقعها مركزي جدًا.",
+      "fa": "آپارتمان کوچک است، اما موقعیت مکانی آن بسیار مرکزی است."
     },
     "sentenceGrammarNotes": [
       {
@@ -1329,7 +1359,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "The staircase is clean because the caretaker cleans it every morning.",
       "uk": "Сходи чисті, бо двірник щодня вранці їх прибирає.",
-      "ar": "الدرج نظيف لأن عامل المبنى ينظفه كل صباح."
+      "ar": "الدرج نظيف لأن عامل المبنى ينظفه كل صباح.",
+      "fa": "پله‌ها تمیز هستند، زیرا سرایدار هر روز صبح آن‌ها را تمیز می‌کند."
     },
     "sentenceGrammarNotes": [
       {
@@ -1369,7 +1400,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "The tenants are waiting in front of the building until the landlord comes.",
       "uk": "Орендарі чекають перед будинком, поки прийде орендодавець.",
-      "ar": "ينتظر المستأجرون أمام المنزل حتى يأتي المؤجر."
+      "ar": "ينتظر المستأجرون أمام المنزل حتى يأتي المؤجر.",
+      "fa": "مستأجران جلوی خانه منتظر می‌مانند تا صاحبخانه بیاید."
     },
     "sentenceGrammarNotes": [
       {
@@ -1409,7 +1441,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "The new elevator runs quietly, so it does not bother anyone in the building.",
       "uk": "Новий ліфт їздить тихо, тому він нікому не заважає в будинку.",
-      "ar": "المصعد الجديد يعمل بهدوء، لذلك لا يزعج أحدًا في المبنى."
+      "ar": "المصعد الجديد يعمل بهدوء، لذلك لا يزعج أحدًا في المبنى.",
+      "fa": "آسانسور جدید بی‌صدا حرکت می‌کند، به همین دلیل مزاحم هیچ‌کس در ساختمان نمی‌شود."
     },
     "sentenceGrammarNotes": [
       {
@@ -1449,7 +1482,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "What are the tenants still talking about for a long time in the courtyard after the meeting?",
       "uk": "Про що орендарі ще довго говорять у дворі після зборів?",
-      "ar": "عمّ يتحدث المستأجرون طويلاً في الفناء بعد الاجتماع؟"
+      "ar": "عمّ يتحدث المستأجرون طويلاً في الفناء بعد الاجتماع؟",
+      "fa": "مستأجران بعد از جلسه هنوز در حیاط در مورد چه چیزی صحبت می‌کنند؟"
     },
     "sentenceGrammarNotes": [
       {
@@ -1489,7 +1523,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "For that, the owner first needs approval from the court.",
       "uk": "Для цього власнику спочатку потрібен дозвіл від суду.",
-      "ar": "لهذا يحتاج المالك أولاً إلى موافقة من المحكمة."
+      "ar": "لهذا يحتاج المالك أولاً إلى موافقة من المحكمة.",
+      "fa": "برای این کار، مالک ابتدا به مجوزی از دادگاه نیاز دارد."
     },
     "sentenceGrammarNotes": [
       {
@@ -1530,7 +1565,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "Either the elevator gets repaired, or the tenants keep taking the stairs.",
       "uk": "Або ліфт відремонтують, або орендарі й далі користуватимуться сходами.",
-      "ar": "إما أن يتم إصلاح المصعد، أو يواصل المستأجرون استخدام الدرج."
+      "ar": "إما أن يتم إصلاح المصعد، أو يواصل المستأجرون استخدام الدرج.",
+      "fa": "یا آسانسور تعمیر می‌شود، یا مستأجران همچنان از پله‌ها استفاده می‌کنند."
     },
     "sentenceGrammarNotes": [
       {
@@ -1578,7 +1614,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "You may not scream loudly either in the courtyard or in the stairwell.",
       "uk": "Ні у дворі, ні на сходовій клітці не можна голосно кричати.",
-      "ar": "لا يجوز الصراخ بصوت عالٍ لا في الفناء ولا في بيت الدرج."
+      "ar": "لا يجوز الصراخ بصوت عالٍ لا في الفناء ولا في بيت الدرج.",
+      "fa": "نه در حیاط و نه در راه‌پله، کسی اجازه ندارد بلند فریاد بزند."
     },
     "sentenceGrammarNotes": [
       {
@@ -1617,7 +1654,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "Despite the high utility costs, many people still want to live centrally.",
       "uk": "Попри високі комунальні витрати, багато людей і далі хочуть жити в центрі.",
-      "ar": "رغم ارتفاع التكاليف الإضافية، ما زال كثير من الناس يريدون السكن في موقع مركزي."
+      "ar": "رغم ارتفاع التكاليف الإضافية، ما زال كثير من الناس يريدون السكن في موقع مركزي.",
+      "fa": "با وجود هزینه‌های جانبی بالا، بسیاری از مردم همچنان می‌خواهند در مرکز شهر زندگی کنند."
     },
     "sentenceGrammarNotes": [
       {
@@ -1658,7 +1696,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "The tenant complains that the noise does not stop even at night.",
       "uk": "Орендар скаржиться на те, що шум не припиняється навіть уночі.",
-      "ar": "يشتكي المستأجر من أن الضجيج لا يتوقف حتى في الليل."
+      "ar": "يشتكي المستأجر من أن الضجيج لا يتوقف حتى في الليل.",
+      "fa": "مستأجر از این موضوع شکایت دارد که سر و صدا حتی در شب هم قطع نمی‌شود."
     },
     "sentenceGrammarNotes": [
       {
@@ -1699,7 +1738,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "The landlady takes care of the garden so that the courtyard looks clean.",
       "uk": "Орендодавиця доглядає за садом, щоб подвір’я виглядало чистим.",
-      "ar": "تهتم المالكة بالحديقة لكي يبدو الفناء نظيفًا."
+      "ar": "تهتم المالكة بالحديقة لكي يبدو الفناء نظيفًا.",
+      "fa": "صاحبخانه از باغچه مراقبت می‌کند تا حیاط تمیز به نظر برسد."
     },
     "sentenceGrammarNotes": [
       {
@@ -1746,7 +1786,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "Not only the elevator is old, but the staircase is damaged as well.",
       "uk": "Не лише ліфт старий, а й сходи пошкоджені.",
-      "ar": "ليس المصعد قديمًا فحسب، بل إن الدرج متضرر أيضًا."
+      "ar": "ليس المصعد قديمًا فحسب، بل إن الدرج متضرر أيضًا.",
+      "fa": "نه تنها آسانسور قدیمی است، بلکه پله‌ها هم آسیب دیده‌اند."
     },
     "sentenceGrammarNotes": [
       {
@@ -1786,7 +1827,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "If the lawyer had reacted earlier, the trial would probably have been shorter.",
       "uk": "Якби адвокат відреагував раніше, процес, імовірно, був би коротшим.",
-      "ar": "لو أن المحامي تصرف في وقت أبكر، لكان مسار القضية أقصر على الأرجح."
+      "ar": "لو أن المحامي تصرف في وقت أبكر، لكان مسار القضية أقصر على الأرجح.",
+      "fa": "اگر وکیل زودتر واکنش نشان می‌داد، احتمالاً روند دادگاه کوتاه‌تر می‌بود."
     },
     "sentenceGrammarNotes": [
       {
@@ -1827,7 +1869,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "If the notice period had been explained more clearly, fewer tenants would have made mistakes.",
       "uk": "Якби строк розірвання був пояснений чіткіше, менше орендарів припустилися б помилок.",
-      "ar": "لو تم شرح مهلة الإنهاء بشكل أوضح، لارتكب عدد أقل من المستأجرين أخطاء."
+      "ar": "لو تم شرح مهلة الإنهاء بشكل أوضح، لارتكب عدد أقل من المستأجرين أخطاء.",
+      "fa": "اگر مهلت فسخ قرارداد واضح‌تر توضیح داده شده بود، مستأجران کمتری اشتباه می‌کردند."
     },
     "sentenceGrammarNotes": [
       {
@@ -1867,7 +1910,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "Despite the dispute with the neighbors, the landlord tried to maintain peace in the building.",
       "uk": "Попри суперечку з сусідами, орендодавець намагався зберегти мир у будинку.",
-      "ar": "رغم الخلاف مع الجيران، سعى المؤجر إلى الحفاظ على الهدوء في المبنى."
+      "ar": "رغم الخلاف مع الجيران، سعى المؤجر إلى الحفاظ على الهدوء في المبنى.",
+      "fa": "با وجود درگیری با همسایگان، صاحبخانه برای برقراری آرامش در ساختمان تلاش کرد."
     },
     "sentenceGrammarNotes": [
       {
@@ -1914,7 +1958,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "What exactly the landlord talked about during the trial remained unclear to many tenants.",
       "uk": "Про що саме орендодавець говорив у процесі, для багатьох орендарів залишилося незрозумілим.",
-      "ar": "ما الذي تحدث عنه المؤجر بالضبط أثناء المحاكمة ظل غير واضح لكثير من المستأجرين."
+      "ar": "ما الذي تحدث عنه المؤجر بالضبط أثناء المحاكمة ظل غير واضح لكثير من المستأجرين.",
+      "fa": "آنچه صاحبخانه دقیقاً در دادگاه در مورد آن صحبت کرد، برای بسیاری از مستأجران نامشخص ماند."
     },
     "sentenceGrammarNotes": [
       {
@@ -1955,7 +2000,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "Not only the property is expensive, but the permit also costs time and money.",
       "uk": "Не лише ділянка дорога, а й дозвіл коштує часу та грошей.",
-      "ar": "ليست الأرض وحدها باهظة، بل إن الحصول على التصريح يكلّف وقتًا ومالًا أيضًا."
+      "ar": "ليست الأرض وحدها باهظة، بل إن الحصول على التصريح يكلّف وقتًا ومالًا أيضًا.",
+      "fa": "نه تنها زمین گران است، بلکه گرفتن مجوز هم زمان و هزینه می‌برد."
     },
     "sentenceGrammarNotes": [
       {
@@ -1995,7 +2041,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "Either the owner reduces the utility costs, or several tenants cancel the contract.",
       "uk": "Або власник знизить комунальні витрати, або кілька орендарів розірвуть договір.",
-      "ar": "إما أن يخفض المالك التكاليف الإضافية، أو يلغي عدة مستأجرين العقد."
+      "ar": "إما أن يخفض المالك التكاليف الإضافية، أو يلغي عدة مستأجرين العقد.",
+      "fa": "یا مالک هزینه‌های جانبی را کاهش می‌دهد، یا چندین مستأجر قرارداد را فسخ می‌کنند."
     },
     "sentenceGrammarNotes": [
       {
@@ -2043,7 +2090,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "If the walls had been better insulated, people would have heard much less noise from outside in winter.",
       "uk": "Якби стіни були краще ізольовані, взимку було б чути значно менше шуму ззовні.",
-      "ar": "لو كانت الجدران معزولة بشكل أفضل، لسمع الناس ضجيجًا أقل بكثير من الخارج في الشتاء."
+      "ar": "لو كانت الجدران معزولة بشكل أفضل، لسمع الناس ضجيجًا أقل بكثير من الخارج في الشتاء.",
+      "fa": "اگر دیوارها بهتر عایق‌بندی شده بودند، در زمستان سر و صدای بسیار کمتری از بیرون شنیده می‌شد."
     },
     "sentenceGrammarNotes": [
       {
@@ -2089,7 +2137,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "Despite the court's decision, some neighbors continue to violate the house rules.",
       "uk": "Попри рішення суду, деякі сусіди й далі порушують правила будинку.",
-      "ar": "رغم قرار المحكمة، يواصل بعض الجيران مخالفة قواعد المنزل."
+      "ar": "رغم قرار المحكمة، يواصل بعض الجيران مخالفة قواعد المنزل.",
+      "fa": "با وجود تصمیم دادگاه، برخی از همسایگان همچنان به نقض قوانین ساختمان ادامه می‌دهند."
     },
     "sentenceGrammarNotes": [
       {
@@ -2137,7 +2186,8 @@ window.appData.sentenceBankV2 = [
     "translations": {
       "en": "If the owner had discovered earlier how noisy the location really is, he would not have bought the property.",
       "uk": "Якби власник раніше зрозумів, наскільки насправді гучне це місце, він би не купив цю ділянку.",
-      "ar": "لو أن المالك اكتشف في وقت أبكر مدى ضجيج الموقع في الحقيقة، لما اشترى العقار."
+      "ar": "لو أن المالك اكتشف في وقت أبكر مدى ضجيج الموقع في الحقيقة، لما اشترى العقار.",
+      "fa": "اگر مالک زودتر متوجه می‌شد که موقعیت مکانی واقعاً چقدر پر سر و صداست، زمین را نمی‌خرید."
     },
     "sentenceGrammarNotes": [
       {

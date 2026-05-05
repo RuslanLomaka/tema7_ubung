@@ -448,6 +448,7 @@ function isArticlePrompt(task) {
 function getVocabularyTranslation(item) {
   if (selectedLanguage === "uk") return item.meaningUk || item.meaningEn;
   if (selectedLanguage === "ar") return item.meaningAr || item.meaningEn;
+  if (selectedLanguage === "fa") return item.meaningFa || item.meaningEn;
   return item.meaningEn;
 }
 
