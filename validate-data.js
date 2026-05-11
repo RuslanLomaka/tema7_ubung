@@ -36,6 +36,21 @@ function hasTranslations(translations) {
   return translations && translations.en && translations.uk && translations.ar;
 }
 
+const nonGermanScriptPattern = /[\u0400-\u04FF\u0600-\u06FF]/;
+
+function assertNoNonGermanScript(file, id, field, value) {
+  if (typeof value !== "string") return;
+  if (nonGermanScriptPattern.test(value)) {
+    addIssue(file, id, `${field} contains Cyrillic, Arabic, or Persian characters inside a German-owned field.`);
+  }
+}
+
+function assertNoNonGermanScriptInFields(file, id, source, fields) {
+  for (const field of fields) {
+    assertNoNonGermanScript(file, id, field, source?.[field]);
+  }
+}
+
 const grammarKeys = new Set(Object.keys(grammarConcepts));
 const vocabularyByBasicForm = new Map(vocabulary.map((item) => [item.basicForm, item]));
 const helpLanguages = ["en", "uk", "ar"];
@@ -91,6 +106,19 @@ for (const language of helpLanguages) {
   }
 }
 
+for (const [key, concept] of Object.entries(grammarConcepts)) {
+  assertNoNonGermanScriptInFields("grammar.js", key, concept, [
+    "title",
+    "shortRule",
+    "shortExample",
+    "fullTheory",
+    "commonMistake"
+  ]);
+  for (const [index, example] of (concept.moreExamples || []).entries()) {
+    assertNoNonGermanScript("grammar.js", key, `moreExamples.${index}`, example);
+  }
+}
+
 for (const item of vocabulary) {
   // Vocab entries feed theory rendering, generated gap-fill hints, and some
   // form/distractor logic, so a missing field here tends to break multiple views.
@@ -101,6 +129,7 @@ for (const item of vocabulary) {
   if (!item.meaningEn || !item.meaningUk || !item.meaningAr) {
     addIssue("vocab.js", item.basicForm || "unknown", "Missing one or more translations.");
   }
+  assertNoNonGermanScriptInFields("vocab.js", item.basicForm || "unknown", item, ["basicForm", "forms", "hintDe"]);
 }
 
 for (const entry of sentenceBankV2) {
@@ -116,6 +145,7 @@ for (const entry of sentenceBankV2) {
   if (!hasTranslations(entry.translations)) {
     addIssue("sentences.js", entry.id || "unknown", "Sentence entry missing translations.");
   }
+  assertNoNonGermanScript("sentences.js", entry.id || "unknown", "sentence", entry.sentence);
 
   for (const link of entry.vocabularyLinks || []) {
     if (!vocabularyByBasicForm.has(link)) {
@@ -127,6 +157,9 @@ for (const entry of sentenceBankV2) {
     if (!Array.isArray(entry.multipleChoice.wrongOptions) || entry.multipleChoice.wrongOptions.length !== 3) {
       addIssue("sentences.js", entry.id, "multipleChoice must have exactly 3 wrongOptions.");
     }
+    for (const [index, option] of (entry.multipleChoice.wrongOptions || []).entries()) {
+      assertNoNonGermanScript("sentences.js", entry.id, `multipleChoice.wrongOptions.${index}`, option);
+    }
   }
 
   if (entry.errorSearch) {
@@ -135,8 +168,9 @@ for (const entry of sentenceBankV2) {
       addIssue("sentences.js", entry.id, "errorSearch is missing typoOptions.");
     }
     for (const [correctWord, wrongWords] of Object.entries(typoOptions)) {
+      assertNoNonGermanScript("sentences.js", entry.id, "errorSearch.correctWord", correctWord);
       const variants = Array.isArray(wrongWords) ? wrongWords : [];
-      for (const wrongWord of variants) {
+      for (const [index, wrongWord] of variants.entries()) {
         if (typeof wrongWord !== "string" || !wrongWord.trim()) {
           addIssue("sentences.js", entry.id, `Invalid typo variant for ${correctWord}.`);
           continue;
@@ -144,6 +178,7 @@ for (const entry of sentenceBankV2) {
         if (/\s/.test(wrongWord)) {
           addIssue("sentences.js", entry.id, `Whitespace typo variant is not allowed: ${correctWord} -> ${wrongWord}`);
         }
+        assertNoNonGermanScript("sentences.js", entry.id, `errorSearch.typoOptions.${correctWord}.${index}`, wrongWord);
       }
     }
   }
@@ -153,6 +188,9 @@ for (const entry of sentenceBankV2) {
     const unique = new Set(alternatives.map((value) => value.trim().toLowerCase()));
     if (unique.size !== alternatives.length) {
       addIssue("sentences.js", entry.id, "alternativeCorrectAnswers contains duplicates.");
+    }
+    for (const [index, alternative] of alternatives.entries()) {
+      assertNoNonGermanScript("sentences.js", entry.id, `alternativeCorrectAnswers.${index}`, alternative);
     }
   }
 }
@@ -167,6 +205,7 @@ for (const dialog of dialogs) {
   if (!hasTranslations(dialog.translations)) {
     addIssue("dialogs.js", dialog.id || "unknown", "Dialog entry missing translations.");
   }
+  assertNoNonGermanScriptInFields("dialogs.js", dialog.id || "unknown", dialog, ["title", "situationDe"]);
   if (!Array.isArray(dialog.lines) || dialog.lines.length < 4) {
     addIssue("dialogs.js", dialog.id || "unknown", "Dialog must contain at least 4 lines.");
     continue;
@@ -197,6 +236,8 @@ for (const dialog of dialogs) {
     if (line.id) lineIds.add(line.id);
     if (!line.speaker) addIssue("dialogs.js", dialog.id, `Dialog line ${line.id || "unknown"} missing speaker.`);
     if (!line.text) addIssue("dialogs.js", dialog.id, `Dialog line ${line.id || "unknown"} missing text.`);
+    assertNoNonGermanScript("dialogs.js", dialog.id, `lines.${line.id || "unknown"}.speaker`, line.speaker);
+    assertNoNonGermanScript("dialogs.js", dialog.id, `lines.${line.id || "unknown"}.text`, line.text);
     if (line.speaker) speakerCounts[line.speaker] = (speakerCounts[line.speaker] || 0) + 1;
   }
 
@@ -223,6 +264,9 @@ for (const task of tasks.filter((task) => task.type === "formTraining")) {
   if (!task.forms) addIssue("data.js", task.id || "unknown", "Form task missing forms block.");
   if (!hasTranslations(task.translations)) {
     addIssue("data.js", task.id || "unknown", "Form task missing translations.");
+  }
+  for (const [field, value] of Object.entries(task.forms || {})) {
+    assertNoNonGermanScript("data.js", task.id || "unknown", `forms.${field}`, value);
   }
 }
 

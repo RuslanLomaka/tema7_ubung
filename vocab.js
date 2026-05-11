@@ -388,7 +388,7 @@ window.appData.vocabulary = [
     "meaningUk": "виявляти",
     "meaningAr": "يكتشف",
     "meaningFa": "کشف کردن (پیدا کردن)",
-    "hintDe": "Etwas sehen oder finden, das man vorher nicht kannته."
+    "hintDe": "Etwas sehen oder finden, was man vorher nicht kannte."
   },
   {
     "category": "verb",
@@ -578,7 +578,7 @@ window.appData.vocabulary = [
     "meaningUk": "а навпаки / а також",
     "meaningAr": "بل / وإنما",
     "meaningFa": "بلکه",
-    "hintDe": "Verbindet den zweiten Teil nach einer Verneینung oder nach nicht nur."
+    "hintDe": "Verbindet den zweiten Teil nach einer Verneinung oder nach nicht nur."
   },
   {
     "category": "grammar",
