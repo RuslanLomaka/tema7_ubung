@@ -97,6 +97,7 @@ const testView = document.querySelector("#testView");
 const theoryNavButton = document.querySelector("#theoryNavButton");
 const testNavButton = document.querySelector("#testNavButton");
 const startTestFromTheoryButton = document.querySelector("#startTestFromTheoryButton");
+const themeToggle = document.querySelector("#themeToggle");
 const languageSelect = document.querySelector("#languageSelect");
 const roundLabel = document.querySelector("#roundLabel");
 const scoreLabel = document.querySelector("#scoreLabel");
@@ -164,6 +165,38 @@ const confirmModalAccept = document.querySelector("#confirmModalAccept");
 
 let modalResolver = null;
 let taskHelpOpen = false;
+
+function readStoredThemePreference() {
+  try {
+    return localStorage.getItem("tema7-dark-mode") === "true";
+  } catch (error) {
+    return false;
+  }
+}
+
+function storeThemePreference(isDarkMode) {
+  try {
+    localStorage.setItem("tema7-dark-mode", String(isDarkMode));
+  } catch (error) {
+    // Theme persistence is optional; the visual switch still works instantly.
+  }
+}
+
+function setDarkMode(isDarkMode, shouldStore = true) {
+  document.body.classList.toggle("dark-mode", isDarkMode);
+  if (themeToggle) {
+    themeToggle.setAttribute("aria-pressed", String(isDarkMode));
+    themeToggle.setAttribute(
+      "aria-label",
+      isDarkMode ? "Helles Design einschalten" : "Dunkles Design einschalten"
+    );
+    themeToggle.querySelector(".theme-toggle-icon").textContent = isDarkMode ? "☀" : "☾";
+    themeToggle.querySelector(".theme-toggle-text").textContent = isDarkMode ? "Hell" : "Dunkel";
+  }
+  if (shouldStore) {
+    storeThemePreference(isDarkMode);
+  }
+}
 
 function randomInt(max) {
   if (globalThis.crypto && globalThis.crypto.getRandomValues) {
@@ -2720,6 +2753,12 @@ function refreshAfterLanguageChange() {
     renderFinish();
   }
 }
+
+setDarkMode(readStoredThemePreference(), false);
+
+themeToggle?.addEventListener("click", () => {
+  setDarkMode(!document.body.classList.contains("dark-mode"));
+});
 
 languageSelect.value = selectedLanguage;
 languageSelect.addEventListener("change", (event) => {
