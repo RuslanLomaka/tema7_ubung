@@ -36,6 +36,13 @@ function hasTranslations(translations) {
   return translations && translations.en && translations.uk && translations.ar;
 }
 
+function normalizeOptionText(value) {
+  return String(value || "")
+    .trim()
+    .replace(/\s+/g, " ")
+    .toLowerCase();
+}
+
 const nonGermanScriptPattern = /[\u0400-\u04FF\u0600-\u06FF]/;
 
 function assertNoNonGermanScript(file, id, field, value) {
@@ -157,8 +164,18 @@ for (const entry of sentenceBankV2) {
     if (!Array.isArray(entry.multipleChoice.wrongOptions) || entry.multipleChoice.wrongOptions.length !== 3) {
       addIssue("sentences.js", entry.id, "multipleChoice must have exactly 3 wrongOptions.");
     }
+    const acceptedAnswers = new Set([entry.sentence, ...(entry.alternativeCorrectAnswers || [])].map(normalizeOptionText));
+    const seenOptions = new Set();
     for (const [index, option] of (entry.multipleChoice.wrongOptions || []).entries()) {
       assertNoNonGermanScript("sentences.js", entry.id, `multipleChoice.wrongOptions.${index}`, option);
+      const normalizedOption = normalizeOptionText(option);
+      if (acceptedAnswers.has(normalizedOption)) {
+        addIssue("sentences.js", entry.id, `multipleChoice wrong option ${index + 1} duplicates an accepted answer.`);
+      }
+      if (seenOptions.has(normalizedOption)) {
+        addIssue("sentences.js", entry.id, `multipleChoice wrong option ${index + 1} duplicates another wrong option.`);
+      }
+      seenOptions.add(normalizedOption);
     }
   }
 

@@ -129,7 +129,7 @@ window.appData.sentenceBankV2 = [
       "wrongOptions": [
         "Die Wohnung ist nicht nur teuer, auch sondern in einem schlechten Zustand.",
         "Die Wohnung ist nicht teuer nur, sondern auch in einem schlechten Zustand.",
-        "Die Wohnung ist nicht nur teuer, sondern in einem schlechten Zustand auch."
+        "Die Wohnung ist nicht nur teuer, sondern auch in einem schlechten Zustand ist."
       ]
     },
     "errorSearch": {
@@ -226,9 +226,9 @@ window.appData.sentenceBankV2 = [
     ],
     "multipleChoice": {
       "wrongOptions": [
-        "Der Vermieter verlangt bis zum dritten Werktag die Miete.",
+        "Der Vermieter die Miete verlangt bis zum dritten Werktag.",
         "Der Vermieter verlangt die Miete zum bis dritten Werktag.",
-        "Der Vermieter die Miete verlangt bis zum dritten Werktag."
+        "Der Vermieter verlangt die Miete bis dritten zum Werktag."
       ]
     },
     "errorSearch": {
@@ -355,8 +355,8 @@ window.appData.sentenceBankV2 = [
     ],
     "multipleChoice": {
       "wrongOptions": [
-        "Der Mieter zieht in die neue Wohnung nächste Woche ein.",
-        "Der Mieter zieht nächste Woche ein in die neue Wohnung.",
+        "Der Mieter in die neue Wohnung zieht nächste Woche ein.",
+        "Der Mieter zieht nächste Woche in die neue Wohnung an.",
         "Der Mieter nächste Woche zieht in die neue Wohnung ein."
       ]
     },
@@ -452,7 +452,7 @@ window.appData.sentenceBankV2 = [
       "wrongOptions": [
         "Haben Sie sich schon dafür Gedanken gemacht, wer sich um den Garten kümmert?",
         "Haben Sie schon sich darüber Gedanken gemacht, wer sich um den Garten kümmert?",
-        "Haben Sie sich schon darüber Gedanken gemacht, wer um den Garten sich kümmert?"
+        "Haben Sie sich schon darüber Gedanken gemacht, wer sich um den Garten kümmert hat?"
       ]
     },
     "errorSearch": {
@@ -497,9 +497,9 @@ window.appData.sentenceBankV2 = [
     ],
     "multipleChoice": {
       "wrongOptions": [
-        "Für was genau wurde diese zusätzliche Gebühr in den Nebenkosten berechnet?",
-        "Wofür wurde genau diese zusätzliche Gebühr in den Nebenkosten berechnet?",
-        "Wofür genau wurde diese zusätzliche Gebühr berechnet in den Nebenkosten?"
+        "Wofür genau wurde diese zusätzliche Gebühr auf den Nebenkosten berechnet?",
+        "Wofür genau diese zusätzliche Gebühr wurde in den Nebenkosten berechnet?",
+        "Wofür genau wurde diese zusätzliche Gebühr in den Nebenkosten berechnen?"
       ]
     },
     "errorSearch": {
@@ -551,9 +551,9 @@ window.appData.sentenceBankV2 = [
     ],
     "multipleChoice": {
       "wrongOptions": [
-        "Worüber hat der Nachbar sich gestern beim Hausmeister beschwert?",
-        "Über was hat sich der Nachbar gestern beim Hausmeister beschwert?",
-        "Worüber hat sich der Nachbar gestern beschwert beim Hausmeister?"
+        "Worüber der Nachbar hat sich gestern beim Hausmeister beschwert?",
+        "Worüber hat sich der Nachbar gestern beim Hausmeister beschwert hat?",
+        "Worüber hat sich der Nachbar gestern beim Hausmeister beschweren?"
       ]
     },
     "errorSearch": {
@@ -642,9 +642,9 @@ window.appData.sentenceBankV2 = [
     ],
     "multipleChoice": {
       "wrongOptions": [
-        "Zwar ist die Lage sehr zentral, der ständige Lärm aber stört die Nachtruhe.",
+        "Zwar ist die Lage sehr zentral, aber stört der ständige Lärm die Nachtruhe.",
         "Zwar die Lage ist sehr zentral, aber der ständige Lärm stört die Nachtruhe.",
-        "Zwar ist die Lage sehr zentral, aber stört der ständige Lärm die Nachtruhe."
+        "Zwar ist die Lage sehr zentral, aber der ständige Lärm die Nachtruhe stört."
       ]
     },
     "errorSearch": {
@@ -730,7 +730,7 @@ window.appData.sentenceBankV2 = [
       "wrongOptions": [
         "Die Kaution dient dem Vermieter als Sicherheit, falls der Mieter gegen den Vertrag verstoßt.",
         "Die Kaution dient dem Vermieter als Sicherheit, falls der Mieter verstößt gegen den Vertrag.",
-        "Die Kaution dient als Sicherheit dem Vermieter, falls der Mieter gegen den Vertrag verstößt."
+        "Die Kaution dient dem Vermieter als Sicherheit, falls verstößt der Mieter gegen den Vertrag."
       ]
     },
     "errorSearch": {
@@ -773,7 +773,7 @@ window.appData.sentenceBankV2 = [
       "wrongOptions": [
         "Trotz den strengen Verboten grillen die Nachbarn fast jeden Abend auf ihrem Balkon.",
         "Trotz der strengen Verbote die Nachbarn grillen fast jeden Abend auf ihrem Balkon.",
-        "Trotz der strengen Verbote grillen fast jeden Abend die Nachbarn auf ihrem Balkon."
+        "Trotz der strengen Verbote grillen die Nachbarn fast jeden Abend auf ihren Balkon."
       ]
     },
     "errorSearch": {
@@ -910,8 +910,8 @@ window.appData.sentenceBankV2 = [
     "multipleChoice": {
       "wrongOptions": [
         "Hätten wir doch früher aus dieser rücksichtslosen Nachbarschaft ausgezogen!",
-        "Wären wir früher doch aus dieser rücksichtslosen Nachbarschaft ausgezogen!",
-        "Wären wir doch aus dieser rücksichtslosen Nachbarschaft früher ausgezogen!"
+        "Wären wir doch früher aus dieser rücksichtslosen Nachbarschaft ausgeziehen!",
+        "Wären wir doch früher aus dieser rücksichtslosen Nachbarschaft ausgezieht!"
       ]
     },
     "errorSearch": {
@@ -955,7 +955,7 @@ window.appData.sentenceBankV2 = [
       "wrongOptions": [
         "Trotz der fehlenden Genehmigung der Eigentümer begann mit dem Bau der Mauer.",
         "Trotz fehlenden Genehmigung begann der Eigentümer mit dem Bau der Mauer.",
-        "Trotz der fehlenden Genehmigung begann mit dem Bau der Mauer der Eigentümer."
+        "Trotz der fehlenden Genehmigung begann der Eigentümer der Bau der Mauer."
       ]
     },
     "errorSearch": {
@@ -1214,8 +1214,8 @@ window.appData.sentenceBankV2 = [
     "multipleChoice": {
       "wrongOptions": [
         "Vor dem Umzug der Mieter liest den Mietvertrag noch einmal.",
-        "Vor dem Umzug liest der Mieter noch einmal den Mietvertrag.",
-        "Vor dem Umzug liest den Mietvertrag der Mieter noch einmal."
+        "Vor dem Umzug liest der Mieter den Mietvertrag noch einmal lesen.",
+        "Vor dem Umzug liest der Mieter den Mietvertrag noch einmal liest."
       ]
     },
     "errorSearch": {
@@ -1256,8 +1256,8 @@ window.appData.sentenceBankV2 = [
     "multipleChoice": {
       "wrongOptions": [
         "Im Sommer der Vermieter mäht den Rasen am Samstag.",
-        "Im Sommer mäht den Rasen der Vermieter am Samstag.",
-        "Im Sommer mäht der Vermieter am Samstag den Rasen."
+        "Im Sommer mähen der Vermieter den Rasen am Samstag.",
+        "Im Sommer mäht der Vermieter den Rasen am Samstag mäht."
       ]
     },
     "errorSearch": {
@@ -1379,7 +1379,7 @@ window.appData.sentenceBankV2 = [
       "wrongOptions": [
         "Die Treppe ist sauber, weil der Hausmeister reinigt sie jeden Morgen.",
         "Die Treppe sauber ist, weil der Hausmeister sie jeden Morgen reinigt.",
-        "Die Treppe ist sauber, weil jeden Morgen der Hausmeister sie reinigt."
+        "Die Treppe ist sauber, weil der Hausmeister sie jeden Morgen reinigen."
       ]
     },
     "errorSearch": {
@@ -1502,7 +1502,7 @@ window.appData.sentenceBankV2 = [
       "wrongOptions": [
         "Worüber die Mieter sprechen nach der Versammlung noch lange im Hof?",
         "Über was sprechen die Mieter nach der Versammlung noch lange im Hof?",
-        "Worüber sprechen nach der Versammlung die Mieter noch lange im Hof?"
+        "Worüber sprechen die Mieter nach der Versammlung noch lange im Hof spricht?"
       ]
     },
     "errorSearch": {
@@ -1543,8 +1543,8 @@ window.appData.sentenceBankV2 = [
     "multipleChoice": {
       "wrongOptions": [
         "Dafür der Eigentümer braucht zuerst eine Genehmigung vom Gericht.",
-        "Dafür braucht zuerst der Eigentümer eine Genehmigung vom Gericht.",
-        "Für das braucht der Eigentümer zuerst eine Genehmigung vom Gericht."
+        "Dafür braucht der Eigentümer zuerst eine Genehmigung Gericht vom.",
+        "Dafür braucht der Eigentümer zuerst eine Genehmigung von der Gericht."
       ]
     },
     "errorSearch": {
@@ -1847,7 +1847,7 @@ window.appData.sentenceBankV2 = [
     "multipleChoice": {
       "wrongOptions": [
         "Hätte der Rechtsanwalt früher reagiert, hätte der Prozess wahrscheinlich kürzer gewesen.",
-        "Der Rechtsanwalt hätte früher reagiert, wäre der Prozess wahrscheinlich kürzer gewesen.",
+        "Hätte der Rechtsanwalt früher reagiert, der Prozess wäre wahrscheinlich kürzer gewesen.",
         "Hätte der Rechtsanwalt reagiert früher, wäre der Prozess wahrscheinlich kürzer gewesen."
       ]
     },
@@ -1888,7 +1888,7 @@ window.appData.sentenceBankV2 = [
     "multipleChoice": {
       "wrongOptions": [
         "Wäre die Kündigungsfrist klarer erklärt worden, wären weniger Mieter Fehler gemacht.",
-        "Die Kündigungsfrist wäre klarer erklärt worden, hätten weniger Mieter Fehler gemacht.",
+        "Wäre die Kündigungsfrist klarer erklärt worden, weniger Mieter hätten Fehler gemacht.",
         "Wäre die Kündigungsfrist erklärt klarer worden, hätten weniger Mieter Fehler gemacht."
       ]
     },
@@ -1935,9 +1935,9 @@ window.appData.sentenceBankV2 = [
     "alternativeCorrectAnswers": [],
     "multipleChoice": {
       "wrongOptions": [
-        "Trotz dem Streit mit den Nachbarn bemühte sich der Vermieter um Frieden im Haus.",
+        "Trotz den Streit mit den Nachbarn bemühte sich der Vermieter um Frieden im Haus.",
         "Trotz des Streits mit den Nachbarn der Vermieter bemühte sich um Frieden im Haus.",
-        "Trotz des Streits mit den Nachbarn bemühte der Vermieter sich im Haus um Frieden."
+        "Trotz des Streits mit den Nachbarn bemühte sich der Vermieter für Frieden im Haus."
       ]
     },
     "errorSearch": {
@@ -2069,7 +2069,7 @@ window.appData.sentenceBankV2 = [
       "wrongOptions": [
         "Entweder der Eigentümer senkt die Nebenkosten, oder kündigen mehrere Mieter den Vertrag.",
         "Entweder senkt der Eigentümer die Nebenkosten, oder mehrere Mieter den Vertrag kündigen.",
-        "Der Eigentümer senkt entweder die Nebenkosten, oder mehrere Mieter kündigen den Vertrag."
+        "Entweder der Eigentümer senkt die Nebenkosten, oder mehrere Mieter kündigt den Vertrag."
       ]
     },
     "errorSearch": {
@@ -2115,7 +2115,7 @@ window.appData.sentenceBankV2 = [
     "multipleChoice": {
       "wrongOptions": [
         "Wären die Mauern besser isoliert gewesen, wären man im Winter deutlich weniger Lärm von draußen gehört.",
-        "Die Mauern wären besser isoliert gewesen, hätte man im Winter deutlich weniger Lärm von draußen gehört.",
+        "Wären die Mauern besser isoliert gewesen, man hätte im Winter deutlich weniger Lärm von draußen gehört.",
         "Wären die Mauern isoliert besser gewesen, hätte man im Winter deutlich weniger Lärm von draußen gehört."
       ]
     },
@@ -2163,7 +2163,7 @@ window.appData.sentenceBankV2 = [
     "alternativeCorrectAnswers": [],
     "multipleChoice": {
       "wrongOptions": [
-        "Trotz der Entscheidung vom Gericht verstoßen einige Nachbarn weiter gegen die Hausordnung.",
+        "Trotz der Entscheidung des Gerichts verstoßt einige Nachbarn weiter gegen die Hausordnung.",
         "Trotz der Entscheidung des Gerichts einige Nachbarn verstoßen weiter gegen die Hausordnung.",
         "Trotz der Entscheidung des Gerichts verstoßen gegen die Hausordnung einige Nachbarn weiter."
       ]
