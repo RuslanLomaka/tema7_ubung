@@ -39,6 +39,32 @@ button {
   padding: 32px 0;
 }
 
+.credits-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+.credits-top a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.credits-top a:hover {
+  text-decoration: underline;
+}
+
+.credits-separator {
+  color: var(--muted);
+  opacity: 0.55;
+}
+
 .topbar {
   display: flex;
   align-items: flex-end;
